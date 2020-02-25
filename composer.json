@@ -1,76 +1,9 @@
 {
-    "name"             : "yoeunes/notify",
-    "license"          : "MIT",
-    "description"      : "toastr.js, pnotify.js flush notifications for Laravel 5 and Lumen",
-    "homepage"         : "https://github.com/yoeunes/notify",
-    "keywords"         : [
-        "toastr",
-        "pnotify",
-        "toastr js",
-        "pnotify js",
-        "notification",
-        "laravel",
-        "laravel 5",
-        "laravel 5.6",
-        "laravel 5.7",
-        "laravel 5.8",
-        "laravel 6",
-        "laravel notification",
-        "laravel toastr",
-        "laravel pnotify",
-        "flush",
-        "flush notifications",
-        "laravel flush notifications",
-        "flush messages",
-        "messages",
-        "alerts",
-        "Lumen",
-        "php",
-        "yoeunes"
-    ],
-    "authors"          : [
-        {
-            "name"    : "Younes Khoubza",
-            "email"   : "younes.khoubza@gmail.com",
-            "homepage": "https://github.com/yoeunes/notify",
-            "role"    : "Developer"
-        }
-    ],
-    "require"          : {
-        "php"               : "^7.0|^7.1|^7.2",
-        "illuminate/session": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0",
-        "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0"
-    },
-    "require-dev"      : {
-        "orchestra/testbench": "3.5.*|3.6.*|3.7.*",
-        "phpunit/phpunit"    : "^6.2|^7.0"
-    },
-    "autoload"         : {
+    "name": "yoeunes/notify",
+    "license": "MIT",
+    "autoload": {
         "psr-4": {
             "Yoeunes\\Notify\\": "src"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
-    },
-    "autoload-dev"     : {
-        "psr-4": {
-            "Yoeunes\\Notify\\Tests\\": "tests"
         }
-    },
-    "minimum-stability": "stable",
-    "prefer-stable"    : true,
-    "extra"            : {
-        "laravel": {
-            "providers": [
-                "Yoeunes\\Notify\\NotifyServiceProvider"
-            ],
-            "aliases"  : {
-                "Notify": "Yoeunes\\Notify\\Facades\\Notify"
-            }
-        }
-    },
-    "config"           : {
-        "sort-packages": true
     }
 }
