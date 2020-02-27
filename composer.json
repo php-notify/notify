@@ -6,14 +6,20 @@
         "notify",
         "php",
         "laravel",
-        "symfony"
+        "symfony",
+        "Lumen",
+        "notifications",
+        "messages",
+        "alerts",
+        "pnotify",
+        "toastr "
     ],
     "homepage": "https://github.com/yoeunes/notify",
     "authors": [
         {
             "name": "Younes Khoubza",
             "email": "younes.khoubza@gmail.com",
-            "homepage": "https://github.com/yoeunes/notify",
+            "homepage": "https://github.com/yoeunes",
             "role": "Developer"
         }
     ],
