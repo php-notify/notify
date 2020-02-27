@@ -114,11 +114,11 @@ class NotifyManager
 
         $config = $notifiers[$name];
 
-        $config += [
+        $config += array(
             'name' => $name,
             'exception' => $this->config->get('exception'),
-            'session_key' => $this->config->get('session_key'),
-        ];
+            'session_key' => $this->config->get('session_key')
+        );
 
         return $config;
     }

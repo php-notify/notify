@@ -6,7 +6,7 @@ class JSONRenderer extends BaseRenderer
 {
     public function render($notifiers)
     {
-        $notifications = [];
+        $notifications = array();
 
         /** @var \Yoeunes\Notify\Factories\NotifierFactoryInterface $notifier */
         foreach ($notifiers as $notifier) {
@@ -15,20 +15,20 @@ class JSONRenderer extends BaseRenderer
             }
         }
 
-        return json_encode([
+        return json_encode(array(
             'notifications' => $notifications,
             'scripts' => $this->getScripts($notifiers),
-            'styles' => $this->getStyles($notifiers),
-        ]);
+            'styles' => $this->getStyles($notifiers)
+        ));
     }
 
     public function renderScripts($notifiers)
     {
-        return json_encode(['scripts' => $this->getScripts($notifiers)]);
+        return json_encode(array('scripts' => $this->getScripts($notifiers)));
     }
 
     public function renderStyles($notifiers)
     {
-        return json_encode(['styles' => $this->getStyles($notifiers)]);
+        return json_encode(array('styles' => $this->getStyles($notifiers)));
     }
 }

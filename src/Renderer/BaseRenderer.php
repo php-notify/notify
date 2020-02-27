@@ -9,7 +9,7 @@ abstract class BaseRenderer implements RendererInterface
 {
     public function getScripts($notifiers)
     {
-        $scripts = [];
+        $scripts = array();
 
         foreach ($notifiers as $notifier) {
             if ($notifier instanceof ScriptableInterface && $notifier->readyToRender()) {
@@ -22,7 +22,7 @@ abstract class BaseRenderer implements RendererInterface
 
     public function getStyles($notifiers)
     {
-        $styles = [];
+        $styles = array();
 
         foreach ($notifiers as $notifier) {
             if ($notifier instanceof StyleableInterface && $notifier->readyToRender()) {

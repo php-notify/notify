@@ -1,9 +1,43 @@
 {
     "name": "yoeunes/notify",
+    "description": "",
+    "keywords": [
+        "yoeunes",
+        "notify",
+        "php",
+        "laravel",
+        "symfony"
+    ],
+    "homepage": "https://github.com/yoeunes/notify",
+    "authors": [
+        {
+            "name": "Younes Khoubza",
+            "email": "younes.khoubza@gmail.com",
+            "homepage": "https://github.com/yoeunes/notify",
+            "role": "Developer"
+        }
+    ],
     "license": "MIT",
+    "require": {
+        "php": ">=5.3",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
     "autoload": {
         "psr-4": {
-            "Yoeunes\\Notify\\": "src"
+            "Yoeunes\\Notify\\": "src/"
         }
-    }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Yoeunes\\Notify\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

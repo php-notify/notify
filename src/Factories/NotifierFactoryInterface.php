@@ -6,15 +6,15 @@ interface NotifierFactoryInterface
 {
     public function __invoke($config);
 
-    public function notification($type, $message, $title = '', $options = []);
+    public function notification($type, $message, $title = '', $options = array());
 
-    public function error($message, $title = '', $options = []);
+    public function error($message, $title = '', $options = array());
 
-    public function info($message, $title = '', $options = []);
+    public function info($message, $title = '', $options = array());
 
-    public function success($message, $title = '', $options = []);
+    public function success($message, $title = '', $options = array());
 
-    public function warning($message, $title = '', $options = []);
+    public function warning($message, $title = '', $options = array());
 
     public function readyToRender();
 
