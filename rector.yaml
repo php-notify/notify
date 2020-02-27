@@ -1,0 +1,7 @@
+parameters:
+    php_version_features: '5.3'
+    paths:
+        - 'src'
+        - 'tests'
+    sets:
+        - 'php53'
