@@ -5,3 +5,20 @@ parameters:
         - 'tests'
     sets:
         - 'php53'
+        - 'phpunit40'
+        - 'psr-4'
+        - 'code-quality'
+        - 'coding-style'
+        - 'doctrine-code-quality'
+        - 'php-code-sniffer-30'
+        - 'solid'
+        - 'early-return'
+#        - 'type-declaration'
+        - 'celebrity'
+        - 'php-di-decouple'
+        - 'phpstan'
+        - 'dead-code'
+    import_short_classes: false
+    import_doc_blocks: false
+services:
+    Rector\TypeDeclaration\Rector\Property\CompleteVarDocTypePropertyRector: ~

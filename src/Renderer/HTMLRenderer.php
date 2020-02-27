@@ -2,7 +2,7 @@
 
 namespace Yoeunes\Notify\Renderer;
 
-class HTMLRenderer extends BaseRenderer
+final class HTMLRenderer extends BaseRenderer
 {
     public function render($notifiers)
     {

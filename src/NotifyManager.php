@@ -5,8 +5,9 @@ namespace Yoeunes\Notify;
 use Yoeunes\Notify\Config\ConfigInterface;
 use Yoeunes\Notify\Factories\NotifierFactoryInterface;
 use Yoeunes\Notify\Renderer\HTMLRenderer;
+use Yoeunes\Notify\Renderer\RendererInterface;
 
-class NotifyManager
+final class NotifyManager
 {
     /**
      * The config instance.
@@ -18,29 +19,32 @@ class NotifyManager
     /**
      * The active notifiers instances.
      *
-     * @var array<string,object>
+     * @var array<string, object>
      */
     protected $notifiers = array();
 
     /**
      * The custom notifiers resolvers.
      *
-     * @var array<string,callable>
+     * @var array<string, callable>
      */
     protected $extensions = array();
 
-    /** @var \Yoeunes\Notify\Renderer\RendererInterface */
+    /**
+     * @var \Yoeunes\Notify\Renderer\RendererInterface
+     */
     protected $renderer;
 
     /**
      * Create a new manager instance.
      *
-     * @param \Yoeunes\Notify\Config\ConfigInterface $config
+     * @param \Yoeunes\Notify\Config\ConfigInterface          $config
+     * @param \Yoeunes\Notify\Renderer\RendererInterface|null $renderer
      */
-    public function __construct(ConfigInterface $config)
+    public function __construct(ConfigInterface $config, RendererInterface $renderer = null)
     {
         $this->config = $config;
-        $this->renderer = new HTMLRenderer();
+        $this->renderer = null !== $renderer ? $renderer : new HTMLRenderer();
     }
 
     /**
@@ -90,7 +94,7 @@ class NotifyManager
             return $this->extensions[$config['notifier']]($config);
         }
 
-        throw new \InvalidArgumentException("Unsupported notifier [ {$name} ].");
+        throw new \InvalidArgumentException(sprintf('Unsupported notifier [ %s ].', $name));
     }
 
     /**
@@ -109,18 +113,16 @@ class NotifyManager
         $notifiers = $this->config->get('notifiers');
 
         if (!isset($notifiers[$name]) || !is_array($notifiers[$name])) {
-            throw new \InvalidArgumentException("Notifier [$name] not configured.");
+            throw new \InvalidArgumentException(sprintf('Notifier [%s] not configured.', $name));
         }
 
         $config = $notifiers[$name];
 
-        $config += array(
+        return $config + array(
             'name' => $name,
             'exception' => $this->config->get('exception'),
             'session_key' => $this->config->get('session_key')
         );
-
-        return $config;
     }
 
     public function render()
@@ -148,11 +150,7 @@ class NotifyManager
      */
     public function extend($name, $resolver)
     {
-        if ($resolver instanceof \Closure) {
-            $this->extensions[$name] = $resolver->bindTo($this, $this);
-        } else {
-            $this->extensions[$name] = $resolver;
-        }
+        $this->extensions[$name] = $resolver instanceof \Closure ? $resolver->bindTo($this, $this) : $resolver;
     }
 
     /**
