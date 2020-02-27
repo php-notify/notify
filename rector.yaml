@@ -1,8 +1,10 @@
 parameters:
     php_version_features: '5.3'
+
     paths:
         - 'src'
         - 'tests'
+
     sets:
         - 'php53'
         - 'phpunit40'
@@ -10,6 +12,7 @@ parameters:
         - 'code-quality'
         - 'coding-style'
         - 'doctrine-code-quality'
+        - 'symfony-code-quality'
         - 'php-code-sniffer-30'
         - 'solid'
         - 'early-return'
@@ -18,7 +21,10 @@ parameters:
         - 'php-di-decouple'
         - 'phpstan'
         - 'dead-code'
+
     import_short_classes: false
+
     import_doc_blocks: false
+
 services:
     Rector\TypeDeclaration\Rector\Property\CompleteVarDocTypePropertyRector: ~

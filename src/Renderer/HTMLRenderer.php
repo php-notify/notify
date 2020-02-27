@@ -10,7 +10,7 @@ final class HTMLRenderer extends BaseRenderer
 
         foreach ($notifiers as $notifier) {
             if ($notifier->readyToRender()) {
-                $html .= $notifier->render() .  str_repeat(PHP_EOL, 2);
+                $html .= $notifier->render() . str_repeat(PHP_EOL, 2);
             }
         }
 

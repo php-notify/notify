@@ -1,0 +1,14 @@
+parameters:
+    php_version_features: '5.3'
+
+    paths:
+        - 'src'
+        - 'tests'
+
+    sets:
+        - 'clean-code'
+        - 'psr12'
+        - 'types'
+        - 'dead-code'
+        - 'common'
+        - 'symfony'
