@@ -94,7 +94,7 @@ final class NotifyManager
             return $this->extensions[$config['notifier']]($config);
         }
 
-        throw new \InvalidArgumentException(sprintf('Unsupported notifier [ %s ].', $name));
+        throw new \InvalidArgumentException(sprintf('Unsupported notifier [ %s ]', $name));
     }
 
     /**
@@ -113,15 +113,15 @@ final class NotifyManager
         $notifiers = $this->config->get('notifiers');
 
         if (!isset($notifiers[$name]) || !is_array($notifiers[$name])) {
-            throw new \InvalidArgumentException(sprintf('Notifier [%s] not configured.', $name));
+            throw new \InvalidArgumentException(sprintf('Notifier [%s] not configured', $name));
         }
 
         $config = $notifiers[$name];
 
         return $config + array(
             'name' => $name,
-            'exception' => $this->config->get('exception'),
-            'session_key' => $this->config->get('session_key')
+//            'exception' => $this->config->get('exception'),
+//            'session_key' => $this->config->get('session_key')
         );
     }
 
@@ -144,13 +144,21 @@ final class NotifyManager
      * Register an extension notifier resolver.
      *
      * @param string   $name
-     * @param callable $resolver
+     * @param \Closure|NotifierFactoryInterface $resolver
      *
      * @return void
      */
     public function extend($name, $resolver)
     {
-        $this->extensions[$name] = $resolver instanceof \Closure ? $resolver->bindTo($this, $this) : $resolver;
+        if ($resolver instanceof NotifierFactoryInterface) {
+            $resolver = function ($config) use ($resolver) {
+                $resolver->setConfig($config);
+
+                return $resolver;
+            };
+        }
+
+        $this->extensions[$name] = $resolver;
     }
 
     /**

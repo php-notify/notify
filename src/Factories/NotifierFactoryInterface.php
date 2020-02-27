@@ -4,8 +4,6 @@ namespace Yoeunes\Notify\Factories;
 
 interface NotifierFactoryInterface
 {
-    public function __invoke($config);
-
     public function notification($type, $message, $title = '', $options = array());
 
     public function error($message, $title = '', $options = array());
@@ -19,4 +17,6 @@ interface NotifierFactoryInterface
     public function readyToRender();
 
     public function render();
+
+    public function setConfig($config);
 }

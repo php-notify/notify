@@ -1,6 +1,6 @@
 {
     "name": "yoeunes/notify",
-    "description": "",
+    "description": "PHP notify library to display flash notification",
     "keywords": [
         "yoeunes",
         "notify",
@@ -29,9 +29,7 @@
         "ext-json": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.0",
-        "rector/rector-prefixed": "^0.7.1",
-        "symplify/easy-coding-standard-prefixed": "^7.2"
+        "phpunit/phpunit": "~4.0"
     },
     "autoload": {
         "psr-4": {
