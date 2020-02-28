@@ -21,19 +21,19 @@ final class NotifyManager
      *
      * @var array<string, object>
      */
-    protected $notifiers = array();
+    private $notifiers = array();
 
     /**
      * The custom notifiers resolvers.
      *
      * @var array<string, callable>
      */
-    protected $extensions = array();
+    private $extensions = array();
 
     /**
      * @var \Yoeunes\Notify\Renderer\RendererInterface
      */
-    protected $renderer;
+    private $renderer;
 
     /**
      * Create a new manager instance.
@@ -59,7 +59,7 @@ final class NotifyManager
         $name = $name ?: $this->getDefaultNotifier();
 
         if (!isset($this->notifiers[$name])) {
-            $this->notifiers[$name] = $this->makeNotifier($name);
+            $this->notifiers[$name] = $this->resolve($name);
         }
 
         return $this->notifiers[$name];
@@ -82,34 +82,30 @@ final class NotifyManager
      *
      * @return object
      */
-    protected function makeNotifier($name)
+    private function resolve($name)
     {
         $config = $this->getNotifierConfig($name);
 
-        if (isset($this->extensions[$name])) {
-            return $this->extensions[$name]($config);
+        $notifier = $config['notifier'];
+
+        if (!isset($this->extensions[$notifier])) {
+            throw new \InvalidArgumentException(sprintf('Unsupported notifier [ %s ]', $notifier));
         }
 
-        if (isset($config['notifier']) && isset($this->extensions[$config['notifier']])) {
-            return $this->extensions[$config['notifier']]($config);
-        }
-
-        throw new \InvalidArgumentException(sprintf('Unsupported notifier [ %s ]', $name));
+        return $this->extensions[$notifier]($config);
     }
 
     /**
      * Get the configuration for a notifier.
      *
-     * @param string|null $name
+     * @param string $name
      *
      * @throws \InvalidArgumentException
      *
      * @return array
      */
-    public function getNotifierConfig($name = null)
+    public function getNotifierConfig($name)
     {
-        $name = $name ?: $this->getDefaultNotifier();
-
         $notifiers = $this->config->get('notifiers');
 
         if (!isset($notifiers[$name]) || !is_array($notifiers[$name])) {
@@ -119,7 +115,7 @@ final class NotifyManager
         $config = $notifiers[$name];
 
         return $config + array(
-            'name' => $name,
+            'notifier' => $name,
 //            'exception' => $this->config->get('exception'),
 //            'session_key' => $this->config->get('session_key')
         );

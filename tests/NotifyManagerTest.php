@@ -67,7 +67,7 @@ class NotifyManagerTest extends \PHPUnit\Framework\TestCase
                 'scripts' => array('jquery.js', 'default_notifier.js'),
                 'styles' => array('default_notifier.css'),
                 'options' => array(),
-                'name' => 'default_notifier',
+                'notifier' => 'default_notifier',
             ),
             $manager->getNotifierConfig()
         );
@@ -92,7 +92,7 @@ class NotifyManagerTest extends \PHPUnit\Framework\TestCase
             );
 
         $manager = new NotifyManager($config);
-        $this->invokeMethod($manager, 'makeNotifier', array('default_notifier'));
+        $this->invokeMethod($manager, 'resolve', array('default_notifier'));
     }
 
     public function test_extend_to_add_more_notifiers_factory()
@@ -152,7 +152,7 @@ class NotifyManagerTest extends \PHPUnit\Framework\TestCase
                         'scripts' => array('jquery.js', 'default_notifier.js'),
                         'styles' => array('default_notifier.css'),
                         'options' => array(),
-                        'name' => 'default_notifier',
+                        'notifier' => 'default_notifier',
                     ),
                     $config
                 );
@@ -163,11 +163,58 @@ class NotifyManagerTest extends \PHPUnit\Framework\TestCase
 
         $manager->extend('another_notifier', $this->getMock('Yoeunes\Notify\Factories\NotifierFactoryInterface'));
 
-        $defaultNotifier = $this->invokeMethod($manager, 'makeNotifier', array('default_notifier'));
-        $anotherNotifier = $this->invokeMethod($manager, 'makeNotifier', array('another_notifier'));
+        $defaultNotifier = $this->invokeMethod($manager, 'resolve', array('default_notifier'));
+        $anotherNotifier = $this->invokeMethod($manager, 'resolve', array('another_notifier'));
 
         $this->assertInstanceOf('Yoeunes\Notify\Factories\NotifierFactoryInterface', $defaultNotifier);
         $this->assertInstanceOf('Yoeunes\Notify\Factories\NotifierFactoryInterface', $anotherNotifier);
+    }
+
+    public function test_make_notifier_containing_notifier_option()
+    {
+        $config = $this->getMock('Yoeunes\Notify\Config\ConfigInterface');
+        $config
+            ->method('get')
+            ->with('notifiers')
+            ->willReturn(
+                array(
+                    'default_notifier' => array(
+                        'scripts' => array('jquery.js', 'default_notifier.js'),
+                        'styles' => array('default_notifier.css'),
+                        'options' => array(),
+                    ),
+                    'another_notifier' => array(
+                        'notifier' => 'default_notifier',
+                        'scripts' => array(),
+                        'styles' => array(),
+                        'options' => array(),
+                    ),
+                )
+            );
+
+        $manager = new NotifyManager($config);
+
+        $that = $this;
+
+        $manager->extend(
+            'default_notifier',
+            function ($config) use ($that) {
+                $that->assertEquals(
+                    array(
+                        'scripts' => array(),
+                        'styles' => array(),
+                        'options' => array(),
+                        'notifier' => 'default_notifier',
+                    ),
+                    $config
+                );
+
+                return $that->getMock('Yoeunes\Notify\Factories\NotifierFactoryInterface');
+            }
+        );
+
+        $defaultNotifier = $this->invokeMethod($manager, 'resolve', array('another_notifier'));
+        $this->assertInstanceOf('Yoeunes\Notify\Factories\NotifierFactoryInterface', $defaultNotifier);
     }
 
     /**
