@@ -2,8 +2,11 @@
 
 namespace Yoeunes\Notify\Renderer;
 
-final class HTMLRenderer extends BaseRenderer
+final class HTMLRenderer extends AbstractRenderer
 {
+    /**
+     * @inheritDoc
+     */
     public function render($notifiers)
     {
         $html = '';
@@ -17,6 +20,9 @@ final class HTMLRenderer extends BaseRenderer
         return $html;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function renderScripts($notifiers)
     {
         $html = '';
@@ -28,6 +34,9 @@ final class HTMLRenderer extends BaseRenderer
         return $html;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function renderStyles($notifiers)
     {
         $html = '';

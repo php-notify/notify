@@ -4,10 +4,16 @@ namespace Yoeunes\Notify\Renderer;
 
 use Yoeunes\Notify\Factories\Behaviours\ScriptableInterface;
 use Yoeunes\Notify\Factories\Behaviours\StyleableInterface;
+use Yoeunes\Notify\Factories\NotificationFactoryInterface;
 
-abstract class BaseRenderer implements RendererInterface
+abstract class AbstractRenderer implements RendererInterface
 {
-    public function getScripts($notifiers)
+    /**
+     * @param array<string, NotificationFactoryInterface> $notifiers
+     *
+     * @return array<int, string>
+     */
+    protected function getScripts($notifiers)
     {
         $scripts = array();
 
@@ -20,7 +26,12 @@ abstract class BaseRenderer implements RendererInterface
         return array_values(array_unique($scripts));
     }
 
-    public function getStyles($notifiers)
+    /**
+     * @param array<string, NotificationFactoryInterface> $notifiers
+     *
+     * @return array<int, string>
+     */
+    protected function getStyles($notifiers)
     {
         $styles = array();
 

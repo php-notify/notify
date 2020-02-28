@@ -3,7 +3,7 @@
 namespace Yoeunes\Notify;
 
 use Yoeunes\Notify\Config\ConfigInterface;
-use Yoeunes\Notify\Factories\NotifierFactoryInterface;
+use Yoeunes\Notify\Factories\NotificationFactoryInterface;
 use Yoeunes\Notify\Renderer\HTMLRenderer;
 use Yoeunes\Notify\Renderer\RendererInterface;
 
@@ -19,7 +19,7 @@ final class NotifyManager
     /**
      * The active notifiers instances.
      *
-     * @var array<string, object>
+     * @var array<string, NotificationFactoryInterface>
      */
     private $notifiers = array();
 
@@ -39,12 +39,11 @@ final class NotifyManager
      * Create a new manager instance.
      *
      * @param \Yoeunes\Notify\Config\ConfigInterface          $config
-     * @param \Yoeunes\Notify\Renderer\RendererInterface|null $renderer
      */
-    public function __construct(ConfigInterface $config, RendererInterface $renderer = null)
+    public function __construct(ConfigInterface $config)
     {
         $this->config = $config;
-        $this->renderer = null !== $renderer ? $renderer : new HTMLRenderer();
+        $this->renderer = new HTMLRenderer();
     }
 
     /**
@@ -121,16 +120,37 @@ final class NotifyManager
         );
     }
 
+    /**
+     * @param \Yoeunes\Notify\Renderer\RendererInterface $renderer
+     *
+     * @return \Yoeunes\Notify\NotifyManager
+     */
+    public function setRenderer(RendererInterface $renderer)
+    {
+        $this->renderer = $renderer;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function render()
     {
         return $this->renderer->render($this->getNotifiers());
     }
 
+    /**
+     * @return string
+     */
     public function renderScripts()
     {
         return $this->renderer->renderScripts($this->getNotifiers());
     }
 
+    /**
+     * @return string
+     */
     public function renderStyles()
     {
         return $this->renderer->renderStyles($this->getNotifiers());
@@ -139,14 +159,14 @@ final class NotifyManager
     /**
      * Register an extension notifier resolver.
      *
-     * @param string   $name
-     * @param \Closure|NotifierFactoryInterface $resolver
+     * @param string                                $name
+     * @param \Closure|NotificationFactoryInterface $resolver
      *
      * @return void
      */
     public function extend($name, $resolver)
     {
-        if ($resolver instanceof NotifierFactoryInterface) {
+        if ($resolver instanceof NotificationFactoryInterface) {
             $resolver = function ($config) use ($resolver) {
                 $resolver->setConfig($config);
 
@@ -158,7 +178,9 @@ final class NotifyManager
     }
 
     /**
-     * @return array<string, NotifierFactoryInterface>
+     * Get active notifiers instances.
+     *
+     * @return array<string, NotificationFactoryInterface>
      */
     public function getNotifiers()
     {
