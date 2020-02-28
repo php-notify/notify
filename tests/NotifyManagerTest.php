@@ -2,9 +2,10 @@
 
 namespace Yoeunes\Notify\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Yoeunes\Notify\NotifyManager;
 
-class NotifyManagerTest extends \PHPUnit\Framework\TestCase
+class NotifyManagerTest extends TestCase
 {
     public function test_default_notifier()
     {
@@ -99,7 +100,7 @@ class NotifyManagerTest extends \PHPUnit\Framework\TestCase
         $config = $this->getMock('Yoeunes\Notify\Config\ConfigInterface');
         $manager = new NotifyManager($config);
 
-        $notifier = $this->getMock('Yoeunes\Notify\Factories\NotificationFactoryInterface');
+        $notifier = $this->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface');
 
         $manager->extend(
             'notifier_1',
@@ -108,7 +109,7 @@ class NotifyManagerTest extends \PHPUnit\Framework\TestCase
             }
         );
 
-        $manager->extend('notifier_2', $this->getMock('Yoeunes\Notify\Factories\NotificationFactoryInterface'));
+        $manager->extend('notifier_2', $this->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface'));
 
         $reflection = new \ReflectionClass(get_class($manager));
         $extensions = $reflection->getProperty('extensions');
@@ -156,17 +157,17 @@ class NotifyManagerTest extends \PHPUnit\Framework\TestCase
                     $config
                 );
 
-                return $that->getMock('Yoeunes\Notify\Factories\NotificationFactoryInterface');
+                return $that->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface');
             }
         );
 
-        $manager->extend('another_notifier', $this->getMock('Yoeunes\Notify\Factories\NotificationFactoryInterface'));
+        $manager->extend('another_notifier', $this->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface'));
 
         $defaultNotifier = $this->invokeMethod($manager, 'resolve', array('default_notifier'));
         $anotherNotifier = $this->invokeMethod($manager, 'resolve', array('another_notifier'));
 
-        $this->assertInstanceOf('Yoeunes\Notify\Factories\NotificationFactoryInterface', $defaultNotifier);
-        $this->assertInstanceOf('Yoeunes\Notify\Factories\NotificationFactoryInterface', $anotherNotifier);
+        $this->assertInstanceOf('Yoeunes\Notify\Factory\NotificationFactoryInterface', $defaultNotifier);
+        $this->assertInstanceOf('Yoeunes\Notify\Factory\NotificationFactoryInterface', $anotherNotifier);
     }
 
     public function test_make_notifier_containing_notifier_option()
@@ -208,12 +209,12 @@ class NotifyManagerTest extends \PHPUnit\Framework\TestCase
                     $config
                 );
 
-                return $that->getMock('Yoeunes\Notify\Factories\NotificationFactoryInterface');
+                return $that->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface');
             }
         );
 
         $defaultNotifier = $this->invokeMethod($manager, 'resolve', array('another_notifier'));
-        $this->assertInstanceOf('Yoeunes\Notify\Factories\NotificationFactoryInterface', $defaultNotifier);
+        $this->assertInstanceOf('Yoeunes\Notify\Factory\NotificationFactoryInterface', $defaultNotifier);
     }
 
     /**

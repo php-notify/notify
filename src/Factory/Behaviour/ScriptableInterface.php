@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Factories\Behaviours;
+namespace Yoeunes\Notify\Factory\Behaviour;
 
 interface ScriptableInterface
 {

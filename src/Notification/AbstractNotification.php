@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Notifiers;
+namespace Yoeunes\Notify\Notification;
 
 abstract class AbstractNotification implements NotificationInterface
 {

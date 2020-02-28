@@ -2,7 +2,7 @@
 
 namespace Yoeunes\Notify\Renderer;
 
-use Yoeunes\Notify\Factories\NotificationFactoryInterface;
+use Yoeunes\Notify\Factory\NotificationFactoryInterface;
 
 interface RendererInterface
 {

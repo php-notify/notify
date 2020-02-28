@@ -3,7 +3,7 @@
 namespace Yoeunes\Notify;
 
 use Yoeunes\Notify\Config\ConfigInterface;
-use Yoeunes\Notify\Factories\NotificationFactoryInterface;
+use Yoeunes\Notify\Factory\NotificationFactoryInterface;
 use Yoeunes\Notify\Renderer\HTMLRenderer;
 use Yoeunes\Notify\Renderer\RendererInterface;
 

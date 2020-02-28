@@ -13,11 +13,11 @@ final class HTMLRenderer extends AbstractRenderer
 
         foreach ($notifiers as $notifier) {
             if ($notifier->readyToRender()) {
-                $html .= $notifier->render() . str_repeat(PHP_EOL, 2);
+                $html .= $notifier->render() . PHP_EOL;
             }
         }
 
-        return $html;
+        return trim($html);
     }
 
     /**
@@ -31,7 +31,7 @@ final class HTMLRenderer extends AbstractRenderer
             $html .= sprintf('<script type="text/javascript" src="%s"></script>', $script) . PHP_EOL;
         }
 
-        return $html;
+        return trim($html);
     }
 
     /**
@@ -45,6 +45,6 @@ final class HTMLRenderer extends AbstractRenderer
             $html .= sprintf('<link rel="stylesheet" type="text/css" href="%s" />', $style) . PHP_EOL;
         }
 
-        return $html;
+        return trim($html);
     }
 }

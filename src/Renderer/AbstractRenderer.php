@@ -2,9 +2,9 @@
 
 namespace Yoeunes\Notify\Renderer;
 
-use Yoeunes\Notify\Factories\Behaviours\ScriptableInterface;
-use Yoeunes\Notify\Factories\Behaviours\StyleableInterface;
-use Yoeunes\Notify\Factories\NotificationFactoryInterface;
+use Yoeunes\Notify\Factory\Behaviour\ScriptableInterface;
+use Yoeunes\Notify\Factory\Behaviour\StyleableInterface;
+use Yoeunes\Notify\Factory\NotificationFactoryInterface;
 
 abstract class AbstractRenderer implements RendererInterface
 {
@@ -23,7 +23,7 @@ abstract class AbstractRenderer implements RendererInterface
             }
         }
 
-        return array_values(array_unique($scripts));
+        return array_values(array_unique(array_filter($scripts)));
     }
 
     /**
@@ -41,6 +41,6 @@ abstract class AbstractRenderer implements RendererInterface
             }
         }
 
-        return array_values(array_unique($styles));
+        return array_values(array_unique(array_filter($styles)));
     }
 }

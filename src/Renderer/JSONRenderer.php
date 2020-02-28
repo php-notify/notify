@@ -11,7 +11,7 @@ final class JSONRenderer extends AbstractRenderer
     {
         $notifications = array();
 
-        /** @var \Yoeunes\Notify\Factories\NotificationFactoryInterface $notifier */
+        /** @var \Yoeunes\Notify\Factory\NotificationFactoryInterface $notifier */
         foreach ($notifiers as $notifier) {
             if ($notifier->readyToRender()) {
                 $notifications[] = $notifier->render();

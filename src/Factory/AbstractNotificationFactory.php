@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Factories;
+namespace Yoeunes\Notify\Factory;
 
 abstract class AbstractNotificationFactory implements NotificationFactoryInterface
 {
