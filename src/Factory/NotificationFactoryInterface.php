@@ -62,8 +62,6 @@ interface NotificationFactoryInterface
 
     /**
      * @param array<string, mixed> $config
-     *
-     * @return void
      */
     public function setConfig($config);
 }

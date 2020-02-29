@@ -27,9 +27,9 @@ abstract class AbstractNotification implements NotificationInterface
     /**
      * BaseNotification constructor.
      *
-     * @param string $type
-     * @param string $message
-     * @param string $title
+     * @param string               $type
+     * @param string               $message
+     * @param string               $title
      * @param array<string, mixed> $context
      */
     public function __construct($type, $message, $title, $context)
@@ -41,7 +41,7 @@ abstract class AbstractNotification implements NotificationInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -49,7 +49,7 @@ abstract class AbstractNotification implements NotificationInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getMessage()
     {
@@ -57,7 +57,7 @@ abstract class AbstractNotification implements NotificationInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getTitle()
     {
@@ -65,7 +65,7 @@ abstract class AbstractNotification implements NotificationInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getContext()
     {

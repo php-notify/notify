@@ -5,7 +5,7 @@ namespace Yoeunes\Notify\Renderer;
 final class JSONRenderer extends AbstractRenderer
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function render($notifiers)
     {
@@ -21,12 +21,12 @@ final class JSONRenderer extends AbstractRenderer
         return json_encode(array(
             'notifications' => $notifications,
             'scripts' => $this->getScripts($notifiers),
-            'styles' => $this->getStyles($notifiers)
+            'styles' => $this->getStyles($notifiers),
         ));
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function renderScripts($notifiers)
     {
@@ -34,7 +34,7 @@ final class JSONRenderer extends AbstractRenderer
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function renderStyles($notifiers)
     {

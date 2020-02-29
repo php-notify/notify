@@ -8,7 +8,7 @@ interface SessionInterface
      * Returns an attribute.
      *
      * @param string $key
-     * @param mixed $default The default value if not found
+     * @param mixed  $default The default value if not found
      *
      * @return mixed
      */
@@ -18,9 +18,7 @@ interface SessionInterface
      *  Flash a key / value pair to the session.
      *
      * @param string $key
-     * @param mixed $value
-     *
-     * @return void
+     * @param mixed  $value
      */
     public function flash($key, $value);
 }
