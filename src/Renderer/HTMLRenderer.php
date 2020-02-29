@@ -5,7 +5,7 @@ namespace Yoeunes\Notify\Renderer;
 final class HTMLRenderer extends AbstractRenderer
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function render($notifiers)
     {
@@ -13,7 +13,7 @@ final class HTMLRenderer extends AbstractRenderer
 
         foreach ($notifiers as $notifier) {
             if ($notifier->readyToRender()) {
-                $html .= $notifier->render() . PHP_EOL;
+                $html .= $notifier->render().PHP_EOL;
             }
         }
 
@@ -21,28 +21,28 @@ final class HTMLRenderer extends AbstractRenderer
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function renderScripts($notifiers)
     {
         $html = '';
 
         foreach ($this->getScripts($notifiers) as $script) {
-            $html .= sprintf('<script type="text/javascript" src="%s"></script>', $script) . PHP_EOL;
+            $html .= sprintf('<script type="text/javascript" src="%s"></script>', $script).PHP_EOL;
         }
 
         return trim($html);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function renderStyles($notifiers)
     {
         $html = '';
 
         foreach ($this->getStyles($notifiers) as $style) {
-            $html .= sprintf('<link rel="stylesheet" type="text/css" href="%s" />', $style) . PHP_EOL;
+            $html .= sprintf('<link rel="stylesheet" type="text/css" href="%s" />', $style).PHP_EOL;
         }
 
         return trim($html);

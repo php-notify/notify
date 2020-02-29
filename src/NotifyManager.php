@@ -38,7 +38,7 @@ final class NotifyManager
     /**
      * Create a new manager instance.
      *
-     * @param \Yoeunes\Notify\Config\ConfigInterface          $config
+     * @param \Yoeunes\Notify\Config\ConfigInterface $config
      */
     public function __construct(ConfigInterface $config)
     {
@@ -161,8 +161,6 @@ final class NotifyManager
      *
      * @param string                                $name
      * @param \Closure|NotificationFactoryInterface $resolver
-     *
-     * @return void
      */
     public function extend($name, $resolver)
     {

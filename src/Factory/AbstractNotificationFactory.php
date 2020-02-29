@@ -10,7 +10,7 @@ abstract class AbstractNotificationFactory implements NotificationFactoryInterfa
     protected $config;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function setConfig($config)
     {
@@ -18,7 +18,7 @@ abstract class AbstractNotificationFactory implements NotificationFactoryInterfa
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function error($message, $title = '', $context = array())
     {
@@ -26,7 +26,7 @@ abstract class AbstractNotificationFactory implements NotificationFactoryInterfa
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function info($message, $title = '', $context = array())
     {
@@ -34,7 +34,7 @@ abstract class AbstractNotificationFactory implements NotificationFactoryInterfa
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function success($message, $title = '', $context = array())
     {
@@ -42,7 +42,7 @@ abstract class AbstractNotificationFactory implements NotificationFactoryInterfa
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function warning($message, $title = '', $context = array())
     {
