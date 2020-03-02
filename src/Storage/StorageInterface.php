@@ -1,8 +1,8 @@
 <?php
 
-namespace Yoeunes\Notify\Session;
+namespace Yoeunes\Notify\Storage;
 
-interface SessionInterface
+interface StorageInterface
 {
     /**
      * Returns an attribute.
@@ -15,7 +15,7 @@ interface SessionInterface
     public function get($key, $default = null);
 
     /**
-     *  Flash a key / value pair to the session.
+     *  Flash a key / value pair to the storage.
      *
      * @param string $key
      * @param mixed  $value
