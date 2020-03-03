@@ -2,8 +2,8 @@
 
 namespace Yoeunes\Notify\Tests\Renderer;
 
-use PHPUnit\Framework\TestCase;
 use Yoeunes\Notify\Renderer\HTMLRenderer;
+use Yoeunes\Notify\Tests\TestCase;
 
 final class HTMLRendererTest extends TestCase
 {
@@ -16,7 +16,7 @@ final class HTMLRendererTest extends TestCase
 
     public function test_render_with_one_notifier_and_the_notifier_is_not_ready_to_render()
     {
-        $notifier = $this->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface');
+        $notifier = $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
         $notifier
             ->expects($this->once())
             ->method('readyToRender')
@@ -32,7 +32,7 @@ final class HTMLRendererTest extends TestCase
 
     public function test_render_with_one_notifier_ready_to_render()
     {
-        $notifier = $this->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface');
+        $notifier = $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
         $notifier
             ->expects($this->once())
             ->method('readyToRender')
@@ -49,7 +49,7 @@ final class HTMLRendererTest extends TestCase
 
     public function test_render_with_two_notifiers_ready_to_render()
     {
-        $notifier = $this->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface');
+        $notifier = $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
         $notifier
             ->expects($this->once())
             ->method('readyToRender')
@@ -59,7 +59,7 @@ final class HTMLRendererTest extends TestCase
             ->method('render')
             ->willReturn("notifier.success('happy message');");
 
-        $anotherNotifier = $this->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface');
+        $anotherNotifier = $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
         $anotherNotifier
             ->expects($this->once())
             ->method('readyToRender')
@@ -83,7 +83,7 @@ final class HTMLRendererTest extends TestCase
 
     public function test_render_scripts_with_one_notifier_and_the_notifier_is_not_instance_of_scriptable()
     {
-        $notifier = $this->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface');
+        $notifier = $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
         $notifier
             ->expects($this->never())
             ->method('readyToRender');
@@ -179,7 +179,7 @@ final class HTMLRendererTest extends TestCase
 
     public function test_render_styles_with_one_notifier_and_the_notifier_is_not_instance_of_scriptable()
     {
-        $notifier = $this->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface');
+        $notifier = $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
         $notifier
             ->expects($this->never())
             ->method('readyToRender');

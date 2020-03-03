@@ -2,14 +2,13 @@
 
 namespace Yoeunes\Notify\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Yoeunes\Notify\NotifyManager;
 
-class NotifyManagerTest extends TestCase
+final class NotifyManagerTest extends TestCase
 {
     public function test_default_notifier()
     {
-        $config = $this->getMock('Yoeunes\Notify\Config\ConfigInterface');
+        $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
         $config->method('get')
             ->with('default')
             ->willReturn('default_notifier');
@@ -23,7 +22,7 @@ class NotifyManagerTest extends TestCase
     {
         $this->setExpectedException('InvalidArgumentException', 'Notifier [default_notifier] not configured');
 
-        $config = $this->getMock('Yoeunes\Notify\Config\ConfigInterface');
+        $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
 
         $manager = new NotifyManager($config);
         $manager->getNotifierConfig('default_notifier');
@@ -33,7 +32,7 @@ class NotifyManagerTest extends TestCase
     {
         $this->setExpectedException('InvalidArgumentException', 'Notifier [default_notifier] not configured');
 
-        $config = $this->getMock('Yoeunes\Notify\Config\ConfigInterface');
+        $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
 
         $manager = new NotifyManager($config);
         $manager->getNotifierConfig('default_notifier');
@@ -41,7 +40,7 @@ class NotifyManagerTest extends TestCase
 
     public function test_get_notifier_config()
     {
-        $config = $this->getMock('Yoeunes\Notify\Config\ConfigInterface');
+        $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
         $config
             ->expects($this->exactly(1))
             ->method('get')
@@ -77,7 +76,7 @@ class NotifyManagerTest extends TestCase
     {
         $this->setExpectedException('InvalidArgumentException', 'Unsupported notifier [ default_notifier ]');
 
-        $config = $this->getMock('Yoeunes\Notify\Config\ConfigInterface');
+        $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
         $config
             ->method('get')
             ->with('notifiers')
@@ -97,10 +96,10 @@ class NotifyManagerTest extends TestCase
 
     public function test_extend_to_add_more_notifiers_factory()
     {
-        $config = $this->getMock('Yoeunes\Notify\Config\ConfigInterface');
+        $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
         $manager = new NotifyManager($config);
 
-        $notifier = $this->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface');
+        $notifier = $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
 
         $manager->extend(
             'notifier_1',
@@ -109,7 +108,7 @@ class NotifyManagerTest extends TestCase
             }
         );
 
-        $manager->extend('notifier_2', $this->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface'));
+        $manager->extend('notifier_2', $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface'));
 
         $reflection = new \ReflectionClass(get_class($manager));
         $extensions = $reflection->getProperty('extensions');
@@ -121,7 +120,7 @@ class NotifyManagerTest extends TestCase
 
     public function test_make_notifier()
     {
-        $config = $this->getMock('Yoeunes\Notify\Config\ConfigInterface');
+        $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
         $config
             ->method('get')
             ->with('notifiers')
@@ -157,11 +156,11 @@ class NotifyManagerTest extends TestCase
                     $config
                 );
 
-                return $that->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface');
+                return $that->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
             }
         );
 
-        $manager->extend('another_notifier', $this->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface'));
+        $manager->extend('another_notifier', $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock());
 
         $defaultNotifier = $this->invokeMethod($manager, 'resolve', array('default_notifier'));
         $anotherNotifier = $this->invokeMethod($manager, 'resolve', array('another_notifier'));
@@ -172,7 +171,7 @@ class NotifyManagerTest extends TestCase
 
     public function test_make_notifier_containing_notifier_option()
     {
-        $config = $this->getMock('Yoeunes\Notify\Config\ConfigInterface');
+        $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
         $config
             ->method('get')
             ->with('notifiers')
@@ -209,7 +208,7 @@ class NotifyManagerTest extends TestCase
                     $config
                 );
 
-                return $that->getMock('Yoeunes\Notify\Factory\NotificationFactoryInterface');
+                return $that->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
             }
         );
 
