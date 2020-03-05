@@ -7,7 +7,7 @@ use Yoeunes\Notify\Factory\NotificationFactoryInterface;
 use Yoeunes\Notify\Renderer\HTMLRenderer;
 use Yoeunes\Notify\Renderer\RendererInterface;
 
-final class NotifyManager
+final class NotifyManager implements NotifyManagerInterface
 {
     /**
      * The config instance.
