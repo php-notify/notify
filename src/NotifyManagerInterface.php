@@ -29,8 +29,8 @@ interface NotifyManagerInterface
      * @param string $name
      *
      * @return array
-     * @throws \InvalidArgumentException
      *
+     * @throws \InvalidArgumentException
      */
     public function getNotifierConfig($name);
 
@@ -59,7 +59,7 @@ interface NotifyManagerInterface
     /**
      * Register an extension notifier resolver.
      *
-     * @param string $name
+     * @param string                                $name
      * @param \Closure|NotificationFactoryInterface $resolver
      */
     public function extend($name, $resolver);
