@@ -7,6 +7,15 @@ use Yoeunes\Notify\Factory\NotificationFactoryInterface;
 use Yoeunes\Notify\Renderer\HTMLRenderer;
 use Yoeunes\Notify\Renderer\RendererInterface;
 
+/**
+ * @method \Yoeunes\Notify\Notification\NotificationInterface notification(string $type, string $message, string $title = '', array $context = array())
+ * @method \Yoeunes\Notify\Notification\NotificationInterface success(string $message, string $title = '', array $context = array())
+ * @method \Yoeunes\Notify\Notification\NotificationInterface info(string $message, string $title = '', array $context = array())
+ * @method \Yoeunes\Notify\Notification\NotificationInterface warning(string $message, string $title = '', array $context = array())
+ * @method \Yoeunes\Notify\Notification\NotificationInterface error(string $message, string $title = '', array $context = array())
+ * @method bool readyToRender()
+ * @method void setConfig(array $config)
+ */
 final class NotifyManager implements NotifyManagerInterface
 {
     /**
