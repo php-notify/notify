@@ -99,9 +99,9 @@ final class NotifyManager implements NotifyManagerInterface
      *
      * @param string $name
      *
-     * @throws \InvalidArgumentException
-     *
      * @return array
+     *
+     * @throws \InvalidArgumentException
      */
     public function getNotifierConfig($name)
     {
