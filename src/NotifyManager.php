@@ -47,6 +47,19 @@ final class NotifyManager implements NotifyManagerInterface
     }
 
     /**
+     * Dynamically pass methods to the default notifier.
+     *
+     * @param string $method
+     * @param array  $parameters
+     *
+     * @return mixed
+     */
+    public function __call($method, array $parameters)
+    {
+        return call_user_func_array(array($this->notifier(), $method), $parameters);
+    }
+
+    /**
      * Get a notifier instance.
      *
      * @param string|null $name
@@ -114,10 +127,10 @@ final class NotifyManager implements NotifyManagerInterface
         $config = $notifiers[$name];
 
         return $config + array(
-            'notifier' => $name,
+                'notifier' => $name,
 //            'exception' => $this->config->get('exception'),
 //            'session_key' => $this->config->get('session_key')
-        );
+            );
     }
 
     /**
@@ -138,6 +151,16 @@ final class NotifyManager implements NotifyManagerInterface
     public function render()
     {
         return $this->renderer->render($this->getNotifiers());
+    }
+
+    /**
+     * Get active notifiers instances.
+     *
+     * @return array<string, NotificationFactoryInterface>
+     */
+    public function getNotifiers()
+    {
+        return $this->notifiers;
     }
 
     /**
@@ -173,28 +196,5 @@ final class NotifyManager implements NotifyManagerInterface
         }
 
         $this->extensions[$name] = $resolver;
-    }
-
-    /**
-     * Get active notifiers instances.
-     *
-     * @return array<string, NotificationFactoryInterface>
-     */
-    public function getNotifiers()
-    {
-        return $this->notifiers;
-    }
-
-    /**
-     * Dynamically pass methods to the default notifier.
-     *
-     * @param string $method
-     * @param array  $parameters
-     *
-     * @return mixed
-     */
-    public function __call($method, array $parameters)
-    {
-        return call_user_func_array(array($this->notifier(), $method), $parameters);
     }
 }

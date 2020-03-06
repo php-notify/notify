@@ -44,7 +44,10 @@ final class JSONRendererTest extends TestCase
 
         $renderer = new JSONRenderer();
 
-        $this->assertEquals('{"notifications":["notifier.success(\'happy message\');"],"scripts":[],"styles":[]}', $renderer->render(array($notifier)));
+        $this->assertEquals(
+            '{"notifications":["notifier.success(\'happy message\');"],"scripts":[],"styles":[]}',
+            $renderer->render(array($notifier))
+        );
     }
 
     public function test_render_with_two_notifiers_ready_to_render()
@@ -71,7 +74,10 @@ final class JSONRendererTest extends TestCase
 
         $renderer = new JSONRenderer();
 
-        $this->assertEquals('{"notifications":["notifier.success(\'happy message\');","notifier.info(\'info message\');"],"scripts":[],"styles":[]}', $renderer->render(array($notifier, $anotherNotifier)));
+        $this->assertEquals(
+            '{"notifications":["notifier.success(\'happy message\');","notifier.info(\'info message\');"],"scripts":[],"styles":[]}',
+            $renderer->render(array($notifier, $anotherNotifier))
+        );
     }
 
     public function test_render_scripts_with_empty_array()
@@ -132,7 +138,10 @@ final class JSONRendererTest extends TestCase
 
         $renderer = new JSONRenderer();
 
-        $this->assertEquals('{"scripts":["jquery.js","script.js"]}', $renderer->renderScripts(array($notifier->reveal())));
+        $this->assertEquals(
+            '{"scripts":["jquery.js","script.js"]}',
+            $renderer->renderScripts(array($notifier->reveal()))
+        );
     }
 
     public function test_render_scripts_with_two_notifiers_ready_to_render()
@@ -225,7 +234,10 @@ final class JSONRendererTest extends TestCase
 
         $renderer = new JSONRenderer();
 
-        $this->assertEquals('{"styles":["bootstrap.css","style.css"]}', $renderer->renderStyles(array($notifier->reveal())));
+        $this->assertEquals(
+            '{"styles":["bootstrap.css","style.css"]}',
+            $renderer->renderStyles(array($notifier->reveal()))
+        );
     }
 
     public function test_render_styles_with_two_notifiers_ready_to_render()

@@ -94,6 +94,26 @@ final class NotifyManagerTest extends TestCase
         $this->invokeMethod($manager, 'resolve', array('default_notifier'));
     }
 
+    /**
+     * Call protected/private method of a class.
+     *
+     * @param object &$object Instantiated object that we will run method on
+     * @param string  $methodName Method name to call
+     * @param array   $parameters array of parameters to pass into method
+     *
+     * @return mixed method return
+     *
+     * @throws \ReflectionException
+     */
+    private function invokeMethod(&$object, $methodName, array $parameters = array())
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, $parameters);
+    }
+
     public function test_extend_to_add_more_notifiers_factory()
     {
         $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
@@ -160,7 +180,10 @@ final class NotifyManagerTest extends TestCase
             }
         );
 
-        $manager->extend('another_notifier', $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock());
+        $manager->extend(
+            'another_notifier',
+            $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock()
+        );
 
         $defaultNotifier = $this->invokeMethod($manager, 'resolve', array('default_notifier'));
         $anotherNotifier = $this->invokeMethod($manager, 'resolve', array('another_notifier'));
@@ -214,25 +237,5 @@ final class NotifyManagerTest extends TestCase
 
         $defaultNotifier = $this->invokeMethod($manager, 'resolve', array('another_notifier'));
         $this->assertInstanceOf('Yoeunes\Notify\Factory\NotificationFactoryInterface', $defaultNotifier);
-    }
-
-    /**
-     * Call protected/private method of a class.
-     *
-     * @param object &$object    Instantiated object that we will run method on
-     * @param string $methodName Method name to call
-     * @param array  $parameters array of parameters to pass into method
-     *
-     * @return mixed method return
-     *
-     * @throws \ReflectionException
-     */
-    private function invokeMethod(&$object, $methodName, array $parameters = array())
-    {
-        $reflection = new \ReflectionClass(get_class($object));
-        $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
-
-        return $method->invokeArgs($object, $parameters);
     }
 }

@@ -18,11 +18,13 @@ final class JSONRenderer extends AbstractRenderer
             }
         }
 
-        return json_encode(array(
-            'notifications' => $notifications,
-            'scripts' => $this->getScripts($notifiers),
-            'styles' => $this->getStyles($notifiers),
-        ));
+        return json_encode(
+            array(
+                'notifications' => $notifications,
+                'scripts' => $this->getScripts($notifiers),
+                'styles' => $this->getStyles($notifiers),
+            )
+        );
     }
 
     /**

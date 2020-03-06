@@ -71,7 +71,10 @@ final class HTMLRendererTest extends TestCase
 
         $renderer = new HTMLRenderer();
 
-        $this->assertEquals("notifier.success('happy message');\nnotifier.info('info message');", $renderer->render(array($notifier, $anotherNotifier)));
+        $this->assertEquals(
+            "notifier.success('happy message');\nnotifier.info('info message');",
+            $renderer->render(array($notifier, $anotherNotifier))
+        );
     }
 
     public function test_render_scripts_with_empty_array()
@@ -132,8 +135,11 @@ final class HTMLRendererTest extends TestCase
 
         $renderer = new HTMLRenderer();
 
-        $this->assertEquals('<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="script.js"></script>', $renderer->renderScripts(array($notifier->reveal())));
+        $this->assertEquals(
+            '<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="script.js"></script>',
+            $renderer->renderScripts(array($notifier->reveal()))
+        );
     }
 
     public function test_render_scripts_with_two_notifiers_ready_to_render()
@@ -228,8 +234,11 @@ final class HTMLRendererTest extends TestCase
 
         $renderer = new HTMLRenderer();
 
-        $this->assertEquals('<link rel="stylesheet" type="text/css" href="bootstrap.css" />
-<link rel="stylesheet" type="text/css" href="style.css" />', $renderer->renderStyles(array($notifier->reveal())));
+        $this->assertEquals(
+            '<link rel="stylesheet" type="text/css" href="bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="style.css" />',
+            $renderer->renderStyles(array($notifier->reveal()))
+        );
     }
 
     public function test_render_styles_with_two_notifiers_ready_to_render()
