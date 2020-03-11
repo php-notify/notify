@@ -15,7 +15,7 @@ final class TimeStampTest extends TestCase
 
         $envelop = new Envelope($notification, array($stamp));
 
-        $this->assertSame($stamp, $envelop->last('Yoeunes\Notify\Envelope\Stamp\TimeStamp'));
+        $this->assertSame($stamp, $envelop->get('Yoeunes\Notify\Envelope\Stamp\TimeStamp'));
         $this->assertInstanceOf('\Yoeunes\Notify\Envelope\Stamp\StampInterface', $stamp);
     }
 }

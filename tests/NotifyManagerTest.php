@@ -2,6 +2,7 @@
 
 namespace Yoeunes\Notify\Tests;
 
+use Yoeunes\Notify\Middleware\MiddlewareStack;
 use Yoeunes\Notify\NotifyManager;
 
 final class NotifyManagerTest extends TestCase
@@ -13,7 +14,7 @@ final class NotifyManagerTest extends TestCase
             ->with('default')
             ->willReturn('default_notifier');
 
-        $manager = new NotifyManager($config);
+        $manager = new NotifyManager($config, new MiddlewareStack());
 
         $this->assertEquals('default_notifier', $manager->getDefaultNotifier());
     }
@@ -24,7 +25,7 @@ final class NotifyManagerTest extends TestCase
 
         $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
 
-        $manager = new NotifyManager($config);
+        $manager = new NotifyManager($config, new MiddlewareStack());
         $manager->getNotifierConfig('default_notifier');
     }
 
@@ -34,7 +35,7 @@ final class NotifyManagerTest extends TestCase
 
         $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
 
-        $manager = new NotifyManager($config);
+        $manager = new NotifyManager($config, new MiddlewareStack());
         $manager->getNotifierConfig('default_notifier');
     }
 
@@ -60,7 +61,7 @@ final class NotifyManagerTest extends TestCase
                 )
             );
 
-        $manager = new NotifyManager($config);
+        $manager = new NotifyManager($config, new MiddlewareStack());
         $this->assertEquals(
             array(
                 'scripts' => array('jquery.js', 'default_notifier.js'),
@@ -90,7 +91,7 @@ final class NotifyManagerTest extends TestCase
                 )
             );
 
-        $manager = new NotifyManager($config);
+        $manager = new NotifyManager($config, new MiddlewareStack());
         $this->invokeMethod($manager, 'resolve', array('default_notifier'));
     }
 
@@ -117,7 +118,7 @@ final class NotifyManagerTest extends TestCase
     public function test_extend_to_add_more_notifiers_factory()
     {
         $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
-        $manager = new NotifyManager($config);
+        $manager = new NotifyManager($config, new MiddlewareStack());
 
         $notifier = $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
 
@@ -159,7 +160,7 @@ final class NotifyManagerTest extends TestCase
                 )
             );
 
-        $manager = new NotifyManager($config);
+        $manager = new NotifyManager($config, new MiddlewareStack());
 
         $that = $this;
 
@@ -214,7 +215,7 @@ final class NotifyManagerTest extends TestCase
                 )
             );
 
-        $manager = new NotifyManager($config);
+        $manager = new NotifyManager($config, new MiddlewareStack());
 
         $that = $this;
 

@@ -15,7 +15,7 @@ final class EnvelopeTest extends TestCase
         $envelope = new Envelope($notification, array($stamp));
 
         $this->assertSame($notification, $envelope->getNotification());
-        $this->assertSame(array(get_class($stamp) => array($stamp)), $envelope->all());
+        $this->assertSame(array(get_class($stamp) => $stamp), $envelope->all());
     }
 
     public function test_with()
@@ -24,15 +24,11 @@ final class EnvelopeTest extends TestCase
         $stamp = $this->getMockBuilder('\Yoeunes\Notify\Envelope\Stamp\StampInterface')->getMock();
 
         $envelope = new Envelope($notification);
-        $anotherEnvelop = $envelope->with(array($stamp));
-
-        $this->assertNotSame($envelope, $anotherEnvelop);
+        $envelope->with($stamp);
 
         $this->assertSame($notification, $envelope->getNotification());
-        $this->assertSame($notification, $anotherEnvelop->getNotification());
 
-        $this->assertSame(array(), $envelope->all());
-        $this->assertSame(array(get_class($stamp) => array($stamp)), $anotherEnvelop->all());
+        $this->assertSame(array(get_class($stamp) => $stamp), $envelope->all());
     }
 
     public function test_wrap()
@@ -43,7 +39,7 @@ final class EnvelopeTest extends TestCase
         $envelope = Envelope::wrap($notification, array($stamp));
 
         $this->assertSame($notification, $envelope->getNotification());
-        $this->assertSame(array(get_class($stamp) => array($stamp)), $envelope->all());
+        $this->assertSame(array(get_class($stamp) => $stamp), $envelope->all());
     }
 
     public function test_all()
@@ -59,10 +55,10 @@ final class EnvelopeTest extends TestCase
         $envelope = new Envelope($notification, $stamps);
 
         $this->assertSame($notification, $envelope->getNotification());
-        $this->assertSame(array(get_class($stamps[0]) => $stamps), $envelope->all());
+        $this->assertSame(array(get_class($stamps[0]) => $stamps[3]), $envelope->all());
     }
 
-    public function test_last()
+    public function test_get()
     {
         $notification = $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock();
         $stamps = array(
@@ -75,13 +71,11 @@ final class EnvelopeTest extends TestCase
 
         $this->assertSame($notification, $envelope->getNotification());
 
-        $last = $envelope->last(get_class($stamps[0]));
+        $last = $envelope->get(get_class($stamps[0]));
 
-        $this->assertNotSame($stamps[0], $last);
-        $this->assertNotSame($stamps[1], $last);
         $this->assertSame($stamps[2], $last);
-        $this->assertSame($last, $envelope->last(get_class($stamps[0])));
+        $this->assertSame($last, $envelope->get(get_class($stamps[0])));
 
-        $this->assertNull($envelope->last('NotFoundStamp'));
+        $this->assertNull($envelope->get('NotFoundStamp'));
     }
 }

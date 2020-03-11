@@ -12,29 +12,27 @@ final class Envelope
     private $notification;
 
     /**
-     * @var \Yoeunes\Notify\Envelope\Stamp\StampInterface[][]
+     * @var \Yoeunes\Notify\Envelope\Stamp\StampInterface[]
      */
     private $stamps = array();
 
     /**
      * Envelope constructor.
      *
-     * @param  \Yoeunes\Notify\Notification\NotificationInterface  $notification
-     * @param  \Yoeunes\Notify\Envelope\Stamp\StampInterface[]     $stamps
+     * @param \Yoeunes\Notify\Notification\NotificationInterface $notification
+     * @param \Yoeunes\Notify\Envelope\Stamp\StampInterface[]    $stamps
      */
     public function __construct(NotificationInterface $notification, array $stamps = array())
     {
         $this->notification = $notification;
-        foreach ($stamps as $stamp) {
-            $this->stamps[get_class($stamp)][] = $stamp;
-        }
+        call_user_func_array(array($this, 'with'), $stamps);
     }
 
     /**
      * Makes sure the notification is in an Envelope and adds the given stamps.
      *
-     * @param  NotificationInterface|\Yoeunes\Notify\Envelope\Envelope  $notification
-     * @param  \Yoeunes\Notify\Envelope\Stamp\StampInterface[][]        $stamps
+     * @param NotificationInterface|\Yoeunes\Notify\Envelope\Envelope $notification
+     * @param \Yoeunes\Notify\Envelope\Stamp\StampInterface[]         $stamps
      *
      * @return \Yoeunes\Notify\Envelope\Envelope
      */
@@ -42,61 +40,48 @@ final class Envelope
     {
         $envelope = $notification instanceof self ? $notification : new self($notification);
 
-        return $envelope->with($stamps);
+        return call_user_func_array(array($envelope, 'with'), $stamps);
     }
 
     /**
-     * @param  \Yoeunes\Notify\Envelope\Stamp\StampInterface[]  $stamps
-     *
      * @return Envelope a new Envelope instance with additional stamp
      */
-    public function with(array $stamps = array())
+    public function with()
     {
-        $cloned = clone $this;
-
-        foreach ($stamps as $stamp) {
-            $cloned->stamps[get_class($stamp)][] = $stamp;
+        foreach (func_get_args() as $stamp) {
+            $this->stamps[get_class($stamp)] = $stamp;
         }
 
-        return $cloned;
+        return $this;
     }
 
     /**
-     * @param  string  $stampFqcn
+     * @param string $stampFqcn
      *
-     * @return \Yoeunes\Notify\Envelope\Stamp\StampInterface|null
+     * @return null|\Yoeunes\Notify\Envelope\Stamp\StampInterface
      */
-    public function last($stampFqcn)
+    public function get($stampFqcn)
     {
-        return isset($this->stamps[$stampFqcn]) ? end($this->stamps[$stampFqcn]) : null;
+        if (!isset($this->stamps[$stampFqcn])) {
+            return null;
+        }
+
+        return $this->stamps[$stampFqcn];
     }
 
     /**
-     * @param  string|null  $stampFqcn
+     * All stamps by their class name
      *
-     * @return \Yoeunes\Notify\Envelope\Stamp\StampInterface[]|\Yoeunes\Notify\Envelope\Stamp\StampInterface[][] The
-     *                                                                                                           stamps
-     *                                                                                                           for
-     *                                                                                                           the
-     *                                                                                                           specified
-     *                                                                                                           FQCN,
-     *                                                                                                           or all
-     *                                                                                                           stamps
-     *                                                                                                           by
-     *                                                                                                           their
-     *                                                                                                           class
-     *                                                                                                           name
+     * @return \Yoeunes\Notify\Envelope\Stamp\StampInterface[]
      */
-    public function all($stampFqcn = null)
+    public function all()
     {
-        if (null !== $stampFqcn) {
-            return isset($this->stamps[$stampFqcn]) ? $this->stamps[$stampFqcn] : array();
-        }
-
         return $this->stamps;
     }
 
     /**
+     * The original notification contained in the envelope
+     *
      * @return \Yoeunes\Notify\Notification\NotificationInterface
      */
     public function getNotification()

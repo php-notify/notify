@@ -4,6 +4,7 @@ namespace Yoeunes\Notify;
 
 use Yoeunes\Notify\Config\ConfigInterface;
 use Yoeunes\Notify\Factory\NotificationFactoryInterface;
+use Yoeunes\Notify\Middleware\MiddlewareStack;
 use Yoeunes\Notify\Renderer\HTMLRenderer;
 use Yoeunes\Notify\Renderer\RendererInterface;
 
@@ -45,14 +46,21 @@ final class NotifyManager implements NotifyManagerInterface
     private $renderer;
 
     /**
+     * @var \Yoeunes\Notify\Middleware\MiddlewareStack
+     */
+    private $middleware;
+
+    /**
      * Create a new manager instance.
      *
-     * @param \Yoeunes\Notify\Config\ConfigInterface $config
+     * @param \Yoeunes\Notify\Config\ConfigInterface     $config
+     * @param \Yoeunes\Notify\Middleware\MiddlewareStack $middleware
      */
-    public function __construct(ConfigInterface $config)
+    public function __construct(ConfigInterface $config, MiddlewareStack $middleware)
     {
         $this->config = $config;
         $this->renderer = new HTMLRenderer();
+        $this->middleware = $middleware;
     }
 
     /**
@@ -205,5 +213,13 @@ final class NotifyManager implements NotifyManagerInterface
         }
 
         $this->extensions[$name] = $resolver;
+    }
+
+    /**
+     * @return \Yoeunes\Notify\Middleware\MiddlewareStack
+     */
+    public function getMiddleware()
+    {
+        return $this->middleware;
     }
 }

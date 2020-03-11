@@ -15,7 +15,7 @@ final class PriorityStampTest extends TestCase
 
         $envelop = new Envelope($notification, array($stamp));
 
-        $this->assertSame($stamp, $envelop->last('Yoeunes\Notify\Envelope\Stamp\PriorityStamp'));
+        $this->assertSame($stamp, $envelop->get('Yoeunes\Notify\Envelope\Stamp\PriorityStamp'));
         $this->assertInstanceOf('\Yoeunes\Notify\Envelope\Stamp\StampInterface', $stamp);
     }
 }
