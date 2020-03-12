@@ -2,14 +2,14 @@
 
 namespace Yoeunes\Notify\Tests\Renderer;
 
-use Yoeunes\Notify\Renderer\JSONRenderer;
+use Yoeunes\Notify\Renderer\JSONDecorator;
 use Yoeunes\Notify\Tests\TestCase;
 
 final class JSONRendererTest extends TestCase
 {
     public function test_render_with_empty_array()
     {
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $this->assertEquals('{"notifications":[],"scripts":[],"styles":[]}', $renderer->render(array()));
     }
@@ -25,7 +25,7 @@ final class JSONRendererTest extends TestCase
             ->expects($this->never())
             ->method('render');
 
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $this->assertEquals('{"notifications":[],"scripts":[],"styles":[]}', $renderer->render(array($notifier)));
     }
@@ -42,7 +42,7 @@ final class JSONRendererTest extends TestCase
             ->method('render')
             ->willReturn("notifier.success('happy message');");
 
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $this->assertEquals(
             '{"notifications":["notifier.success(\'happy message\');"],"scripts":[],"styles":[]}',
@@ -72,7 +72,7 @@ final class JSONRendererTest extends TestCase
             ->method('render')
             ->willReturn("notifier.info('info message');");
 
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $this->assertEquals(
             '{"notifications":["notifier.success(\'happy message\');","notifier.info(\'info message\');"],"scripts":[],"styles":[]}',
@@ -82,7 +82,7 @@ final class JSONRendererTest extends TestCase
 
     public function test_render_scripts_with_empty_array()
     {
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $this->assertEquals('{"scripts":[]}', $renderer->renderScripts(array()));
     }
@@ -97,7 +97,7 @@ final class JSONRendererTest extends TestCase
             ->expects($this->never())
             ->method('render');
 
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $this->assertEquals('{"scripts":[]}', $renderer->renderScripts(array($notifier)));
     }
@@ -116,7 +116,7 @@ final class JSONRendererTest extends TestCase
             ->getScripts()
             ->shouldNotBeCalled();
 
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $this->assertEquals('{"scripts":[]}', $renderer->renderScripts(array($notifier->reveal())));
     }
@@ -136,7 +136,7 @@ final class JSONRendererTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(array('jquery.js', 'script.js'));
 
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $this->assertEquals(
             '{"scripts":["jquery.js","script.js"]}',
@@ -168,7 +168,7 @@ final class JSONRendererTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(array('jquery.js', 'anotherNotifier.js'));
 
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $scripts = $renderer->renderScripts(array($notifier->reveal(), $anotherNotifier->reveal()));
         $expected = '{"scripts":["jquery.js","notifier.js","anotherNotifier.js"]}';
@@ -178,7 +178,7 @@ final class JSONRendererTest extends TestCase
 
     public function test_render_styles_with_empty_array()
     {
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $this->assertEquals('{"styles":[]}', $renderer->renderStyles(array()));
     }
@@ -193,7 +193,7 @@ final class JSONRendererTest extends TestCase
             ->expects($this->never())
             ->method('render');
 
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $this->assertEquals('{"styles":[]}', $renderer->renderStyles(array($notifier)));
     }
@@ -212,7 +212,7 @@ final class JSONRendererTest extends TestCase
             ->getStyles()
             ->shouldNotBeCalled();
 
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $this->assertEquals('{"styles":[]}', $renderer->renderStyles(array($notifier->reveal())));
     }
@@ -232,7 +232,7 @@ final class JSONRendererTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(array('bootstrap.css', 'style.css'));
 
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $this->assertEquals(
             '{"styles":["bootstrap.css","style.css"]}',
@@ -264,7 +264,7 @@ final class JSONRendererTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(array('bootstrap.css', 'anotherNotifier.js'));
 
-        $renderer = new JSONRenderer();
+        $renderer = new JSONDecorator();
 
         $styles = $renderer->renderStyles(array($notifier->reveal(), $anotherNotifier->reveal()));
         $expected = '{"styles":["bootstrap.css","notifier.css","anotherNotifier.js"]}';

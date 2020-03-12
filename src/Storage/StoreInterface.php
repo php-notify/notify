@@ -2,7 +2,7 @@
 
 namespace Yoeunes\Notify\Storage;
 
-interface StorageInterface
+interface StoreInterface
 {
     /**
      * Returns an attribute.

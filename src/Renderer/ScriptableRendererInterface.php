@@ -2,12 +2,12 @@
 
 namespace Yoeunes\Notify\Renderer;
 
-interface RendererInterface
+interface ScriptableRendererInterface
 {
     /**
      * @param array<string, \Yoeunes\Notify\Envelope\Envelope> $notifications
      *
      * @return string
      */
-    public function render($notifications);
+    public function renderScripts($notifications);
 }

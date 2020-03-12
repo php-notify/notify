@@ -2,7 +2,7 @@
 
 namespace Yoeunes\Notify\Renderer;
 
-final class HTMLRenderer extends AbstractRenderer
+final class HTMLDecorator
 {
     /**
      * {@inheritdoc}

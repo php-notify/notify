@@ -2,14 +2,14 @@
 
 namespace Yoeunes\Notify\Tests\Renderer;
 
-use Yoeunes\Notify\Renderer\HTMLRenderer;
+use Yoeunes\Notify\Renderer\HTMLDecorator;
 use Yoeunes\Notify\Tests\TestCase;
 
 final class HTMLRendererTest extends TestCase
 {
     public function test_render_with_empty_array()
     {
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $this->assertEquals('', $renderer->render(array()));
     }
@@ -25,7 +25,7 @@ final class HTMLRendererTest extends TestCase
             ->expects($this->never())
             ->method('render');
 
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $this->assertEquals('', $renderer->render(array($notifier)));
     }
@@ -42,7 +42,7 @@ final class HTMLRendererTest extends TestCase
             ->method('render')
             ->willReturn("notifier.success('happy message');");
 
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $this->assertEquals("notifier.success('happy message');", $renderer->render(array($notifier)));
     }
@@ -69,7 +69,7 @@ final class HTMLRendererTest extends TestCase
             ->method('render')
             ->willReturn("notifier.info('info message');");
 
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $this->assertEquals(
             "notifier.success('happy message');\nnotifier.info('info message');",
@@ -79,7 +79,7 @@ final class HTMLRendererTest extends TestCase
 
     public function test_render_scripts_with_empty_array()
     {
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $this->assertEquals('', $renderer->renderScripts(array()));
     }
@@ -94,7 +94,7 @@ final class HTMLRendererTest extends TestCase
             ->expects($this->never())
             ->method('render');
 
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $this->assertEquals('', $renderer->renderScripts(array($notifier)));
     }
@@ -113,7 +113,7 @@ final class HTMLRendererTest extends TestCase
             ->getScripts()
             ->shouldNotBeCalled();
 
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $this->assertEquals('', $renderer->renderScripts(array($notifier->reveal())));
     }
@@ -133,7 +133,7 @@ final class HTMLRendererTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(array('jquery.js', 'script.js'));
 
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $this->assertEquals(
             '<script type="text/javascript" src="jquery.js"></script>
@@ -166,7 +166,7 @@ final class HTMLRendererTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(array('jquery.js', 'anotherNotifier.js'));
 
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $scripts = $renderer->renderScripts(array($notifier->reveal(), $anotherNotifier->reveal()));
         $expected = '<script type="text/javascript" src="jquery.js"></script>
@@ -178,7 +178,7 @@ final class HTMLRendererTest extends TestCase
 
     public function test_render_styles_with_empty_array()
     {
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $this->assertEquals('', $renderer->renderStyles(array()));
     }
@@ -193,7 +193,7 @@ final class HTMLRendererTest extends TestCase
             ->expects($this->never())
             ->method('render');
 
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $this->assertEquals('', $renderer->renderStyles(array($notifier)));
     }
@@ -212,7 +212,7 @@ final class HTMLRendererTest extends TestCase
             ->getStyles()
             ->shouldNotBeCalled();
 
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $this->assertEquals('', $renderer->renderStyles(array($notifier->reveal())));
     }
@@ -232,7 +232,7 @@ final class HTMLRendererTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(array('bootstrap.css', 'style.css'));
 
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $this->assertEquals(
             '<link rel="stylesheet" type="text/css" href="bootstrap.css" />
@@ -265,7 +265,7 @@ final class HTMLRendererTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(array('bootstrap.css', 'anotherNotifier.js'));
 
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLDecorator();
 
         $styles = $renderer->renderStyles(array($notifier->reveal(), $anotherNotifier->reveal()));
         $expected = '<link rel="stylesheet" type="text/css" href="bootstrap.css" />

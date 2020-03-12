@@ -2,7 +2,7 @@
 
 namespace Yoeunes\Notify\Renderer;
 
-final class JSONRenderer extends AbstractRenderer
+final class JSONDecorator
 {
     /**
      * {@inheritdoc}
