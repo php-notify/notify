@@ -44,11 +44,15 @@ final class Envelope implements NotificationInterface
     }
 
     /**
+     * @param  array|mixed  ...$stamps
+     *
      * @return Envelope a new Envelope instance with additional stamp
      */
-    public function with()
+    public function with($stamps)
     {
-        foreach (func_get_args() as $stamp) {
+        $stamps = is_array($stamps) ? $stamps : func_get_args();
+
+        foreach ($stamps as $stamp) {
             $this->stamps[get_class($stamp)] = $stamp;
         }
 

@@ -214,12 +214,4 @@ final class NotifyManager implements NotifyManagerInterface
 
         $this->extensions[$name] = $resolver;
     }
-
-    /**
-     * @return \Yoeunes\Notify\Middleware\MiddlewareStack
-     */
-    public function getMiddleware()
-    {
-        return $this->middleware;
-    }
 }

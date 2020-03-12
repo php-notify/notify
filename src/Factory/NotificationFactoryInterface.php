@@ -51,16 +51,6 @@ interface NotificationFactoryInterface
     public function warning($message, $title = '', $context = array());
 
     /**
-     * @return bool
-     */
-    public function readyToRender();
-
-    /**
-     * @return string
-     */
-    public function render();
-
-    /**
      * @param array<string, mixed> $config
      */
     public function setConfig($config);
