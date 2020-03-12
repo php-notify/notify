@@ -29,7 +29,7 @@ final class TimeSpecification implements SpecificationInterface
      */
     public function isSatisfiedBy(Envelope $envelope)
     {
-        $stamp = $envelope->get('Yoeunes\Notify\Envelope\Stamp\TimeStamp');
+        $stamp = $envelope->get('Yoeunes\Notify\Envelope\Stamp\CreatedAtStamp');
 
         if (null === $stamp) {
             return false;

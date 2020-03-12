@@ -7,16 +7,13 @@ use Yoeunes\Notify\Envelope\Envelope;
 final class AndSpecification implements SpecificationInterface
 {
     /**
-     * @var \Yoeunes\Notify\Filter\FilterManagerInterface[]
+     * @var \Yoeunes\Notify\Filter\Specification\SpecificationInterface[]
      */
     private $specifications;
 
-    /**
-     * @param \Yoeunes\Notify\Filter\Specification\SpecificationInterface[] $specifications
-     */
-    public function __construct(array $specifications)
+    public function __construct()
     {
-        $this->specifications = $specifications;
+        $this->specifications = func_get_args();
     }
 
     /**
@@ -31,19 +28,5 @@ final class AndSpecification implements SpecificationInterface
         }
 
         return true;
-    }
-
-    /**
-     * @param \Yoeunes\Notify\Filter\Specification\SpecificationInterface $specification
-     *
-     * @return $this
-     */
-    public function addSpecification(SpecificationInterface $specification)
-    {
-        if (!in_array($specification, $this->specifications)) {
-            $this->specifications = $specification;
-        }
-
-        return $this;
     }
 }

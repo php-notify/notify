@@ -6,7 +6,7 @@ use Yoeunes\Notify\Envelope\Envelope;
 use Yoeunes\Notify\Envelope\Stamp\PriorityStamp;
 use Yoeunes\Notify\Middleware\AddDelayStampMiddleware;
 use Yoeunes\Notify\Middleware\AddPriorityStampMiddleware;
-use Yoeunes\Notify\Middleware\AddTimeStampMiddleware;
+use Yoeunes\Notify\Middleware\AddCreatedAtStampMiddleware;
 use Yoeunes\Notify\Middleware\MiddlewareStack;
 use PHPUnit\Framework\TestCase;
 
@@ -16,7 +16,7 @@ final class MiddlewareStackTest extends TestCase
     {
         $middlewareList = array(
             new AddPriorityStampMiddleware(),
-            new AddTimeStampMiddleware(),
+            new AddCreatedAtStampMiddleware(),
         );
 
         $stack = new MiddlewareStack($middlewareList);
@@ -33,8 +33,8 @@ final class MiddlewareStackTest extends TestCase
         $this->assertInstanceOf('Yoeunes\Notify\Envelope\Stamp\PriorityStamp', $priorityStamp);
 //        $this->assertEquals(0, $priorityStamp->getPriority());
 
-        $timeStamp = $envelope->get('Yoeunes\Notify\Envelope\Stamp\TimeStamp');
-        $this->assertInstanceOf('Yoeunes\Notify\Envelope\Stamp\TimeStamp', $timeStamp);
+        $timeStamp = $envelope->get('Yoeunes\Notify\Envelope\Stamp\CreatedAtStamp');
+        $this->assertInstanceOf('Yoeunes\Notify\Envelope\Stamp\CreatedAtStamp', $timeStamp);
 
         $this->assertEquals(time(), $timeStamp->getCreatedAt()->getTimestamp());
     }

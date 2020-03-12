@@ -4,33 +4,17 @@ namespace Yoeunes\Notify\Tests\Filter;
 
 use Yoeunes\Notify\Envelope\Envelope;
 use Yoeunes\Notify\Envelope\Stamp\PriorityStamp;
-use Yoeunes\Notify\Filter\FilterManager;
+use Yoeunes\Notify\Filter\FilterBuilder;
 use PHPUnit\Framework\TestCase;
-use Yoeunes\Notify\Filter\Specification\AndSpecification;
-use Yoeunes\Notify\Filter\Specification\PrioritySpecification;
 use Yoeunes\Notify\Filter\Specification\TimeSpecification;
 use Yoeunes\Notify\Middleware\AddPriorityStampMiddleware;
-use Yoeunes\Notify\Middleware\AddTimeStampMiddleware;
+use Yoeunes\Notify\Middleware\AddCreatedAtStampMiddleware;
 use Yoeunes\Notify\Middleware\MiddlewareStack;
 
 final class FilterManagerTest extends TestCase
 {
-    public function test_filter()
+    public function test_filter_where()
     {
-        $middlewareList = array(
-            new AddPriorityStampMiddleware(),
-            new AddTimeStampMiddleware(),
-        );
-
-        $manager = new FilterManager(new MiddlewareStack($middlewareList));
-
-        $specifications = array(
-            new PrioritySpecification(-1, 0),
-            new TimeSpecification(new \DateTime())
-        );
-
-        $specification = new AndSpecification($specifications);
-
         $notifications = array(
             $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock(),
             $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock(),
@@ -52,12 +36,24 @@ final class FilterManagerTest extends TestCase
             array(new PriorityStamp(1))
         );
 
-        $expected = array(
-            $notifications[3]->getNotification(),
-            $notifications[5]->getNotification(),
+        $middlewareList = array(
+            new AddPriorityStampMiddleware(),
+            new AddCreatedAtStampMiddleware(),
         );
+        $middleware = new MiddlewareStack($middlewareList);
 
-        var_dump($manager->filter($notifications, $specification));
-//        $this->assertEquals($expected, $manager->filter($notifications, $specification));
+        $envelopes = $middleware->handleMany($notifications);
+
+        $builder = new FilterBuilder();
+
+        $envelopes = $builder
+            ->wherePriority(-1, 1)
+            ->andWhere(new TimeSpecification(new \DateTime()))
+            ->setMaxResults(2)
+            ->filter($envelopes);
+
+        var_dump(array_values(array_map(function (Envelope $envelope) {
+            return $envelope->getNotification();
+        }, $envelopes)));
     }
 }

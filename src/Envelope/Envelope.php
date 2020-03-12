@@ -4,7 +4,7 @@ namespace Yoeunes\Notify\Envelope;
 
 use Yoeunes\Notify\Notification\NotificationInterface;
 
-final class Envelope
+final class Envelope implements NotificationInterface
 {
     /**
      * @var \Yoeunes\Notify\Notification\NotificationInterface
@@ -87,5 +87,45 @@ final class Envelope
     public function getNotification()
     {
         return $this->notification;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getType()
+    {
+        return $this->notification->getType();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMessage()
+    {
+        return $this->notification->getMessage();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTitle()
+    {
+        return $this->notification->getTitle();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getContext()
+    {
+        return $this->notification->getContext();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function render()
+    {
+        return $this->notification->render();
     }
 }

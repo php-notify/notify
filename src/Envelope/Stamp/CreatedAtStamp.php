@@ -2,7 +2,7 @@
 
 namespace Yoeunes\Notify\Envelope\Stamp;
 
-final class TimeStamp implements StampInterface
+final class CreatedAtStamp implements StampInterface
 {
     /**
      * @param  int

@@ -63,10 +63,8 @@ final class MiddlewareStack
      */
     public function addMiddleware(MiddlewareInterface $middleware)
     {
-        if (!in_array($middleware, $this->middlewareList)) {
-            $this->middlewareList[] = $middleware;
-            $this->middlewareChain = $this->createExecutionChain($this->middlewareList);
-        }
+        $this->middlewareList[] = $middleware;
+        $this->middlewareChain = $this->createExecutionChain($this->middlewareList);
 
         return $this;
     }
