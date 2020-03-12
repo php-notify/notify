@@ -22,7 +22,7 @@ abstract class AbstractNotificationFactory implements NotificationFactoryInterfa
      */
     public function error($message, $title = '', $context = array())
     {
-        return $this->notification('error', $message, $title, $context);
+        return $this->createNotification('error', $message, $title, $context);
     }
 
     /**
@@ -30,7 +30,7 @@ abstract class AbstractNotificationFactory implements NotificationFactoryInterfa
      */
     public function info($message, $title = '', $context = array())
     {
-        return $this->notification('info', $message, $title, $context);
+        return $this->createNotification('info', $message, $title, $context);
     }
 
     /**
@@ -38,7 +38,7 @@ abstract class AbstractNotificationFactory implements NotificationFactoryInterfa
      */
     public function success($message, $title = '', $context = array())
     {
-        return $this->notification('success', $message, $title, $context);
+        return $this->createNotification('success', $message, $title, $context);
     }
 
     /**
@@ -46,6 +46,6 @@ abstract class AbstractNotificationFactory implements NotificationFactoryInterfa
      */
     public function warning($message, $title = '', $context = array())
     {
-        return $this->notification('warning', $message, $title, $context);
+        return $this->createNotification('warning', $message, $title, $context);
     }
 }

@@ -44,7 +44,7 @@ final class Envelope implements NotificationInterface
     }
 
     /**
-     * @param  array|mixed  ...$stamps
+     * @param  array|\Yoeunes\Notify\Envelope\Stamp\StampInterface $stamps
      *
      * @return Envelope a new Envelope instance with additional stamp
      */

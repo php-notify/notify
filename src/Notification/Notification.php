@@ -2,37 +2,35 @@
 
 namespace Yoeunes\Notify\Notification;
 
-abstract class AbstractNotification implements NotificationInterface
+final class Notification implements NotificationInterface
 {
     /**
      * @var string
      */
-    protected $type;
+    private $type;
 
     /**
      * @var string
      */
-    protected $message;
+    private $message;
 
     /**
      * @var string
      */
-    protected $title;
+    private $title;
 
     /**
      * @var array<string, mixed>
      */
-    protected $context;
+    private $context;
 
     /**
-     * BaseNotification constructor.
-     *
      * @param string               $type
      * @param string               $message
      * @param string               $title
      * @param array<string, mixed> $context
      */
-    public function __construct($type, $message, $title, $context)
+    public function __construct($type, $message, $title = '', $context = array())
     {
         $this->type = $type;
         $this->message = $message;

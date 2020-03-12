@@ -12,7 +12,7 @@ interface NotificationFactoryInterface
      *
      * @return \Yoeunes\Notify\Notification\NotificationInterface
      */
-    public function notification($type, $message, $title = '', $context = array());
+    public function createNotification($type, $message, $title = '', $context = array());
 
     /**
      * @param string               $message

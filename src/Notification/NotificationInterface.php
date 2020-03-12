@@ -23,9 +23,4 @@ interface NotificationInterface
      * @return array<string, mixed>
      */
     public function getContext();
-
-    /**
-     * @return string
-     */
-    public function render();
 }
