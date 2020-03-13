@@ -2,17 +2,10 @@
 
 namespace Yoeunes\Notify\Presenter;
 
-use Yoeunes\Notify\Envelope\Envelope;
-
-final class CliPresenter implements PresenterInterface
+final class CliPresenter extends AbstractPresenter
 {
-    public function render(Envelope $envelope)
+    public function render()
     {
-        var_dump($envelope);die;
-    }
-
-    public function support(Envelope $envelope, array $context = array())
-    {
-        return false;
+        dd("ok");
     }
 }

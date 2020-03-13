@@ -6,11 +6,18 @@ use Yoeunes\Notify\Manager\AbstractManager;
 
 final class PresenterManager extends AbstractManager
 {
-    /**
-     * @inheritDoc
-     */
-    public function getDefaultDriver()
+    protected function getConfigKeyForDefaultDriver()
     {
-        // TODO: Implement getDefaultDriver() method.
+        return 'default_presenter';
+    }
+
+    protected function getConfigKeyForDriversList()
+    {
+        return 'presenters';
+    }
+
+    protected function getFactoryFullyQualifiedName()
+    {
+        return '\Yoeunes\Notify\Presenter\PresenterInterface';
     }
 }

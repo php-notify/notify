@@ -5,27 +5,6 @@ namespace Yoeunes\Notify\Manager;
 interface ManagerInterface
 {
     /**
-     * Get the configuration root key.
-     *
-     * @return string
-     */
-    public function getRootConfig();
-
-    /**
-     * Get the default driver name.
-     *
-     * @return string
-     */
-    public function getDefaultDriver();
-
-    /**
-     * Get the drivers list from the configuration
-     *
-     * @return array<string, array>
-     */
-    public function getDriversFromConfig();
-
-    /**
      * Get a driver instance.
      *
      * @param string|null $driver
@@ -34,7 +13,7 @@ interface ManagerInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function driver($driver = null);
+    public function make($driver = null);
 
     /**
      * Call a custom driver creator.
@@ -55,18 +34,4 @@ interface ManagerInterface
      * @return $this
      */
     public function extend($driver, $resolver);
-
-    /**
-     * Get the config instance.
-     *
-     * @return \Yoeunes\Notify\Config\ConfigInterface
-     */
-    public function getConfig();
-
-    /**
-     * Get all of the created "drivers".
-     *
-     * @return array<string, object>
-     */
-    public function getDrivers();
 }

@@ -3,26 +3,15 @@
 namespace Yoeunes\Notify\Producer;
 
 use Yoeunes\Notify\Envelope\Envelope;
-use Yoeunes\Notify\Envelope\Stamp\FingerprintStamp;
+use Yoeunes\Notify\Envelope\Stamp\ProducerStamp;
 use Yoeunes\Notify\Notification\Notification;
-use Yoeunes\Notify\Storage\StorageManagerInterface;
 
 abstract class AbstractProducer implements ProducerInterface
 {
     /**
-     * @var \Yoeunes\Notify\Storage\StorageManagerInterface
-     */
-    protected $storageManager;
-
-    /**
      * @var array<string, mixed>
      */
     protected $config;
-
-    public function __construct(StorageManagerInterface $storageManager)
-    {
-        $this->storageManager = $storageManager;
-    }
 
     /**
      * {@inheritdoc}
@@ -75,9 +64,7 @@ abstract class AbstractProducer implements ProducerInterface
     public function render($type, $message, $title = '', $context = array())
     {
         $envelope = Envelope::wrap($this->createNotification($type, $message, $title, $context));
-        $envelope->with(new FingerprintStamp(spl_object_hash($this)));
-
-        $this->storageManager->addNotification($envelope);
+        $envelope->with(new ProducerStamp($this->getConfig('driver')));
 
         return $envelope;
     }
@@ -93,16 +80,16 @@ abstract class AbstractProducer implements ProducerInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfig()
+    public function getConfig($key = null)
     {
-        return $this->config;
-    }
+        if (null === $key) {
+            return $this->config;
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStorageManager()
-    {
-        return $this->storageManager;
+        if (isset($this->config[$key])) {
+            return $this->config[$key];
+        }
+
+        return null;
     }
 }

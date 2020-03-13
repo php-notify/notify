@@ -2,17 +2,10 @@
 
 namespace Yoeunes\Notify\Presenter;
 
-use Yoeunes\Notify\Envelope\Envelope;
-
-final class HtmlPresenter implements PresenterInterface
+final class HtmlPresenter extends AbstractPresenter
 {
-    public function render(Envelope $envelope)
+    public function render()
     {
-        var_dump($envelope);die;
-    }
-
-    public function support(Envelope $envelope, array $context = array())
-    {
-        return true;
+        dd("ok");
     }
 }

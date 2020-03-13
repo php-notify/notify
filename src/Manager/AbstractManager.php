@@ -21,13 +21,6 @@ abstract class AbstractManager implements ManagerInterface
     protected $drivers = array();
 
     /**
-     * The registered custom driver creators.
-     *
-     * @var array<string, callable>
-     */
-    protected $customCreators = array();
-
-    /**
      * Create a new manager instance.
      *
      * @param \Yoeunes\Notify\Config\ConfigInterface $config
@@ -40,7 +33,7 @@ abstract class AbstractManager implements ManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function driver($driver = null)
+    public function make($driver = null)
     {
         $driver = $driver ?: $this->getDefaultDriver();
 
@@ -60,19 +53,9 @@ abstract class AbstractManager implements ManagerInterface
     /**
      * @inheritDoc
      */
-    public function getDefaultDriver()
+    protected function getDefaultDriver()
     {
-        $root = null !== $this->getRootConfig() ? '.' : '';
-
-        return $this->config->get($root . 'default');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getRootConfig()
-    {
-        return null;
+        return $this->config->get($this->getConfigKeyForDefaultDriver());
     }
 
     /**
@@ -103,46 +86,6 @@ abstract class AbstractManager implements ManagerInterface
         }
 
         throw new \InvalidArgumentException(sprintf("Driver [%s] not supported.", $driver));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getDriversFromConfig()
-    {
-        $root = null !== $this->getRootConfig() ? '.' : '';
-
-        return $this->config->get($root . 'drivers', array());
-    }
-
-    /**
-     * Get the configuration for a driver.
-     *
-     * @param string $driver
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function getDriverConfig($driver)
-    {
-        $drivers = $this->getDriversFromConfig();
-
-        if (!isset($drivers[$driver]) || !is_array($drivers[$driver])) {
-            throw new \InvalidArgumentException(sprintf('Driver [%s] not configured', $driver));
-        }
-
-        $config = $drivers[$driver];
-
-        return $config + array('driver' => $driver);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function callCustomCreator($driver, array $config = array())
-    {
-        return $this->customCreators[$driver]($config);
     }
 
     /**
@@ -181,6 +124,6 @@ abstract class AbstractManager implements ManagerInterface
      */
     public function __call($method, array $parameters)
     {
-        return call_user_func_array(array($this->driver(), $method), $parameters);
+        return call_user_func_array(array($this->make(), $method), $parameters);
     }
 }

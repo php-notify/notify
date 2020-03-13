@@ -69,14 +69,4 @@ interface ProducerInterface
      * @param array<string, mixed> $config
      */
     public function setConfig($config);
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getConfig();
-
-    /**
-     * @return \Yoeunes\Notify\Storage\StorageManagerInterface
-     */
-    public function getStorageManager();
 }

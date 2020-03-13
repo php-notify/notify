@@ -2,7 +2,9 @@
 
 namespace Yoeunes\Notify\Storage;
 
-final class StorageManager implements StorageManagerInterface
+use Yoeunes\Notify\Manager\AbstractManager;
+
+final class StorageManager extends AbstractManager
 {
     /**
      * @var \Yoeunes\Notify\Storage\StoreInterface
@@ -16,9 +18,4 @@ final class StorageManager implements StorageManagerInterface
     private $styles = array();
 
     private $fingerprints = array();
-
-    public function __construct(StoreInterface $store)
-    {
-        $this->store = $store;
-    }
 }
