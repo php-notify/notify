@@ -14,7 +14,7 @@ final class OrSpecification implements SpecificationInterface
     /**
      * @param array|mixed ...$specifications
      */
-    public function __construct($specifications)
+    public function __construct($specifications = array())
     {
         $specifications = is_array($specifications) ? $specifications : func_get_args();
 

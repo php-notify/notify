@@ -1,52 +1,54 @@
 <?php
 
-namespace Yoeunes\Notify\Tests;
+namespace Yoeunes\Notify\Tests\Manager;
 
-use Yoeunes\Notify\Middleware\MiddlewareStack;
-use Yoeunes\Notify\NotifyManager;
+use Yoeunes\Notify\Producer\ProducerManager;
+use Yoeunes\Notify\Tests\TestCase;
 
-final class NotifyManagerTest extends TestCase
+final class ManagerTest extends TestCase
 {
-    public function test_default_notifier()
+    public function test_default_driver()
     {
         $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
         $config->method('get')
             ->with('default')
             ->willReturn('default_notifier');
 
-        $manager = new NotifyManager($config, new MiddlewareStack());
-
-        $this->assertEquals('default_notifier', $manager->getDefaultNotifier());
+        $manager = new ProducerManager($config);
+        $this->assertEquals('default_notifier', $manager->getDefaultDriver());
     }
 
-    public function test_throw_exception_when_notifier_not_found()
+    public function test_throw_exception_when_driver_not_found()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Notifier [default_notifier] not configured');
+        $this->setExpectedException('InvalidArgumentException', 'Driver [default_notifier] not configured');
+
+        $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
+        $config->method('get')
+            ->with('drivers')
+            ->willReturn(array());
+
+        $manager = new ProducerManager($config);
+        $this->callMethod($manager, 'getDriverConfig', 'default_notifier');
+    }
+
+    public function test_throw_exception_when_driver_not_configured()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Driver [default_notifier] not configured');
 
         $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
 
-        $manager = new NotifyManager($config, new MiddlewareStack());
-        $manager->getNotifierConfig('default_notifier');
+        $manager = new ProducerManager($config);
+        $this->callMethod($manager, 'getDriverConfig', 'default_notifier');
     }
 
-    public function test_throw_exception_when_notifier_not_configured()
-    {
-        $this->setExpectedException('InvalidArgumentException', 'Notifier [default_notifier] not configured');
-
-        $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
-
-        $manager = new NotifyManager($config, new MiddlewareStack());
-        $manager->getNotifierConfig('default_notifier');
-    }
-
-    public function test_get_notifier_config()
+    public function test_get_driver_config()
     {
         $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
         $config
             ->expects($this->exactly(1))
             ->method('get')
-            ->withConsecutive(array('notifiers'))
-            ->willReturnOnConsecutiveCalls(
+            ->with('drivers')
+            ->willReturn(
                 array(
                     'default_notifier' => array(
                         'scripts' => array('jquery.js', 'default_notifier.js'),
@@ -61,26 +63,26 @@ final class NotifyManagerTest extends TestCase
                 )
             );
 
-        $manager = new NotifyManager($config, new MiddlewareStack());
+        $manager = new ProducerManager($config);
         $this->assertEquals(
             array(
                 'scripts' => array('jquery.js', 'default_notifier.js'),
                 'styles' => array('default_notifier.css'),
                 'options' => array(),
-                'notifier' => 'default_notifier',
+                'driver' => 'default_notifier',
             ),
-            $manager->getNotifierConfig('default_notifier')
+            $this->callMethod($manager, 'getDriverConfig', 'default_notifier')
         );
     }
 
-    public function test_make_unsupported_notifier()
+    public function test_throw_exception_for_unsupported_notifier()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Unsupported notifier [ default_notifier ]');
+        $this->setExpectedException('InvalidArgumentException', 'Driver [default_notifier] not supported.');
 
         $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
         $config
             ->method('get')
-            ->with('notifiers')
+            ->with('drivers')
             ->willReturn(
                 array(
                     'default_notifier' => array(
@@ -91,34 +93,14 @@ final class NotifyManagerTest extends TestCase
                 )
             );
 
-        $manager = new NotifyManager($config, new MiddlewareStack());
-        $this->invokeMethod($manager, 'resolve', array('default_notifier'));
-    }
-
-    /**
-     * Call protected/private method of a class.
-     *
-     * @param object &$object Instantiated object that we will run method on
-     * @param string  $methodName Method name to call
-     * @param array   $parameters array of parameters to pass into method
-     *
-     * @return mixed method return
-     *
-     * @throws \ReflectionException
-     */
-    private function invokeMethod(&$object, $methodName, array $parameters = array())
-    {
-        $reflection = new \ReflectionClass(get_class($object));
-        $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
-
-        return $method->invokeArgs($object, $parameters);
+        $manager = new ProducerManager($config);
+        $this->callMethod($manager, 'createDriver', 'default_notifier');
     }
 
     public function test_extend_to_add_more_notifiers_factory()
     {
         $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
-        $manager = new NotifyManager($config, new MiddlewareStack());
+        $manager = new ProducerManager($config);
 
         $notifier = $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
 
@@ -129,14 +111,12 @@ final class NotifyManagerTest extends TestCase
             }
         );
 
-        $manager->extend('notifier_2', $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface'));
-
         $reflection = new \ReflectionClass(get_class($manager));
-        $extensions = $reflection->getProperty('extensions');
+        $extensions = $reflection->getProperty('customCreators');
         $extensions->setAccessible(true);
 
-        $this->assertCount(2, $extensions->getValue($manager));
-        $this->assertCount(0, $manager->getNotifiers());
+        $this->assertCount(1, $extensions->getValue($manager));
+        $this->assertCount(0, $manager->getDrivers());
     }
 
     public function test_make_notifier()
@@ -144,7 +124,7 @@ final class NotifyManagerTest extends TestCase
         $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
         $config
             ->method('get')
-            ->with('notifiers')
+            ->with('drivers')
             ->willReturn(
                 array(
                     'default_notifier' => array(
@@ -160,7 +140,7 @@ final class NotifyManagerTest extends TestCase
                 )
             );
 
-        $manager = new NotifyManager($config, new MiddlewareStack());
+        $manager = new ProducerManager($config);
 
         $that = $this;
 
@@ -172,25 +152,18 @@ final class NotifyManagerTest extends TestCase
                         'scripts' => array('jquery.js', 'default_notifier.js'),
                         'styles' => array('default_notifier.css'),
                         'options' => array(),
-                        'notifier' => 'default_notifier',
+                        'driver' => 'default_notifier',
                     ),
                     $config
                 );
 
-                return $that->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
+                return $that->getMockBuilder('Yoeunes\Notify\Producer\ProducerInterface')->getMock();
             }
         );
 
-        $manager->extend(
-            'another_notifier',
-            $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock()
-        );
+        $defaultNotifier = $this->callMethod($manager, 'createDriver', 'default_notifier');
 
-        $defaultNotifier = $this->invokeMethod($manager, 'resolve', array('default_notifier'));
-        $anotherNotifier = $this->invokeMethod($manager, 'resolve', array('another_notifier'));
-
-        $this->assertInstanceOf('Yoeunes\Notify\Factory\NotificationFactoryInterface', $defaultNotifier);
-        $this->assertInstanceOf('Yoeunes\Notify\Factory\NotificationFactoryInterface', $anotherNotifier);
+        $this->assertInstanceOf('Yoeunes\Notify\Producer\ProducerInterface', $defaultNotifier);
     }
 
     public function test_make_notifier_containing_notifier_option()
@@ -198,7 +171,7 @@ final class NotifyManagerTest extends TestCase
         $config = $this->getMockBuilder('Yoeunes\Notify\Config\ConfigInterface')->getMock();
         $config
             ->method('get')
-            ->with('notifiers')
+            ->with('drivers')
             ->willReturn(
                 array(
                     'default_notifier' => array(
@@ -207,7 +180,7 @@ final class NotifyManagerTest extends TestCase
                         'options' => array(),
                     ),
                     'another_notifier' => array(
-                        'notifier' => 'default_notifier',
+                        'driver' => 'default_notifier',
                         'scripts' => array(),
                         'styles' => array(),
                         'options' => array(),
@@ -215,7 +188,7 @@ final class NotifyManagerTest extends TestCase
                 )
             );
 
-        $manager = new NotifyManager($config, new MiddlewareStack());
+        $manager = new ProducerManager($config);
 
         $that = $this;
 
@@ -227,16 +200,16 @@ final class NotifyManagerTest extends TestCase
                         'scripts' => array(),
                         'styles' => array(),
                         'options' => array(),
-                        'notifier' => 'default_notifier',
+                        'driver' => 'default_notifier',
                     ),
                     $config
                 );
 
-                return $that->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
+                return $that->getMockBuilder('Yoeunes\Notify\Producer\ProducerInterface')->getMock();
             }
         );
 
-        $defaultNotifier = $this->invokeMethod($manager, 'resolve', array('another_notifier'));
-        $this->assertInstanceOf('Yoeunes\Notify\Factory\NotificationFactoryInterface', $defaultNotifier);
+        $defaultNotifier = $this->callMethod($manager, 'createDriver', 'another_notifier');
+        $this->assertInstanceOf('Yoeunes\Notify\Producer\ProducerInterface', $defaultNotifier);
     }
 }

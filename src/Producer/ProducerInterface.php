@@ -1,8 +1,8 @@
 <?php
 
-namespace Yoeunes\Notify\Factory;
+namespace Yoeunes\Notify\Producer;
 
-interface NotificationFactoryInterface
+interface ProducerInterface
 {
     /**
      * @param string               $type

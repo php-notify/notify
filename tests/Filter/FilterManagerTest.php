@@ -47,13 +47,11 @@ final class FilterManagerTest extends TestCase
         $builder = new FilterBuilder();
 
         $envelopes = $builder
-            ->wherePriority(-1, 1)
-            ->andWhere(new TimeSpecification(new \DateTime()))
+//            ->wherePriority(-1, 1)
+//            ->andWhere(new TimeSpecification(new \DateTime()))
             ->setMaxResults(2)
             ->filter($envelopes);
 
-        var_dump(array_values(array_map(function (Envelope $envelope) {
-            return $envelope->getNotification();
-        }, $envelopes)));
+        $this->assertNotEmpty($envelopes);
     }
 }

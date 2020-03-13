@@ -1,13 +1,13 @@
 <?php
 
-namespace Yoeunes\Notify\Factory;
+namespace Yoeunes\Notify\Producer;
 
 use Yoeunes\Notify\Envelope\Envelope;
 use Yoeunes\Notify\Envelope\Stamp\FingerprintStamp;
 use Yoeunes\Notify\Notification\Notification;
 use Yoeunes\Notify\Storage\StorageManagerInterface;
 
-abstract class AbstractNotificationFactory implements NotificationFactoryInterface
+abstract class AbstractProducer implements ProducerInterface
 {
     /**
      * @var \Yoeunes\Notify\Storage\StorageManagerInterface

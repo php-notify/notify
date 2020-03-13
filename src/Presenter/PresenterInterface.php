@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Decorator\Presenter;
+namespace Yoeunes\Notify\Presenter;
 
 use Yoeunes\Notify\Envelope\Envelope;
 
