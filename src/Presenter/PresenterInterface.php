@@ -4,10 +4,15 @@ namespace Yoeunes\Notify\Presenter;
 
 interface PresenterInterface
 {
-    public function render();
+    /**
+     * @param array $context
+     *
+     * @return bool
+     */
+    public function support(array $context);
 
     /**
-     * @param array<string, mixed> $config
+     * @return string
      */
-    public function setConfig($config);
+    public function render();
 }

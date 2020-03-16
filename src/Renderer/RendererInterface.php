@@ -2,12 +2,14 @@
 
 namespace Yoeunes\Notify\Renderer;
 
+use Yoeunes\Notify\Envelope\Envelope;
+
 interface RendererInterface
 {
     /**
-     * @param array<string, \Yoeunes\Notify\Envelope\Envelope> $notifications
+     * @param \Yoeunes\Notify\Envelope\Envelope $envelope
      *
      * @return string
      */
-    public function render($notifications);
+    public function render(Envelope $envelope);
 }

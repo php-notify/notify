@@ -104,7 +104,7 @@ final class ManagerTest extends TestCase
 
         $notifier = $this->getMockBuilder('Yoeunes\Notify\Factory\NotificationFactoryInterface')->getMock();
 
-        $manager->extend(
+        $manager->addDriver(
             'notifier_1',
             function () use ($notifier) {
                 return $notifier;
@@ -144,7 +144,7 @@ final class ManagerTest extends TestCase
 
         $that = $this;
 
-        $manager->extend(
+        $manager->addDriver(
             'default_notifier',
             function ($config) use ($that) {
                 $that->assertEquals(
@@ -192,7 +192,7 @@ final class ManagerTest extends TestCase
 
         $that = $this;
 
-        $manager->extend(
+        $manager->addDriver(
             'default_notifier',
             function ($config) use ($that) {
                 $that->assertEquals(

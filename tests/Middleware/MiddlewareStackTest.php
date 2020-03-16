@@ -7,7 +7,7 @@ use Yoeunes\Notify\Envelope\Stamp\PriorityStamp;
 use Yoeunes\Notify\Middleware\AddDelayStampMiddleware;
 use Yoeunes\Notify\Middleware\AddPriorityStampMiddleware;
 use Yoeunes\Notify\Middleware\AddCreatedAtStampMiddleware;
-use Yoeunes\Notify\Middleware\MiddlewareStack;
+use Yoeunes\Notify\Middleware\MiddlewareManager;
 use PHPUnit\Framework\TestCase;
 
 final class MiddlewareStackTest extends TestCase
@@ -19,7 +19,7 @@ final class MiddlewareStackTest extends TestCase
             new AddCreatedAtStampMiddleware(),
         );
 
-        $stack = new MiddlewareStack($middlewareList);
+        $stack = new MiddlewareManager($middlewareList);
 
         $notification = $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock();
         $envelope = new Envelope($notification);
@@ -45,7 +45,7 @@ final class MiddlewareStackTest extends TestCase
             new AddPriorityStampMiddleware(),
         );
 
-        $stack = new MiddlewareStack($middlewareList);
+        $stack = new MiddlewareManager($middlewareList);
 
         $notification = $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock();
         $stamps = array(

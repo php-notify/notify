@@ -17,7 +17,7 @@ interface ProducerInterface
     /**
      * @return \Yoeunes\Notify\Renderer\RendererInterface
      */
-    public function createRenderer();
+    public function getRenderer();
 
     /**
      * @param        $type
@@ -64,9 +64,4 @@ interface ProducerInterface
      * @return \Yoeunes\Notify\Envelope\Envelope
      */
     public function warning($message, $title = '', $context = array());
-
-    /**
-     * @param array<string, mixed> $config
-     */
-    public function setConfig($config);
 }

@@ -2,20 +2,20 @@
 
 namespace Yoeunes\Notify\Storage;
 
+use Yoeunes\Notify\Config\ConfigInterface;
 use Yoeunes\Notify\Manager\AbstractManager;
 
 final class StorageManager extends AbstractManager
 {
-    /**
-     * @var \Yoeunes\Notify\Storage\StoreInterface
-     */
-    private $store;
+    private $config;
 
-    private $notifications = array();
+    public function __construct(ConfigInterface $config)
+    {
+        $this->config = $config;
+    }
 
-    private $scripts = array();
-
-    private $styles = array();
-
-    private $fingerprints = array();
+    protected function getDefaultDriver()
+    {
+        return $this->config->get('storage');
+    }
 }

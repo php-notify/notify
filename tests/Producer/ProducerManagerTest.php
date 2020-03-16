@@ -14,14 +14,14 @@ final class ProducerManagerTest extends TestCase
 
         $notifier = $this->getMockBuilder('Yoeunes\Notify\Producer\ProducerInterface')->getMock();
 
-        $manager->extend(
+        $manager->addDriver(
             'notifier_1',
             function () use ($notifier) {
                 return $notifier;
             }
         );
 
-        $manager->extend('notifier_2', $this->getMockBuilder('Yoeunes\Notify\Producer\ProducerInterface'));
+        $manager->addDriver('notifier_2', $this->getMockBuilder('Yoeunes\Notify\Producer\ProducerInterface'));
 
         $reflection = new \ReflectionClass(get_class($manager));
         $extensions = $reflection->getProperty('customCreators');

@@ -2,22 +2,31 @@
 
 namespace Yoeunes\Notify\Presenter;
 
+use Yoeunes\Notify\Config\ConfigInterface;
 use Yoeunes\Notify\Manager\AbstractManager;
 
 final class PresenterManager extends AbstractManager
 {
-    protected function getConfigKeyForDefaultDriver()
+    private $config;
+
+    public function __construct(ConfigInterface $config)
     {
-        return 'default_presenter';
+        $this->config = $config;
     }
 
-    protected function getConfigKeyForDriversList()
+    protected function getDefaultDriver()
     {
-        return 'presenters';
+        return $this->config->get('presenter');
     }
 
-    protected function getFactoryFullyQualifiedName()
+    public function getPresenterFromContext(array $context)
     {
-        return '\Yoeunes\Notify\Presenter\PresenterInterface';
+        foreach ($this->drivers as $presenter) {
+            if ($presenter->support($context)) {
+                return $presenter;
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf("No presenter found for the given context"));
     }
 }

@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Yoeunes\Notify\Filter\Specification\TimeSpecification;
 use Yoeunes\Notify\Middleware\AddPriorityStampMiddleware;
 use Yoeunes\Notify\Middleware\AddCreatedAtStampMiddleware;
-use Yoeunes\Notify\Middleware\MiddlewareStack;
+use Yoeunes\Notify\Middleware\MiddlewareManager;
 
 final class FilterManagerTest extends TestCase
 {
@@ -40,7 +40,7 @@ final class FilterManagerTest extends TestCase
             new AddPriorityStampMiddleware(),
             new AddCreatedAtStampMiddleware(),
         );
-        $middleware = new MiddlewareStack($middlewareList);
+        $middleware = new MiddlewareManager($middlewareList);
 
         $envelopes = $middleware->handleMany($notifications);
 

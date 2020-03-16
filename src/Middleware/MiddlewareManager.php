@@ -4,7 +4,7 @@ namespace Yoeunes\Notify\Middleware;
 
 use Yoeunes\Notify\Envelope\Envelope;
 
-final class MiddlewareStack
+final class MiddlewareManager
 {
     /**
      * @var \Yoeunes\Notify\Middleware\MiddlewareInterface[]
