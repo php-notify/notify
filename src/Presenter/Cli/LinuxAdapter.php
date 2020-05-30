@@ -15,8 +15,15 @@ class LinuxAdapter implements CliAdapter
     public function render(array $envelopes = array())
     {
         foreach ($envelopes as $envelope) {
-            exec(sprintf('notify-send --urgency="normal" --expire-time=300 --icon="icon.jpeg" --app-name="notify" "%s" "%s"',
-                $envelope->getTitle(),
+            exec(sprintf('notify-send \
+                --urgency="normal" \
+                --expire-time=300 \
+                --icon="icon.jpeg" \
+                --app-name="notify" \
+                --icon="%s" \
+                "%s " "%s "',
+                __DIR__.'/../../../resources/icons/'.$envelope->getType().'.png',
+                $envelope->getTitle() ?: $envelope->getType(),
                 $envelope->getMessage()
             ));
         }

@@ -6,7 +6,7 @@ class WindowsAdapter implements CliAdapter
 {
     public function isSupported()
     {
-        return '\\' === DIRECTORY_SEPARATOR;
+        return in_array(PHP_OS, array('Linux', 'FreeBSD', 'NetBSD', 'OpenBSD', 'SunOS', 'DragonFly'));
     }
 
     /**
@@ -15,8 +15,15 @@ class WindowsAdapter implements CliAdapter
     public function render(array $envelopes = array())
     {
         foreach ($envelopes as $envelope) {
-            exec(sprintf('notify-send -u critical -i "%s" "%s"',
-                $envelope->getTitle(),
+            exec(sprintf('notify-send \
+                --urgency="normal" \
+                --expire-time=300 \
+                --icon="icon.jpeg" \
+                --app-name="notify" \
+                --icon="%s" \
+                "%s " "%s "',
+                __DIR__.'/../../../resources/icons/'.$envelope->getType().'.png',
+                $envelope->getTitle() ?: $envelope->getType(),
                 $envelope->getMessage()
             ));
         }
