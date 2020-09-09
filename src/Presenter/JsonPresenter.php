@@ -7,18 +7,18 @@ use Yoeunes\Notify\Renderer\HasGlobalOptionsInterface;
 use Yoeunes\Notify\Renderer\HasScriptsInterface;
 use Yoeunes\Notify\Renderer\HasStylesInterface;
 use Yoeunes\Notify\Renderer\RendererManager;
-use Yoeunes\Notify\Storage\StorageInterface;
+use Yoeunes\Notify\Storage\Filter\FilterManager;
 
-final class JsonPresenter implements PresenterInterface
+final class JsonPresenter extends AbstractPresenter
 {
-    private $storage;
     private $renderer;
 
     private $drivers;
 
-    public function __construct(StorageInterface $storage, RendererManager $renderer)
+    public function __construct(FilterManager $filter, RendererManager $renderer)
     {
-        $this->storage = $storage;
+        parent::__construct($filter);
+
         $this->renderer = $renderer;
     }
 
@@ -40,14 +40,14 @@ final class JsonPresenter implements PresenterInterface
         return json_encode(array(
             'scripts' => $this->getResultsByColumn('scripts'),
             'styles' => $this->getResultsByColumn('styles'),
-            'options' => array_values(array_filter(array_column($this->drivers, 'options'))),
+            'options' => array_values(array_filter(array_column($this->drivers ?: [], 'options'))),
             'notifications' => $this->getResultsByColumn('envelopes')
         ));
     }
 
     private function getResultsByColumn($column)
     {
-        $results = array_column($this->drivers, $column);
+        $results = array_column($this->drivers ?: [], $column);
 
         $results = array_reduce($results, 'array_merge', array());
 
@@ -62,7 +62,7 @@ final class JsonPresenter implements PresenterInterface
             return;
         }
 
-        foreach ($this->storage->get() as $envelope) {
+        foreach ($this->getEnvelopes() as $envelope) {
             $this->addEnvelope($envelope);
         }
     }

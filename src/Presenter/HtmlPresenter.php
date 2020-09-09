@@ -7,18 +7,18 @@ use Yoeunes\Notify\Renderer\HasGlobalOptionsInterface;
 use Yoeunes\Notify\Renderer\HasScriptsInterface;
 use Yoeunes\Notify\Renderer\HasStylesInterface;
 use Yoeunes\Notify\Renderer\RendererManager;
-use Yoeunes\Notify\Storage\StorageInterface;
+use Yoeunes\Notify\Storage\Filter\FilterManager;
 
-final class HtmlPresenter implements PresenterInterface
+final class HtmlPresenter extends AbstractPresenter
 {
-    private $storage;
     private $renderer;
 
     private $drivers;
 
-    public function __construct(StorageInterface $storage, RendererManager $renderer)
+    public function __construct(FilterManager $filter, RendererManager $renderer)
     {
-        $this->storage = $storage;
+        parent::__construct($filter);
+
         $this->renderer = $renderer;
     }
 
@@ -39,7 +39,7 @@ final class HtmlPresenter implements PresenterInterface
 
         $html = '';
 
-        foreach ($this->drivers as $driver) {
+        foreach ($this->drivers ?: [] as $driver) {
             $html .= $driver['options'] . PHP_EOL;
 
             foreach ($driver['envelopes'] as $envelope) {
@@ -58,7 +58,7 @@ final class HtmlPresenter implements PresenterInterface
             return;
         }
 
-        foreach ($this->storage->get() as $envelope) {
+        foreach ($this->getEnvelopes() as $envelope) {
             $this->addEnvelope($envelope);
         }
     }

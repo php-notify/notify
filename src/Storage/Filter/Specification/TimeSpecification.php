@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Filter\Specification;
+namespace Yoeunes\Notify\Storage\Filter\Specification;
 
 use Yoeunes\Notify\Envelope\Envelope;
 

@@ -4,9 +4,9 @@ namespace Yoeunes\Notify\Tests\Filter;
 
 use Yoeunes\Notify\Envelope\Envelope;
 use Yoeunes\Notify\Envelope\Stamp\PriorityStamp;
-use Yoeunes\Notify\Filter\FilterBuilder;
+use Yoeunes\Notify\Storage\Filter\FilterBuilder;
 use PHPUnit\Framework\TestCase;
-use Yoeunes\Notify\Filter\Specification\TimeSpecification;
+use Yoeunes\Notify\Storage\Filter\Specification\TimeSpecification;
 use Yoeunes\Notify\Middleware\AddPriorityStampMiddleware;
 use Yoeunes\Notify\Middleware\AddCreatedAtStampMiddleware;
 use Yoeunes\Notify\Middleware\MiddlewareManager;

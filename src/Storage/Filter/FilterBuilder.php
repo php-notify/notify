@@ -1,12 +1,12 @@
 <?php
 
-namespace Yoeunes\Notify\Filter;
+namespace Yoeunes\Notify\Storage\Filter;
 
 use Yoeunes\Notify\Envelope\Envelope;
-use Yoeunes\Notify\Filter\Specification\AndSpecification;
-use Yoeunes\Notify\Filter\Specification\OrSpecification;
-use Yoeunes\Notify\Filter\Specification\PrioritySpecification;
-use Yoeunes\Notify\Filter\Specification\SpecificationInterface;
+use Yoeunes\Notify\Storage\Filter\Specification\AndSpecification;
+use Yoeunes\Notify\Storage\Filter\Specification\OrSpecification;
+use Yoeunes\Notify\Storage\Filter\Specification\PrioritySpecification;
+use Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface;
 
 final class FilterBuilder
 {
@@ -14,7 +14,7 @@ final class FilterBuilder
     const DESC = 'DESC';
 
     /**
-     * @var \Yoeunes\Notify\Filter\Specification\SpecificationInterface
+     * @var \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface
      */
     private $specification;
 
@@ -29,7 +29,7 @@ final class FilterBuilder
     private $maxResults;
 
     /**
-     * @param \Yoeunes\Notify\Filter\Specification\SpecificationInterface $specification
+     * @param \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface $specification
      *
      * @return $this
      */
@@ -41,7 +41,7 @@ final class FilterBuilder
     }
 
     /**
-     * @param \Yoeunes\Notify\Filter\Specification\SpecificationInterface $specification
+     * @param \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface $specification
      *
      * @return $this
      */
@@ -57,7 +57,7 @@ final class FilterBuilder
     }
 
     /**
-     * @param \Yoeunes\Notify\Filter\Specification\SpecificationInterface $specification
+     * @param \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface $specification
      *
      * @return $this
      */
@@ -105,7 +105,7 @@ final class FilterBuilder
     }
 
     /**
-     * @return \Yoeunes\Notify\Filter\Specification\SpecificationInterface
+     * @return \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface
      */
     public function getWhereSpecification()
     {

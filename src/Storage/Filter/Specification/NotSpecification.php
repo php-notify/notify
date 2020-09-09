@@ -1,13 +1,13 @@
 <?php
 
-namespace Yoeunes\Notify\Filter\Specification;
+namespace Yoeunes\Notify\Storage\Filter\Specification;
 
 use Yoeunes\Notify\Envelope\Envelope;
 
 final class NotSpecification implements SpecificationInterface
 {
     /**
-     * @var \Yoeunes\Notify\Filter\Specification\SpecificationInterface
+     * @var \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface
      */
     private $specification;
 

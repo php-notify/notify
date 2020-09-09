@@ -12,7 +12,7 @@ interface PresenterInterface
     public function support(array $context);
 
     /**
-     * @return string
+     * @return null|string
      */
     public function render();
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace Yoeunes\Notify\Filter\Specification;
+namespace Yoeunes\Notify\Storage\Filter\Specification;
 
 use Yoeunes\Notify\Envelope\Envelope;
 
-final class OrSpecification implements SpecificationInterface
+final class AndSpecification implements SpecificationInterface
 {
     /**
-     * @var \Yoeunes\Notify\Filter\Specification\SpecificationInterface[]
+     * @var \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface[]
      */
     private $specifications;
 
@@ -27,11 +27,11 @@ final class OrSpecification implements SpecificationInterface
     public function isSatisfiedBy(Envelope $envelope)
     {
         foreach ($this->specifications as $specification) {
-            if ($specification->isSatisfiedBy($envelope)) {
-                return true;
+            if (!$specification->isSatisfiedBy($envelope)) {
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 }

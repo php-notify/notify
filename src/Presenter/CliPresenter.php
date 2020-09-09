@@ -4,16 +4,16 @@ namespace Yoeunes\Notify\Presenter;
 
 use Yoeunes\Notify\Presenter\Cli\CliAdapter;
 use Yoeunes\Notify\Presenter\Cli\LinuxAdapter;
-use Yoeunes\Notify\Storage\StorageInterface;
+use Yoeunes\Notify\Storage\Filter\FilterManager;
 
-final class CliPresenter implements PresenterInterface
+final class CliPresenter extends AbstractPresenter
 {
-    private $storage;
     private $adapter;
 
-    public function __construct(StorageInterface $storage, CliAdapter $adapter = null)
+    public function __construct(FilterManager $filter, CliAdapter $adapter = null)
     {
-        $this->storage = $storage;
+        parent::__construct($filter);
+
         $this->adapter = $adapter ?: new LinuxAdapter();
     }
 
@@ -30,6 +30,6 @@ final class CliPresenter implements PresenterInterface
      */
     public function render()
     {
-        return $this->adapter->render($this->storage->get());
+        $this->adapter->render($this->getEnvelopes());
     }
 }

@@ -2,27 +2,28 @@
 
 namespace Yoeunes\Notify\Presenter\Cli;
 
-class LinuxAdapter implements CliAdapter
+class LinuxAdapter extends BaseAdapter
 {
+    /**
+     * @inheritDoc
+     */
     public function isSupported()
     {
         return in_array(PHP_OS, array('Linux', 'FreeBSD', 'NetBSD', 'OpenBSD', 'SunOS', 'DragonFly'));
     }
 
     /**
-     * @param \Yoeunes\Notify\Envelope\Envelope[] $envelopes
+     * @inheritDoc
      */
     public function render(array $envelopes = array())
     {
         foreach ($envelopes as $envelope) {
             exec(sprintf('notify-send \
                 --urgency="normal" \
-                --expire-time=300 \
-                --icon="icon.jpeg" \
                 --app-name="notify" \
                 --icon="%s" \
                 "%s " "%s "',
-                __DIR__.'/../../../resources/icons/'.$envelope->getType().'.png',
+                $this->getIcon($envelope),
                 $envelope->getTitle() ?: $envelope->getType(),
                 $envelope->getMessage()
             ));
