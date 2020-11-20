@@ -1,6 +1,6 @@
 <?php
 
-namespace Notify\Storage\Filter;
+namespace Notify\Filter;
 
 use Notify\Config\ConfigInterface;
 use Notify\Manager\AbstractManager;

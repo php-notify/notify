@@ -1,13 +1,13 @@
 <?php
 
-namespace Notify\Storage\Filter\Specification;
+namespace Notify\Filter\Specification;
 
 use Notify\Envelope\Envelope;
 
 final class OrSpecification implements SpecificationInterface
 {
     /**
-     * @var \Notify\Storage\Filter\Specification\SpecificationInterface[]
+     * @var \Notify\Filter\Specification\SpecificationInterface[]
      */
     private $specifications;
 

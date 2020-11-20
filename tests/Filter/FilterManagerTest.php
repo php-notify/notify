@@ -7,7 +7,7 @@ use Notify\Envelope\Stamp\PriorityStamp;
 use Notify\Middleware\AddCreatedAtStampMiddleware;
 use Notify\Middleware\AddPriorityStampMiddleware;
 use Notify\Middleware\MiddlewareManager;
-use Notify\Storage\Filter\FilterBuilder;
+use Notify\Filter\FilterBuilder;
 use PHPUnit\Framework\TestCase;
 
 final class FilterManagerTest extends TestCase

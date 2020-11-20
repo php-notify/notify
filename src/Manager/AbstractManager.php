@@ -65,7 +65,7 @@ abstract class AbstractManager implements ManagerInterface
      */
     protected function createDriver($driver)
     {
-        $method = 'create' . str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $driver))) . 'Driver';
+        $method = 'create'.str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $driver))).'Driver';
 
         if (method_exists($this, $method)) {
             return $this->$method();

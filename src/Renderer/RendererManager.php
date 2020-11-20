@@ -5,6 +5,9 @@ namespace Notify\Renderer;
 use Notify\Config\ConfigInterface;
 use Notify\Manager\AbstractManager;
 
+/**
+ * @method \Notify\Renderer\RendererInterface make($driver = null)
+ */
 class RendererManager extends AbstractManager
 {
     private $config;

@@ -1,12 +1,12 @@
 <?php
 
-namespace Notify\Storage\Filter;
+namespace Notify\Filter;
 
 use Notify\Envelope\Envelope;
-use Notify\Storage\Filter\Specification\AndSpecification;
-use Notify\Storage\Filter\Specification\OrSpecification;
-use Notify\Storage\Filter\Specification\PrioritySpecification;
-use Notify\Storage\Filter\Specification\SpecificationInterface;
+use Notify\Filter\Specification\AndSpecification;
+use Notify\Filter\Specification\OrSpecification;
+use Notify\Filter\Specification\PrioritySpecification;
+use Notify\Filter\Specification\SpecificationInterface;
 
 final class FilterBuilder
 {
@@ -14,7 +14,7 @@ final class FilterBuilder
     const DESC = 'DESC';
 
     /**
-     * @var \Notify\Storage\Filter\Specification\SpecificationInterface
+     * @var \Notify\Filter\Specification\SpecificationInterface
      */
     private $specification;
 
@@ -71,7 +71,7 @@ final class FilterBuilder
     }
 
     /**
-     * @return \Notify\Storage\Filter\Specification\SpecificationInterface
+     * @return \Notify\Filter\Specification\SpecificationInterface
      */
     public function getWhereSpecification()
     {
@@ -104,7 +104,7 @@ final class FilterBuilder
     }
 
     /**
-     * @param \Notify\Storage\Filter\Specification\SpecificationInterface $specification
+     * @param \Notify\Filter\Specification\SpecificationInterface $specification
      *
      * @return $this
      */
@@ -120,7 +120,7 @@ final class FilterBuilder
     }
 
     /**
-     * @param \Notify\Storage\Filter\Specification\SpecificationInterface $specification
+     * @param \Notify\Filter\Specification\SpecificationInterface $specification
      *
      * @return $this
      */
@@ -137,7 +137,7 @@ final class FilterBuilder
     }
 
     /**
-     * @param \Notify\Storage\Filter\Specification\SpecificationInterface $specification
+     * @param \Notify\Filter\Specification\SpecificationInterface $specification
      *
      * @return $this
      */

@@ -1,6 +1,6 @@
 <?php
 
-namespace Notify\Storage\Filter\Specification;
+namespace Notify\Filter\Specification;
 
 use Notify\Envelope\Envelope;
 

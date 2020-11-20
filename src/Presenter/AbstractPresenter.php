@@ -2,33 +2,47 @@
 
 namespace Notify\Presenter;
 
-use Notify\Storage\Filter\FilterManager;
+use Notify\Renderer\RendererManager;
+use Notify\Storage\StorageInterface;
 
 abstract class AbstractPresenter implements PresenterInterface
 {
-    protected $filter;
+    /**
+     * @var \Notify\Storage\StorageInterface
+     */
+    protected $storage;
 
-    protected $filterDriver = 'default';
+    /**
+     * @var \Notify\Renderer\RendererManager
+     */
+    protected $rendererManager;
 
-    public function __construct(FilterManager $filter)
+    public function __construct(StorageInterface $storage, RendererManager $rendererManager)
     {
-        $this->filter = $filter;
+        $this->storage = $storage;
+        $this->rendererManager = $rendererManager;
     }
 
     /**
-     * @param string $filter
-     *
-     * @return self
+     * @inheritDoc
      */
-    public function filter($filter = 'default')
+    public function render()
     {
-        $this->filterDriver = $filter;
+        $html = '';
 
-        return $this;
+        foreach ($this->storage->get() as $envelope) {
+            $renderer = $this->rendererManager->make($envelope->get('Notify\Envelope\Stamp\RendererStamp'));
+            $html .= $renderer->render($envelope) . PHP_EOL;
+        }
+
+        return $html;
     }
 
-    protected function getEnvelopes()
+    /**
+     * @inheritDoc
+     */
+    public function support(array $context)
     {
-        return $this->filter->make($this->filterDriver)->getEnvelopes();
+        return true;
     }
 }
