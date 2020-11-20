@@ -1,78 +1,53 @@
 {
-    "name"             : "yoeunes/notify",
-    "license"          : "MIT",
-    "description"      : "toastr.js, pnotify.js flush notifications for Laravel 5, 6, 7, 8 and Lumen",
-    "homepage"         : "https://github.com/yoeunes/notify",
-    "keywords"         : [
-        "toastr",
-        "pnotify",
-        "toastr js",
-        "pnotify js",
-        "notification",
+    "name": "php-notify/notify",
+    "description": "PHP notify library to display flash notification",
+    "keywords": [
+        "notify",
+        "php",
         "laravel",
-        "laravel 5",
-        "laravel 5.6",
-        "laravel 5.7",
-        "laravel 5.8",
-        "laravel 6",
-        "laravel 7",
-        "laravel 8",
-        "laravel notification",
-        "laravel toastr",
-        "laravel pnotify",
-        "flush",
-        "flush notifications",
-        "laravel flush notifications",
-        "flush messages",
+        "symfony",
+        "Lumen",
+        "notifications",
         "messages",
         "alerts",
-        "Lumen",
-        "php",
-        "yoeunes"
+        "pnotify",
+        "toastr "
     ],
-    "authors"          : [
+    "homepage": "https://github.com/php-notify/notify",
+    "authors": [
         {
-            "name"    : "Younes Khoubza",
-            "email"   : "younes.khoubza@gmail.com",
-            "homepage": "https://github.com/yoeunes/notify",
-            "role"    : "Developer"
+            "name": "Younes Khoubza",
+            "email": "younes.khoubza@gmail.com",
+            "homepage": "https://github.com/yoeunes",
+            "role": "Developer"
         }
     ],
-    "require"          : {
-        "php"               : ">=7.0",
-        "illuminate/session": "^5.5 || ^6.0 || ^7.0 || ^8.0",
-        "illuminate/support": "^5.5 || ^6.0 || ^7.0 || ^8.0"
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3"
     },
-    "require-dev"      : {
-        "orchestra/testbench": "^2.0.4 || ^3.0 || ^4.0 || ^5.0",
-        "phpunit/phpunit"    : "^4.8.36 || ^5.7 || ^6.0 || ^7.0 || ^8.3 || ^9.0"
+    "require-dev": {
+        "phpunit/phpunit": "4.8.36"
     },
-    "autoload"         : {
+    "autoload": {
         "psr-4": {
-            "Yoeunes\\Notify\\": "src"
+            "Notify\\": "src/"
         },
         "files": [
             "src/helpers.php"
         ]
     },
-    "autoload-dev"     : {
+    "autoload-dev": {
         "psr-4": {
-            "Yoeunes\\Notify\\Tests\\": "tests"
+            "Notify\\Tests\\": "tests/"
         }
     },
-    "minimum-stability": "stable",
-    "prefer-stable"    : true,
-    "extra"            : {
-        "laravel": {
-            "providers": [
-                "Yoeunes\\Notify\\NotifyServiceProvider"
-            ],
-            "aliases"  : {
-                "Notify": "Yoeunes\\Notify\\Facades\\Notify"
-            }
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "5.3.3"
         }
     },
-    "config"           : {
-        "sort-packages": true
-    }
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

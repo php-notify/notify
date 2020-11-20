@@ -1,48 +1,47 @@
 <?php
 
-use Yoeunes\Notify\Notify;
-
-if (! function_exists('notify')) {
+if (!function_exists('array_column')) {
     /**
-     * @param string $message
-     * @param string $type
-     * @param string $title
-     * @param array  $options
+     * @see https://www.php.net/manual/fr/function.array-column.php
      *
-     * @return Notify
+     * @param array $input
+     * @param mixed $columnKey
+     * @param mixed $indexKey
+     *
+     * @return array
      */
-    function notify(string $message = null, string $type = 'success', string $title = '', array $options = []): Notify
+    function array_column(array $input, $columnKey, $indexKey = null)
     {
-        if (is_null($message)) {
-            return app('notify');
+        $output = array();
+
+        foreach ($input as $row) {
+            $key    = $value = null;
+            $keySet = $valueSet = false;
+
+            if ($indexKey !== null && array_key_exists($indexKey, $row)) {
+                $keySet = true;
+                $key    = (string)$row[$indexKey];
+            }
+
+            if ($columnKey === null) {
+                $valueSet = true;
+                $value    = $row;
+            } elseif (is_array($row) && array_key_exists($columnKey, $row)) {
+                $valueSet = true;
+                $value    = $row[$columnKey];
+            }
+
+            if (!$valueSet) {
+                continue;
+            }
+
+            if ($keySet) {
+                $output[$key] = $value;
+            } else {
+                $output[] = $value;
+            }
         }
 
-        return app('notify')->addNotification($type, $message, $title, $options);
-    }
-}
-
-if (! function_exists('notify_js')) {
-    /**
-     * @return string
-     */
-    function notify_js(): string
-    {
-        $driver  = config('notify.default');
-        $scripts = config('notify.'.$driver.'.notify_js');
-
-        return '<script type="text/javascript" src="'.implode('"></script><script type="text/javascript" src="', $scripts).'"></script>';
-    }
-}
-
-if (! function_exists('notify_css')) {
-    /**
-     * @return string
-     */
-    function notify_css(): string
-    {
-        $driver  = config('notify.default');
-        $styles = config('notify.'.$driver.'.notify_css');
-
-        return '<link rel="stylesheet" type="text/css" href="'.implode('"><link rel="stylesheet" type="text/css" href="', $styles).'">';
+        return $output;
     }
 }
