@@ -1,7 +1,9 @@
 <?php
 
-namespace Yoeunes\Notify\Exception\Producer;
+namespace Notify\Exception\Producer;
 
-final class ProducerNotFoundException extends \Exception
+use Exception;
+
+final class ProducerNotFoundException extends Exception
 {
 }

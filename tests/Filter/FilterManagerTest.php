@@ -1,38 +1,37 @@
 <?php
 
-namespace Yoeunes\Notify\Tests\Filter;
+namespace Notify\Tests\Filter;
 
-use Yoeunes\Notify\Envelope\Envelope;
-use Yoeunes\Notify\Envelope\Stamp\PriorityStamp;
-use Yoeunes\Notify\Storage\Filter\FilterBuilder;
+use Notify\Envelope\Envelope;
+use Notify\Envelope\Stamp\PriorityStamp;
+use Notify\Middleware\AddCreatedAtStampMiddleware;
+use Notify\Middleware\AddPriorityStampMiddleware;
+use Notify\Middleware\MiddlewareManager;
+use Notify\Storage\Filter\FilterBuilder;
 use PHPUnit\Framework\TestCase;
-use Yoeunes\Notify\Storage\Filter\Specification\TimeSpecification;
-use Yoeunes\Notify\Middleware\AddPriorityStampMiddleware;
-use Yoeunes\Notify\Middleware\AddCreatedAtStampMiddleware;
-use Yoeunes\Notify\Middleware\MiddlewareManager;
 
 final class FilterManagerTest extends TestCase
 {
-    public function test_filter_where()
+    public function testFilterWhere()
     {
         $notifications = array(
-            $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock(),
-            $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock(),
-            $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock(),
+            $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock(),
+            $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock(),
+            $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock(),
         );
 
         $notifications[3] = new Envelope(
-            $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock(),
+            $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock(),
             array(new PriorityStamp(5))
         );
 
         $notifications[4] = new Envelope(
-            $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock(),
+            $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock(),
             array(new PriorityStamp(-1))
         );
 
         $notifications[5] = new Envelope(
-            $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock(),
+            $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock(),
             array(new PriorityStamp(1))
         );
 
@@ -40,7 +39,7 @@ final class FilterManagerTest extends TestCase
             new AddPriorityStampMiddleware(),
             new AddCreatedAtStampMiddleware(),
         );
-        $middleware = new MiddlewareManager($middlewareList);
+        $middleware     = new MiddlewareManager($middlewareList);
 
         $envelopes = $middleware->handleMany($notifications);
 

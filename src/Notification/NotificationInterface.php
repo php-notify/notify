@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Notification;
+namespace Notify\Notification;
 
 interface NotificationInterface
 {

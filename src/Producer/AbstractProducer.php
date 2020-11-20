@@ -1,23 +1,24 @@
 <?php
 
-namespace Yoeunes\Notify\Producer;
+namespace Notify\Producer;
 
-use Yoeunes\Notify\Envelope\Envelope;
-use Yoeunes\Notify\Envelope\Stamp\RendererStamp;
-use Yoeunes\Notify\Envelope\Stamp\StampInterface;
-use Yoeunes\Notify\Middleware\MiddlewareManager;
-use Yoeunes\Notify\Notification\Notification;
-use Yoeunes\Notify\Notification\NotificationInterface;
-use Yoeunes\Notify\Storage\StorageInterface;
+use Notify\Envelope\Envelope;
+use Notify\Envelope\Stamp\RendererStamp;
+use Notify\Envelope\Stamp\StampInterface;
+use Notify\Middleware\MiddlewareManager;
+use Notify\Notification\Notification;
+use Notify\Notification\NotificationInterface;
+use Notify\Storage\StorageInterface;
 
 abstract class AbstractProducer implements ProducerInterface
 {
     private $storage;
+
     private $middleware;
 
     public function __construct(StorageInterface $storage, MiddlewareManager $middleware)
     {
-        $this->storage = $storage;
+        $this->storage    = $storage;
         $this->middleware = $middleware;
     }
 
@@ -29,15 +30,7 @@ abstract class AbstractProducer implements ProducerInterface
     /**
      * {@inheritdoc}
      */
-    public function createNotification($type, $message, $title = '', $context = array())
-    {
-        return new Notification($type, $message, $title, $context);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function error($message, $title = '', $context = array(), array $stamps = [])
+    public function error($message, $title = '', $context = array(), array $stamps = array())
     {
         return $this->render('error', $message, $title, $context, $stamps);
     }
@@ -45,35 +38,11 @@ abstract class AbstractProducer implements ProducerInterface
     /**
      * {@inheritdoc}
      */
-    public function info($message, $title = '', $context = array(), array $stamps = [])
-    {
-        return $this->render('info', $message, $title, $context, $stamps);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function success($message, $title = '', $context = array(), array $stamps = [])
-    {
-        return $this->render('success', $message, $title, $context, $stamps);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function warning($message, $title = '', $context = array(), array $stamps = [])
-    {
-        return $this->render('warning', $message, $title, $context, $stamps);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function render($type, $message, $title = '', $context = array(), array $stamps = [])
+    public function render($type, $message, $title = '', $context = array(), array $stamps = array())
     {
         if (is_array($title) || $title instanceof StampInterface) {
-            $stamps = (array) $title;
-            $title = '';
+            $stamps = (array)$title;
+            $title  = '';
         }
 
         $notification = $this->createNotification($type, $message, $title, $context);
@@ -82,10 +51,20 @@ abstract class AbstractProducer implements ProducerInterface
     }
 
     /**
-     * @param NotificationInterface|\Yoeunes\Notify\Envelope\Envelope $notification
-     * @param array $stamps
+     * {@inheritdoc}
      */
-    public function dispatch($notification, array $stamps = [])
+    public function createNotification($type, $message, $title = '', $context = array())
+    {
+        return new Notification($type, $message, $title, $context);
+    }
+
+    /**
+     * @param NotificationInterface|\Notify\Envelope\Envelope $notification
+     * @param array                                           $stamps
+     *
+     * @return Envelope
+     */
+    public function dispatch($notification, array $stamps = array())
     {
         $stamps[] = new RendererStamp($this->getRenderer());
 
@@ -96,5 +75,29 @@ abstract class AbstractProducer implements ProducerInterface
         $this->storage->add($envelope);
 
         return $envelope;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function info($message, $title = '', $context = array(), array $stamps = array())
+    {
+        return $this->render('info', $message, $title, $context, $stamps);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function success($message, $title = '', $context = array(), array $stamps = array())
+    {
+        return $this->render('success', $message, $title, $context, $stamps);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function warning($message, $title = '', $context = array(), array $stamps = array())
+    {
+        return $this->render('warning', $message, $title, $context, $stamps);
     }
 }

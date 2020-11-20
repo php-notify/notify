@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Manager;
+namespace Notify\Manager;
 
 interface ManagerInterface
 {

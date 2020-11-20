@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Config;
+namespace Notify\Config;
 
 interface ConfigInterface
 {
@@ -8,7 +8,7 @@ interface ConfigInterface
      * Returns an attribute.
      *
      * @param string $key
-     * @param mixed  $default The default value if not found
+     * @param mixed  $default The default value if not found.
      *
      * @return mixed
      */

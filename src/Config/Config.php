@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Config;
+namespace Notify\Config;
 
 final class Config implements ConfigInterface
 {

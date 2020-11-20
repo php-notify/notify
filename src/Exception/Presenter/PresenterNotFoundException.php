@@ -1,7 +1,9 @@
 <?php
 
-namespace Yoeunes\Notify\Exception\Presenter;
+namespace Notify\Exception\Presenter;
 
-final class PresenterNotFoundException extends \Exception
+use Exception;
+
+final class PresenterNotFoundException extends Exception
 {
 }

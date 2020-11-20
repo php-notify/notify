@@ -1,11 +1,14 @@
 <?php
 
-namespace Yoeunes\Notify\Storage;
+namespace Notify\Storage;
 
-use Yoeunes\Notify\Envelope\Envelope;
+use Notify\Envelope\Envelope;
 
 class ArrayStorage implements StorageInterface
 {
+    /**
+     * @var Envelope[]
+     */
     private $envelopes = array();
 
     /**

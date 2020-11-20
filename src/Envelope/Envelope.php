@@ -1,26 +1,24 @@
 <?php
 
-namespace Yoeunes\Notify\Envelope;
+namespace Notify\Envelope;
 
-use Yoeunes\Notify\Notification\NotificationInterface;
+use Notify\Notification\NotificationInterface;
 
 final class Envelope implements NotificationInterface
 {
     /**
-     * @var \Yoeunes\Notify\Notification\NotificationInterface
+     * @var \Notify\Notification\NotificationInterface
      */
     private $notification;
 
     /**
-     * @var \Yoeunes\Notify\Envelope\Stamp\StampInterface[]
+     * @var \Notify\Envelope\Stamp\StampInterface[]
      */
     private $stamps = array();
 
     /**
-     * Envelope constructor.
-     *
-     * @param \Yoeunes\Notify\Notification\NotificationInterface $notification
-     * @param \Yoeunes\Notify\Envelope\Stamp\StampInterface[]    $stamps
+     * @param \Notify\Notification\NotificationInterface $notification
+     * @param \Notify\Envelope\Stamp\StampInterface[]    $stamps
      */
     public function __construct(NotificationInterface $notification, array $stamps = array())
     {
@@ -29,22 +27,7 @@ final class Envelope implements NotificationInterface
     }
 
     /**
-     * Makes sure the notification is in an Envelope and adds the given stamps.
-     *
-     * @param NotificationInterface|\Yoeunes\Notify\Envelope\Envelope $notification
-     * @param \Yoeunes\Notify\Envelope\Stamp\StampInterface[]         $stamps
-     *
-     * @return \Yoeunes\Notify\Envelope\Envelope
-     */
-    public static function wrap($notification, array $stamps = array())
-    {
-        $envelope = $notification instanceof self ? $notification : new self($notification);
-
-        return call_user_func_array(array($envelope, 'with'), $stamps);
-    }
-
-    /**
-     * @param  array|\Yoeunes\Notify\Envelope\Stamp\StampInterface $stamps
+     * @param array|\Notify\Envelope\Stamp\StampInterface $stamps
      *
      * @return Envelope a new Envelope instance with additional stamp
      */
@@ -62,7 +45,7 @@ final class Envelope implements NotificationInterface
     /**
      * @param string $stampFqcn
      *
-     * @return null|\Yoeunes\Notify\Envelope\Stamp\StampInterface
+     * @return \Notify\Envelope\Stamp\StampInterface|null
      */
     public function get($stampFqcn)
     {
@@ -76,7 +59,7 @@ final class Envelope implements NotificationInterface
     /**
      * All stamps by their class name
      *
-     * @return \Yoeunes\Notify\Envelope\Stamp\StampInterface[]
+     * @return \Notify\Envelope\Stamp\StampInterface[]
      */
     public function all()
     {
@@ -86,7 +69,7 @@ final class Envelope implements NotificationInterface
     /**
      * The original notification contained in the envelope
      *
-     * @return \Yoeunes\Notify\Notification\NotificationInterface
+     * @return \Notify\Notification\NotificationInterface
      */
     public function getNotification()
     {
@@ -126,10 +109,17 @@ final class Envelope implements NotificationInterface
     }
 
     /**
-     * @inheritDoc
+     * Makes sure the notification is in an Envelope and adds the given stamps.
+     *
+     * @param \Notify\Notification\NotificationInterface|\Notify\Envelope\Envelope $notification
+     * @param \Notify\Envelope\Stamp\StampInterface[]                              $stamps
+     *
+     * @return \Notify\Envelope\Envelope
      */
-    public function render()
+    public static function wrap($notification, array $stamps = array())
     {
-        return $this->notification->render();
+        $envelope = $notification instanceof self ? $notification : new self($notification);
+
+        return call_user_func_array(array($envelope, 'with'), $stamps);
     }
 }

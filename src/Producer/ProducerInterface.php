@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Producer;
+namespace Notify\Producer;
 
 interface ProducerInterface
 {
@@ -10,22 +10,22 @@ interface ProducerInterface
      * @param string               $title
      * @param array<string, mixed> $context
      *
-     * @return \Yoeunes\Notify\Notification\NotificationInterface
+     * @return \Notify\Notification\NotificationInterface
      */
     public function createNotification($type, $message, $title = '', $context = array());
 
     /**
-     * @return \Yoeunes\Notify\Renderer\RendererInterface
+     * @return \Notify\Renderer\RendererInterface
      */
     public function getRenderer();
 
     /**
-     * @param        $type
-     * @param        $message
+     * @param string $type
+     * @param string $message
      * @param string $title
      * @param array  $context
      *
-     * @return \Yoeunes\Notify\Envelope\Envelope
+     * @return \Notify\Envelope\Envelope
      */
     public function render($type, $message, $title = '', $context = array());
 
@@ -34,7 +34,7 @@ interface ProducerInterface
      * @param string               $title
      * @param array<string, mixed> $context
      *
-     * @return \Yoeunes\Notify\Envelope\Envelope
+     * @return \Notify\Envelope\Envelope
      */
     public function error($message, $title = '', $context = array());
 
@@ -43,7 +43,7 @@ interface ProducerInterface
      * @param string               $title
      * @param array<string, mixed> $context
      *
-     * @return \Yoeunes\Notify\Envelope\Envelope
+     * @return \Notify\Envelope\Envelope
      */
     public function info($message, $title = '', $context = array());
 
@@ -52,7 +52,7 @@ interface ProducerInterface
      * @param string               $title
      * @param array<string, mixed> $context
      *
-     * @return \Yoeunes\Notify\Envelope\Envelope
+     * @return \Notify\Envelope\Envelope
      */
     public function success($message, $title = '', $context = array());
 
@@ -61,7 +61,7 @@ interface ProducerInterface
      * @param string               $title
      * @param array<string, mixed> $context
      *
-     * @return \Yoeunes\Notify\Envelope\Envelope
+     * @return \Notify\Envelope\Envelope
      */
     public function warning($message, $title = '', $context = array());
 }

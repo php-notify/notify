@@ -1,16 +1,16 @@
 <?php
 
-namespace Yoeunes\Notify\Middleware;
+namespace Notify\Middleware;
 
-use Yoeunes\Notify\Envelope\Envelope;
+use Notify\Envelope\Envelope;
 
 interface MiddlewareInterface
 {
     /**
-     * @param \Yoeunes\Notify\Envelope\Envelope $envelope
-     * @param callable                          $next
+     * @param \Notify\Envelope\Envelope $envelope
+     * @param callable                  $next
      *
-     * @return \Yoeunes\Notify\Envelope\Envelope
+     * @return \Notify\Envelope\Envelope
      */
     public function handle(Envelope $envelope, callable $next);
 }

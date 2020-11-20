@@ -1,12 +1,15 @@
 <?php
 
-namespace Yoeunes\Notify\Storage;
+namespace Notify\Storage;
 
-use Yoeunes\Notify\Config\ConfigInterface;
-use Yoeunes\Notify\Manager\AbstractManager;
+use Notify\Config\ConfigInterface;
+use Notify\Manager\AbstractManager;
 
 final class StorageManager extends AbstractManager
 {
+    /**
+     * @var \Notify\Config\ConfigInterface
+     */
     private $config;
 
     public function __construct(ConfigInterface $config)

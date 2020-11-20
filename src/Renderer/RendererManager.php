@@ -1,9 +1,9 @@
 <?php
 
-namespace Yoeunes\Notify\Renderer;
+namespace Notify\Renderer;
 
-use Yoeunes\Notify\Config\ConfigInterface;
-use Yoeunes\Notify\Manager\AbstractManager;
+use Notify\Config\ConfigInterface;
+use Notify\Manager\AbstractManager;
 
 class RendererManager extends AbstractManager
 {

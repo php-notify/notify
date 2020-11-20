@@ -1,8 +1,8 @@
 <?php
 
-namespace Yoeunes\Notify\Storage\Filter\Specification;
+namespace Notify\Storage\Filter\Specification;
 
-use Yoeunes\Notify\Envelope\Envelope;
+use Notify\Envelope\Envelope;
 
 final class TimeSpecification implements SpecificationInterface
 {
@@ -12,7 +12,7 @@ final class TimeSpecification implements SpecificationInterface
     private $minTime;
 
     /**
-     * @var null|int
+     * @var int|null
      */
     private $maxTime;
 
@@ -23,13 +23,13 @@ final class TimeSpecification implements SpecificationInterface
     }
 
     /**
-     * @param \Yoeunes\Notify\Envelope\Envelope $envelope
+     * @param \Notify\Envelope\Envelope $envelope
      *
      * @return bool
      */
     public function isSatisfiedBy(Envelope $envelope)
     {
-        $stamp = $envelope->get('Yoeunes\Notify\Envelope\Stamp\CreatedAtStamp');
+        $stamp = $envelope->get('Notify\Envelope\Stamp\CreatedAtStamp');
 
         if (null === $stamp) {
             return false;

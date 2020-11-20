@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Renderer;
+namespace Notify\Renderer;
 
 interface HasStylesInterface
 {

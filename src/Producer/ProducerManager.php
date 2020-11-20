@@ -1,9 +1,9 @@
 <?php
 
-namespace Yoeunes\Notify\Producer;
+namespace Notify\Producer;
 
-use Yoeunes\Notify\Config\ConfigInterface;
-use Yoeunes\Notify\Manager\AbstractManager;
+use Notify\Config\ConfigInterface;
+use Notify\Manager\AbstractManager;
 
 final class ProducerManager extends AbstractManager
 {
@@ -14,7 +14,7 @@ final class ProducerManager extends AbstractManager
         $this->config = $config;
     }
 
-    protected function getDefaultDriver()
+    public function getDefaultDriver()
     {
         return $this->config->get('default');
     }

@@ -1,13 +1,13 @@
 <?php
 
-namespace Yoeunes\Notify\Renderer;
+namespace Notify\Renderer;
 
-use Yoeunes\Notify\Envelope\Envelope;
+use Notify\Envelope\Envelope;
 
 interface RendererInterface
 {
     /**
-     * @param \Yoeunes\Notify\Envelope\Envelope $envelope
+     * @param \Notify\Envelope\Envelope $envelope
      *
      * @return string
      */

@@ -1,13 +1,13 @@
 <?php
 
-namespace Yoeunes\Notify\Storage\Filter\Specification;
+namespace Notify\Storage\Filter\Specification;
 
-use Yoeunes\Notify\Envelope\Envelope;
+use Notify\Envelope\Envelope;
 
 final class AndSpecification implements SpecificationInterface
 {
     /**
-     * @var \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface[]
+     * @var \Notify\Storage\Filter\Specification\SpecificationInterface[]
      */
     private $specifications;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Yoeunes\Notify\Storage\Filter;
+namespace Notify\Storage\Filter;
 
-use Yoeunes\Notify\Envelope\Envelope;
-use Yoeunes\Notify\Storage\Filter\Specification\AndSpecification;
-use Yoeunes\Notify\Storage\Filter\Specification\OrSpecification;
-use Yoeunes\Notify\Storage\Filter\Specification\PrioritySpecification;
-use Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface;
+use Notify\Envelope\Envelope;
+use Notify\Storage\Filter\Specification\AndSpecification;
+use Notify\Storage\Filter\Specification\OrSpecification;
+use Notify\Storage\Filter\Specification\PrioritySpecification;
+use Notify\Storage\Filter\Specification\SpecificationInterface;
 
 final class FilterBuilder
 {
@@ -14,7 +14,7 @@ final class FilterBuilder
     const DESC = 'DESC';
 
     /**
-     * @var \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface
+     * @var \Notify\Storage\Filter\Specification\SpecificationInterface
      */
     private $specification;
 
@@ -24,53 +24,9 @@ final class FilterBuilder
     private $orderings = array();
 
     /**
-     * @var null|int
+     * @var int|null
      */
     private $maxResults;
-
-    /**
-     * @param \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface $specification
-     *
-     * @return $this
-     */
-    public function where(SpecificationInterface $specification)
-    {
-        $this->specification = $specification;
-
-        return $this;
-    }
-
-    /**
-     * @param \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface $specification
-     *
-     * @return $this
-     */
-    public function andWhere(SpecificationInterface $specification)
-    {
-        if ($this->specification === null) {
-            return $this->where($specification);
-        }
-
-        $this->specification = new AndSpecification($this->specification, $specification);
-
-        return $this;
-    }
-
-    /**
-     * @param \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface $specification
-     *
-     * @return $this
-     */
-    public function orWhere(SpecificationInterface $specification)
-    {
-        if ($this->specification === null) {
-            return $this->where($specification);
-        }
-
-        $this->specification = new OrSpecification($this->specification, $specification);
-
-        return $this;
-    }
 
     public function orderBy(array $orderings)
     {
@@ -85,7 +41,45 @@ final class FilterBuilder
     }
 
     /**
-     * @return null|int
+     * @return array<string, string>
+     */
+    public function getOrderings()
+    {
+        return $this->orderings;
+    }
+
+    public function filter(array $envelopes)
+    {
+        $specification = $this->getWhereSpecification();
+
+        if (null !== $specification) {
+            $envelopes = array_filter(
+                $envelopes,
+                static function (Envelope $envelope) use ($specification) {
+                    return $specification->isSatisfiedBy($envelope);
+                }
+            );
+        }
+
+        $length = $this->getMaxResults();
+
+        if (null !== $length) {
+            $envelopes = array_slice($envelopes, 0, $length, true);
+        }
+
+        return $envelopes;
+    }
+
+    /**
+     * @return \Notify\Storage\Filter\Specification\SpecificationInterface
+     */
+    public function getWhereSpecification()
+    {
+        return $this->specification;
+    }
+
+    /**
+     * @return int|null
      */
     public function getMaxResults()
     {
@@ -104,48 +98,57 @@ final class FilterBuilder
         return $this;
     }
 
-    /**
-     * @return \Yoeunes\Notify\Storage\Filter\Specification\SpecificationInterface
-     */
-    public function getWhereSpecification()
-    {
-        return $this->specification;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    public function getOrderings()
-    {
-        return $this->orderings;
-    }
-
-    public function filter(array $envelopes)
-    {
-        $specification = $this->getWhereSpecification();
-
-        if (null !== $specification) {
-            $envelopes = array_filter($envelopes, function (Envelope $envelope) use ($specification) {
-                return $specification->isSatisfiedBy($envelope);
-            });
-        }
-
-        $length = $this->getMaxResults();
-
-        if (null !== $length) {
-            $envelopes = array_slice($envelopes, 0, $length, true);
-        }
-
-        return $envelopes;
-    }
-
     public function wherePriority($minPriority, $maxPriority = null)
     {
         return $this->andWhere(new PrioritySpecification($minPriority, $maxPriority));
     }
 
+    /**
+     * @param \Notify\Storage\Filter\Specification\SpecificationInterface $specification
+     *
+     * @return $this
+     */
+    public function andWhere(SpecificationInterface $specification)
+    {
+        if ($this->specification === null) {
+            return $this->where($specification);
+        }
+
+        $this->specification = new AndSpecification($this->specification, $specification);
+
+        return $this;
+    }
+
+    /**
+     * @param \Notify\Storage\Filter\Specification\SpecificationInterface $specification
+     *
+     * @return $this
+     */
+    public function where(SpecificationInterface $specification)
+    {
+        $this->specification = $specification;
+
+        return $this;
+    }
+
     public function orWherePriority($minPriority, $maxPriority = null)
     {
         return $this->orWhere(new PrioritySpecification($minPriority, $maxPriority));
+    }
+
+    /**
+     * @param \Notify\Storage\Filter\Specification\SpecificationInterface $specification
+     *
+     * @return $this
+     */
+    public function orWhere(SpecificationInterface $specification)
+    {
+        if ($this->specification === null) {
+            return $this->where($specification);
+        }
+
+        $this->specification = new OrSpecification($this->specification, $specification);
+
+        return $this;
     }
 }

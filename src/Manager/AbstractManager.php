@@ -1,6 +1,8 @@
 <?php
 
-namespace Yoeunes\Notify\Manager;
+namespace Notify\Manager;
+
+use InvalidArgumentException;
 
 abstract class AbstractManager implements ManagerInterface
 {
@@ -14,14 +16,22 @@ abstract class AbstractManager implements ManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function addDriver($alias, $driver)
+    {
+        $this->drivers[$alias] = $driver;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function make($driver = null)
     {
         $driver = $driver ?: $this->getDefaultDriver();
 
         if (null === $driver) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unable to resolve NULL driver for [%s].', get_called_class()
-            ));
+            throw new InvalidArgumentException(sprintf('Unable to resolve NULL driver for [%s].', get_called_class()));
         }
 
         if (!isset($this->drivers[$driver])) {
@@ -31,7 +41,18 @@ abstract class AbstractManager implements ManagerInterface
         return $this->drivers[$driver];
     }
 
-    abstract protected function getDefaultDriver();
+    /**
+     * Dynamically call the default driver instance.
+     *
+     * @param string $method
+     * @param array  $parameters
+     *
+     * @return mixed
+     */
+    public function __call($method, array $parameters)
+    {
+        return call_user_func_array(array($this->make(), $method), $parameters);
+    }
 
     /**
      * Create a new driver instance.
@@ -50,29 +71,14 @@ abstract class AbstractManager implements ManagerInterface
             return $this->$method();
         }
 
-        throw new \InvalidArgumentException(sprintf("Driver [%s] not supported.", $driver));
+        throw new InvalidArgumentException(sprintf('Driver [%s] not supported.', $driver));
     }
 
     /**
-     * {@inheritdoc}
+     * @return string|null
      */
-    public function addDriver($alias, $driver)
+    protected function getDefaultDriver()
     {
-        $this->drivers[$alias] = $driver;
-
-        return $this;
-    }
-
-    /**
-     * Dynamically call the default driver instance.
-     *
-     * @param string $method
-     * @param array  $parameters
-     *
-     * @return mixed
-     */
-    public function __call($method, array $parameters)
-    {
-        return call_user_func_array(array($this->make(), $method), $parameters);
+        return null;
     }
 }

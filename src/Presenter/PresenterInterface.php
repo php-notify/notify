@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Presenter;
+namespace Notify\Presenter;
 
 interface PresenterInterface
 {
@@ -12,7 +12,7 @@ interface PresenterInterface
     public function support(array $context);
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function render();
 }

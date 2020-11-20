@@ -1,17 +1,19 @@
 <?php
 
-namespace Yoeunes\Notify\Envelope\Stamp;
+namespace Notify\Envelope\Stamp;
+
+use DateTime;
 
 final class CreatedAtStamp implements StampInterface
 {
     /**
-     * @param  int
+     * @param int
      */
     private $createdAt;
 
-    public function __construct()
+    public function __construct(DateTime $createdAt = null)
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = $createdAt ?: new DateTime();
     }
 
     /**

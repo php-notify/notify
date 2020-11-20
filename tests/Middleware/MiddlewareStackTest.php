@@ -1,18 +1,17 @@
 <?php
 
-namespace Yoeunes\Notify\Tests\Middleware;
+namespace Notify\Tests\Middleware;
 
-use Yoeunes\Notify\Envelope\Envelope;
-use Yoeunes\Notify\Envelope\Stamp\PriorityStamp;
-use Yoeunes\Notify\Middleware\AddDelayStampMiddleware;
-use Yoeunes\Notify\Middleware\AddPriorityStampMiddleware;
-use Yoeunes\Notify\Middleware\AddCreatedAtStampMiddleware;
-use Yoeunes\Notify\Middleware\MiddlewareManager;
+use Notify\Envelope\Envelope;
+use Notify\Envelope\Stamp\PriorityStamp;
+use Notify\Middleware\AddCreatedAtStampMiddleware;
+use Notify\Middleware\AddPriorityStampMiddleware;
+use Notify\Middleware\MiddlewareManager;
 use PHPUnit\Framework\TestCase;
 
 final class MiddlewareStackTest extends TestCase
 {
-    public function test_handle()
+    public function testHandle()
     {
         $middlewareList = array(
             new AddPriorityStampMiddleware(),
@@ -21,25 +20,25 @@ final class MiddlewareStackTest extends TestCase
 
         $stack = new MiddlewareManager($middlewareList);
 
-        $notification = $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock();
-        $envelope = new Envelope($notification);
+        $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
+        $envelope     = new Envelope($notification);
 
         $stack->handle($envelope);
 
         $this->assertSame($notification, $envelope->getNotification());
         $this->assertCount(2, $envelope->all());
 
-        $priorityStamp = $envelope->get('Yoeunes\Notify\Envelope\Stamp\PriorityStamp');
-        $this->assertInstanceOf('Yoeunes\Notify\Envelope\Stamp\PriorityStamp', $priorityStamp);
+        $priorityStamp = $envelope->get('Notify\Envelope\Stamp\PriorityStamp');
+        $this->assertInstanceOf('Notify\Envelope\Stamp\PriorityStamp', $priorityStamp);
 //        $this->assertEquals(0, $priorityStamp->getPriority());
 
-        $timeStamp = $envelope->get('Yoeunes\Notify\Envelope\Stamp\CreatedAtStamp');
-        $this->assertInstanceOf('Yoeunes\Notify\Envelope\Stamp\CreatedAtStamp', $timeStamp);
+        $timeStamp = $envelope->get('Notify\Envelope\Stamp\CreatedAtStamp');
+        $this->assertInstanceOf('Notify\Envelope\Stamp\CreatedAtStamp', $timeStamp);
 
         $this->assertEquals(time(), $timeStamp->getCreatedAt()->getTimestamp());
     }
 
-    public function test_handle_with_existing_stamps()
+    public function testHandleWithExistingStamps()
     {
         $middlewareList = array(
             new AddPriorityStampMiddleware(),
@@ -47,19 +46,19 @@ final class MiddlewareStackTest extends TestCase
 
         $stack = new MiddlewareManager($middlewareList);
 
-        $notification = $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock();
-        $stamps = array(
-            new PriorityStamp(1)
+        $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
+        $stamps       = array(
+            new PriorityStamp(1),
         );
-        $envelope = new Envelope($notification, $stamps);
+        $envelope     = new Envelope($notification, $stamps);
 
         $stack->handle($envelope);
 
         $this->assertSame($notification, $envelope->getNotification());
         $this->assertCount(1, $envelope->all());
 
-        $priorityStamp = $envelope->get('Yoeunes\Notify\Envelope\Stamp\PriorityStamp');
-        $this->assertInstanceOf('Yoeunes\Notify\Envelope\Stamp\PriorityStamp', $priorityStamp);
+        $priorityStamp = $envelope->get('Notify\Envelope\Stamp\PriorityStamp');
+        $this->assertInstanceOf('Notify\Envelope\Stamp\PriorityStamp', $priorityStamp);
 //        $this->assertEquals(1, $priorityStamp->getPriority());
     }
 }

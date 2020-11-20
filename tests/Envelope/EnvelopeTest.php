@@ -1,16 +1,16 @@
 <?php
 
-namespace Yoeunes\Notify\Tests\Envelope;
+namespace Notify\Tests\Envelope;
 
-use Yoeunes\Notify\Envelope\Envelope;
+use Notify\Envelope\Envelope;
 use PHPUnit\Framework\TestCase;
 
 final class EnvelopeTest extends TestCase
 {
-    public function test___construct()
+    public function testConstruct()
     {
-        $notification = $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock();
-        $stamp = $this->getMockBuilder('\Yoeunes\Notify\Envelope\Stamp\StampInterface')->getMock();
+        $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
+        $stamp        = $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock();
 
         $envelope = new Envelope($notification, array($stamp));
 
@@ -18,23 +18,24 @@ final class EnvelopeTest extends TestCase
         $this->assertSame(array(get_class($stamp) => $stamp), $envelope->all());
     }
 
-    public function test_with()
+    public function testWith()
     {
-        $notification = $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock();
-        $stamp = $this->getMockBuilder('\Yoeunes\Notify\Envelope\Stamp\StampInterface')->getMock();
+        $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
+        $stamp_1        = $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock();
+        $stamp_2        = $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock();
 
         $envelope = new Envelope($notification);
-        $envelope->with($stamp);
+        $envelope->with($stamp_1, $stamp_2);
 
         $this->assertSame($notification, $envelope->getNotification());
 
-        $this->assertSame(array(get_class($stamp) => $stamp), $envelope->all());
+        $this->assertSame(array(get_class($stamp_1) => $stamp_1, get_class($stamp_2) => $stamp_2), $envelope->all());
     }
 
-    public function test_wrap()
+    public function testWrap()
     {
-        $notification = $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock();
-        $stamp = $this->getMockBuilder('\Yoeunes\Notify\Envelope\Stamp\StampInterface')->getMock();
+        $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
+        $stamp        = $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock();
 
         $envelope = Envelope::wrap($notification, array($stamp));
 
@@ -42,14 +43,14 @@ final class EnvelopeTest extends TestCase
         $this->assertSame(array(get_class($stamp) => $stamp), $envelope->all());
     }
 
-    public function test_all()
+    public function testAll()
     {
-        $notification = $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock();
-        $stamps = array(
-            $this->getMockBuilder('\Yoeunes\Notify\Envelope\Stamp\StampInterface')->getMock(),
-            $this->getMockBuilder('\Yoeunes\Notify\Envelope\Stamp\StampInterface')->getMock(),
-            $this->getMockBuilder('\Yoeunes\Notify\Envelope\Stamp\StampInterface')->getMock(),
-            $this->getMockBuilder('\Yoeunes\Notify\Envelope\Stamp\StampInterface')->getMock(),
+        $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
+        $stamps       = array(
+            $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock(),
+            $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock(),
+            $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock(),
+            $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock(),
         );
 
         $envelope = new Envelope($notification, $stamps);
@@ -58,13 +59,13 @@ final class EnvelopeTest extends TestCase
         $this->assertSame(array(get_class($stamps[0]) => $stamps[3]), $envelope->all());
     }
 
-    public function test_get()
+    public function testGet()
     {
-        $notification = $this->getMockBuilder('\Yoeunes\Notify\Notification\NotificationInterface')->getMock();
-        $stamps = array(
-            $this->getMockBuilder('\Yoeunes\Notify\Envelope\Stamp\StampInterface')->getMock(),
-            $this->getMockBuilder('\Yoeunes\Notify\Envelope\Stamp\StampInterface')->getMock(),
-            $this->getMockBuilder('\Yoeunes\Notify\Envelope\Stamp\StampInterface')->getMock(),
+        $notification = $this->getMockBuilder('\Notify\Notification\NotificationInterface')->getMock();
+        $stamps       = array(
+            $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock(),
+            $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock(),
+            $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock(),
         );
 
         $envelope = new Envelope($notification, $stamps);

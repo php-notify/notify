@@ -1,13 +1,13 @@
 <?php
 
-namespace Yoeunes\Notify\Storage\Filter\Specification;
+namespace Notify\Storage\Filter\Specification;
 
-use Yoeunes\Notify\Envelope\Envelope;
+use Notify\Envelope\Envelope;
 
 interface SpecificationInterface
 {
     /**
-     * @param \Yoeunes\Notify\Envelope\Envelope $envelope
+     * @param \Notify\Envelope\Envelope $envelope
      *
      * @return bool
      */

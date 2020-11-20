@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Envelope\Stamp;
+namespace Notify\Envelope\Stamp;
 
 interface StampInterface
 {

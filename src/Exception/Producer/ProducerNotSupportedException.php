@@ -1,7 +1,9 @@
 <?php
 
-namespace Yoeunes\Notify\Exception\Presenter;
+namespace Notify\Exception\Producer;
 
-final class ProducerNotSupportedException extends \Exception
+use Exception;
+
+final class ProducerNotSupportedException extends Exception
 {
 }

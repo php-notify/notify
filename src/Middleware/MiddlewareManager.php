@@ -1,13 +1,13 @@
 <?php
 
-namespace Yoeunes\Notify\Middleware;
+namespace Notify\Middleware;
 
-use Yoeunes\Notify\Envelope\Envelope;
+use Notify\Envelope\Envelope;
 
 final class MiddlewareManager
 {
     /**
-     * @var \Yoeunes\Notify\Middleware\MiddlewareInterface[]
+     * @var \Notify\Middleware\MiddlewareInterface[]
      */
     private $middlewareList;
 
@@ -17,18 +17,35 @@ final class MiddlewareManager
     private $middlewareChain;
 
     /**
-     * @param \Yoeunes\Notify\Middleware\MiddlewareInterface[] $middlewareList
+     * @param \Notify\Middleware\MiddlewareInterface[] $middlewareList
      */
     public function __construct(array $middlewareList = array())
     {
-        $this->middlewareList = $middlewareList;
+        $this->middlewareList  = $middlewareList;
         $this->middlewareChain = $this->createExecutionChain($middlewareList);
+    }
+
+    /**
+     * @param \Notify\Envelope\Envelope[]|\Notify\Notification\NotificationInterface[] $envelopes
+     *
+     * @return array
+     */
+    public function handleMany($envelopes)
+    {
+        $that = $this;
+
+        return array_map(
+            static function ($envelope) use ($that) {
+                return $that->handle($envelope);
+            },
+            $envelopes
+        );
     }
 
     /**
      * Executes the given command and optionally returns a value
      *
-     * @param \Yoeunes\Notify\Envelope\Envelope|\Yoeunes\Notify\Notification\NotificationInterface $envelope
+     * @param \Notify\Envelope\Envelope|\Notify\Notification\NotificationInterface $envelope
      *
      * @return mixed
      */
@@ -44,33 +61,20 @@ final class MiddlewareManager
     }
 
     /**
-     * @param \Yoeunes\Notify\Envelope\Envelope[]|\Yoeunes\Notify\Notification\NotificationInterface[] $envelopes
-     *
-     * @return array
-     */
-    public function handleMany($envelopes)
-    {
-        $that = $this;
-        return array_map(function ($envelope) use ($that) {
-            return $that->handle($envelope);
-        }, $envelopes);
-    }
-
-    /**
-     * @param \Yoeunes\Notify\Middleware\MiddlewareInterface $middleware
+     * @param \Notify\Middleware\MiddlewareInterface $middleware
      *
      * @return $this
      */
     public function addMiddleware(MiddlewareInterface $middleware)
     {
         $this->middlewareList[] = $middleware;
-        $this->middlewareChain = $this->createExecutionChain($this->middlewareList);
+        $this->middlewareChain  = $this->createExecutionChain($this->middlewareList);
 
         return $this;
     }
 
     /**
-     * @param \Yoeunes\Notify\Middleware\MiddlewareInterface[] $middlewareList
+     * @param \Notify\Middleware\MiddlewareInterface[] $middlewareList
      *
      * @return callable
      */
@@ -80,7 +84,7 @@ final class MiddlewareManager
             // the final callable is a no-op
         };
 
-        while ($middleware = \array_pop($middlewareList)) {
+        while ($middleware = array_pop($middlewareList)) {
             $lastCallable = static function ($command) use ($middleware, $lastCallable) {
                 return $middleware->handle($command, $lastCallable);
             };

@@ -1,22 +1,18 @@
 <?php
 
-namespace Yoeunes\Notify\Presenter;
+namespace Notify\Presenter;
 
-use Yoeunes\Notify\Storage\Filter\FilterManager;
+use Notify\Storage\Filter\FilterManager;
 
 abstract class AbstractPresenter implements PresenterInterface
 {
     protected $filter;
+
     protected $filterDriver = 'default';
 
     public function __construct(FilterManager $filter)
     {
         $this->filter = $filter;
-    }
-
-    protected function getEnvelopes()
-    {
-        return $this->filter->make($this->filterDriver)->getEnvelopes();
     }
 
     /**
@@ -29,5 +25,10 @@ abstract class AbstractPresenter implements PresenterInterface
         $this->filterDriver = $filter;
 
         return $this;
+    }
+
+    protected function getEnvelopes()
+    {
+        return $this->filter->make($this->filterDriver)->getEnvelopes();
     }
 }

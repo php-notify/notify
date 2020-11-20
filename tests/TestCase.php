@@ -1,6 +1,8 @@
 <?php
 
-namespace Yoeunes\Notify\Tests;
+namespace Notify\Tests;
+
+use ReflectionClass;
 
 class TestCase extends \PHPUnit\Framework\TestCase
 {
@@ -17,9 +19,9 @@ class TestCase extends \PHPUnit\Framework\TestCase
     /**
      * Call protected/private method of a class.
      *
-     * @param object &$object Instantiated object that we will run method on
-     * @param string  $methodName Method name to call
-     * @param array|mixed $parameters array of parameters to pass into method
+     * @param object      $object     Instantiated object that we will run method on.
+     * @param string      $methodName Method name to call.
+     * @param array|mixed $parameters array of parameters to pass into method.
      *
      * @return mixed method return
      *
@@ -27,8 +29,8 @@ class TestCase extends \PHPUnit\Framework\TestCase
      */
     protected function callMethod(&$object, $methodName, $parameters = array())
     {
-        $reflection = new \ReflectionClass(get_class($object));
-        $method = $reflection->getMethod($methodName);
+        $reflection = new ReflectionClass(get_class($object));
+        $method     = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 
         $parameters = is_array($parameters) ? $parameters : array_slice(func_get_args(), 2);

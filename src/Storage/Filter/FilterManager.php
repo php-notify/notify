@@ -1,9 +1,9 @@
 <?php
 
-namespace Yoeunes\Notify\Storage\Filter;
+namespace Notify\Storage\Filter;
 
-use Yoeunes\Notify\Config\ConfigInterface;
-use Yoeunes\Notify\Manager\AbstractManager;
+use Notify\Config\ConfigInterface;
+use Notify\Manager\AbstractManager;
 
 final class FilterManager extends AbstractManager
 {

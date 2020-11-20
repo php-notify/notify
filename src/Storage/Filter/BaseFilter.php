@@ -1,19 +1,21 @@
 <?php
 
-namespace Yoeunes\Notify\Storage\Filter;
+namespace Notify\Storage\Filter;
 
-use Yoeunes\Notify\Storage\StorageInterface;
+use Notify\Storage\StorageInterface;
 
 class BaseFilter implements FilterInterface
 {
     private $storage;
+
     private $filter;
+
     private $options;
 
     public function __construct(StorageInterface $storage, FilterBuilder $filter, array $options)
     {
         $this->storage = $storage;
-        $this->filter = $filter;
+        $this->filter  = $filter;
         $this->options = $options;
     }
 
@@ -21,8 +23,6 @@ class BaseFilter implements FilterInterface
     {
         $envelopes = $this->storage->get();
 
-        dump($envelopes);
-        
         $minPriority = isset($this->options['priority']['min']) ? $this->options['priority']['min'] : null;
         $maxPriority = isset($this->options['priority']['max']) ? $this->options['priority']['max'] : null;
 

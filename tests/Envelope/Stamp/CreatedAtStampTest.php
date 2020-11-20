@@ -3,19 +3,19 @@
 namespace Notify\Tests\Envelope\Stamp;
 
 use Notify\Envelope\Envelope;
-use Notify\Envelope\Stamp\PriorityStamp;
+use Notify\Envelope\Stamp\CreatedAtStamp;
 use PHPUnit\Framework\TestCase;
 
-final class PriorityStampTest extends TestCase
+final class CreatedAtStampTest extends TestCase
 {
     public function testConstruct()
     {
         $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
-        $stamp        = new PriorityStamp(5);
+        $stamp        = new CreatedAtStamp();
 
         $envelop = new Envelope($notification, array($stamp));
 
-        $this->assertSame($stamp, $envelop->get('Notify\Envelope\Stamp\PriorityStamp'));
+        $this->assertSame($stamp, $envelop->get('Notify\Envelope\Stamp\CreatedAtStamp'));
         $this->assertInstanceOf('Notify\Envelope\Stamp\StampInterface', $stamp);
     }
 }

@@ -1,15 +1,15 @@
 <?php
 
-namespace Yoeunes\Notify\Middleware;
+namespace Notify\Middleware;
 
-use Yoeunes\Notify\Envelope\Envelope;
-use Yoeunes\Notify\Envelope\Stamp\PriorityStamp;
+use Notify\Envelope\Envelope;
+use Notify\Envelope\Stamp\PriorityStamp;
 
 final class AddPriorityStampMiddleware implements MiddlewareInterface
 {
     public function handle(Envelope $envelope, callable $next)
     {
-        if (null === $envelope->get('Yoeunes\Notify\Envelope\Stamp\PriorityStamp')) {
+        if (null === $envelope->get('Notify\Envelope\Stamp\PriorityStamp')) {
             $envelope->with(new PriorityStamp(0));
         }
 

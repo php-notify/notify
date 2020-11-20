@@ -1,8 +1,7 @@
 <?php
 
-namespace Yoeunes\Notify\Storage\Filter;
+namespace Notify\Storage\Filter;
 
 interface FilterInterface
 {
-
 }

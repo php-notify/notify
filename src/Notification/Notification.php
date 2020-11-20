@@ -1,6 +1,6 @@
 <?php
 
-namespace Yoeunes\Notify\Notification;
+namespace Notify\Notification;
 
 final class Notification implements NotificationInterface
 {
@@ -32,9 +32,9 @@ final class Notification implements NotificationInterface
      */
     public function __construct($type, $message, $title = '', $context = array())
     {
-        $this->type = $type;
+        $this->type    = $type;
         $this->message = $message;
-        $this->title = $title;
+        $this->title   = $title;
         $this->context = $context;
     }
 

@@ -1,12 +1,18 @@
 <?php
 
-namespace Yoeunes\Notify\Storage;
+namespace Notify\Storage;
 
-use Yoeunes\Notify\Envelope\Envelope;
+use Notify\Envelope\Envelope;
 
 interface StorageInterface
 {
+    /**
+     * @return Envelope[]
+     */
     public function get();
 
+    /**
+     * @param \Notify\Envelope\Envelope $envelope
+     */
     public function add(Envelope $envelope);
 }

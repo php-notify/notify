@@ -1,9 +1,10 @@
 <?php
 
-namespace Yoeunes\Notify\Presenter;
+namespace Notify\Presenter;
 
-use Yoeunes\Notify\Config\ConfigInterface;
-use Yoeunes\Notify\Manager\AbstractManager;
+use InvalidArgumentException;
+use Notify\Config\ConfigInterface;
+use Notify\Manager\AbstractManager;
 
 final class PresenterManager extends AbstractManager
 {
@@ -14,11 +15,6 @@ final class PresenterManager extends AbstractManager
         $this->config = $config;
     }
 
-    protected function getDefaultDriver()
-    {
-        return $this->config->get('presenter');
-    }
-
     public function getPresenterFromContext(array $context)
     {
         foreach ($this->drivers as $presenter) {
@@ -27,6 +23,11 @@ final class PresenterManager extends AbstractManager
             }
         }
 
-        throw new \InvalidArgumentException(sprintf("No presenter found for the given context"));
+        throw new InvalidArgumentException(sprintf('No presenter found for the given context'));
+    }
+
+    protected function getDefaultDriver()
+    {
+        return $this->config->get('presenter');
     }
 }
