@@ -21,7 +21,12 @@ final class MiddlewareManager
      */
     public function __construct(array $middlewareList = array())
     {
+        $middlewareList[] = new AddCreatedAtStampMiddleware();
+        $middlewareList[] = new AddLifeStampMiddleware();
+        $middlewareList[] = new AddPriorityStampMiddleware();
+
         $this->middlewareList  = $middlewareList;
+
         $this->middlewareChain = $this->createExecutionChain($middlewareList);
     }
 

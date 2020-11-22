@@ -2,7 +2,7 @@
 
 namespace Notify\Envelope\Stamp;
 
-final class PriorityStamp implements StampInterface
+final class PriorityStamp implements StampInterface, OrderableStampInterface
 {
     /**
      * @var int
@@ -20,5 +20,14 @@ final class PriorityStamp implements StampInterface
     public function getPriority()
     {
         return $this->priority;
+    }
+
+    public function compare($orderable)
+    {
+        if (!$orderable instanceof PriorityStamp) {
+            return 0;
+        }
+
+        return $this->priority > $orderable->priority;
     }
 }

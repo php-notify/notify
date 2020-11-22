@@ -10,7 +10,7 @@ final class AddPriorityStampMiddleware implements MiddlewareInterface
     public function handle(Envelope $envelope, callable $next)
     {
         if (null === $envelope->get('Notify\Envelope\Stamp\PriorityStamp')) {
-            $envelope->with(new PriorityStamp(0));
+            $envelope->withStamp(new PriorityStamp(0));
         }
 
         return $next($envelope);

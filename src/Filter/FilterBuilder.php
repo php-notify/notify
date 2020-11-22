@@ -3,6 +3,8 @@
 namespace Notify\Filter;
 
 use Notify\Envelope\Envelope;
+use Notify\Envelope\Stamp\OrderableStampInterface;
+use Notify\Envelope\Stamp\PriorityStamp;
 use Notify\Filter\Specification\AndSpecification;
 use Notify\Filter\Specification\OrSpecification;
 use Notify\Filter\Specification\PrioritySpecification;
@@ -48,6 +50,14 @@ final class FilterBuilder
         return $this->orderings;
     }
 
+    public function withCriteria($criteria)
+    {
+        $criteriaBuilder = new CriteriaBuilder($this, $criteria);
+        $criteriaBuilder->build();
+
+        return $this;
+    }
+
     public function filter(array $envelopes)
     {
         $specification = $this->getWhereSpecification();
@@ -59,6 +69,27 @@ final class FilterBuilder
                     return $specification->isSatisfiedBy($envelope);
                 }
             );
+        }
+
+        $orderings = $this->getOrderings();
+
+        if (null !== $orderings) {
+            foreach ($orderings as $field => $ordering) {
+                usort($envelopes, function (Envelope $a, Envelope $b) use ($field, $ordering) {
+                    if (FilterBuilder::ASC === $ordering) {
+                        list($a, $b) = array($b, $a);
+                    }
+
+                    $stampA = $a->get($field);
+                    $stampB = $b->get($field);
+
+                    if (!$stampA instanceof OrderableStampInterface) {
+                        return 0;
+                    }
+
+                    return $stampA->compare($stampB);
+                });
+            }
         }
 
         $length = $this->getMaxResults();
@@ -98,11 +129,6 @@ final class FilterBuilder
         return $this;
     }
 
-    public function wherePriority($minPriority, $maxPriority = null)
-    {
-        return $this->andWhere(new PrioritySpecification($minPriority, $maxPriority));
-    }
-
     /**
      * @param \Notify\Filter\Specification\SpecificationInterface $specification
      *
@@ -129,11 +155,6 @@ final class FilterBuilder
         $this->specification = $specification;
 
         return $this;
-    }
-
-    public function orWherePriority($minPriority, $maxPriority = null)
-    {
-        return $this->orWhere(new PrioritySpecification($minPriority, $maxPriority));
     }
 
     /**

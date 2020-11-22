@@ -4,7 +4,7 @@ namespace Notify\Envelope\Stamp;
 
 use DateTime;
 
-final class CreatedAtStamp implements StampInterface
+final class CreatedAtStamp implements StampInterface, OrderableStampInterface
 {
     /**
      * @param int
@@ -22,5 +22,14 @@ final class CreatedAtStamp implements StampInterface
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    public function compare($orderable)
+    {
+        if (!$orderable instanceof CreatedAtStamp) {
+            return 0;
+        }
+
+        return $this->createdAt > $orderable->createdAt;
     }
 }

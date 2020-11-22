@@ -2,8 +2,8 @@
 
 namespace PHPSTORM_META;
 
-use Yoeunes\Notify\NotifyManager;
-use Yoeunes\Notify\Envelope\Envelope;
+use Notify\NotifyManager;
+use Notify\Envelope\Envelope;
 
 override(Envelope::get(), type(0));
 

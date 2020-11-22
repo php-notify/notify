@@ -5,6 +5,9 @@ namespace Notify\Presenter;
 use InvalidArgumentException;
 use Notify\Manager\AbstractManager;
 
+/**
+ * @method \Notify\Presenter\PresenterInterface make($driver = null)
+ */
 final class PresenterManager extends AbstractManager
 {
     public function makeFromContext(array $context)

@@ -2,6 +2,7 @@
 
 namespace Notify\Envelope;
 
+use Notify\Envelope\Stamp\StampInterface;
 use Notify\Notification\NotificationInterface;
 
 final class Envelope implements NotificationInterface
@@ -51,8 +52,20 @@ final class Envelope implements NotificationInterface
         $stamps = is_array($stamps) ? $stamps : func_get_args();
 
         foreach ($stamps as $stamp) {
-            $this->stamps[get_class($stamp)] = $stamp;
+            $this->withStamp($stamp);
         }
+
+        return $this;
+    }
+
+    /**
+     * @param \Notify\Envelope\Stamp\StampInterface $stamp
+     *
+     * @return $this
+     */
+    public function withStamp(StampInterface $stamp)
+    {
+        $this->stamps[get_class($stamp)] = $stamp;
 
         return $this;
     }

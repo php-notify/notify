@@ -3,8 +3,10 @@
 namespace Notify\Producer;
 
 use Notify\Envelope\Envelope;
+use Notify\Envelope\Stamp\LifeStamp;
 use Notify\Envelope\Stamp\RendererStamp;
 use Notify\Envelope\Stamp\StampInterface;
+use Notify\Envelope\Stamp\UuidStamp;
 use Notify\Middleware\MiddlewareManager;
 use Notify\Notification\Notification;
 use Notify\Notification\NotificationInterface;
@@ -41,7 +43,7 @@ abstract class AbstractProducer implements ProducerInterface
     public function render($type, $message, $title = '', $context = array(), array $stamps = array())
     {
         if (is_array($title) || $title instanceof StampInterface) {
-            $stamps = (array)$title;
+            $stamps = is_array($title) ? $title : array($title);
             $title  = '';
         }
 

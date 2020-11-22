@@ -5,6 +5,9 @@ namespace Notify\Producer;
 use Notify\Config\ConfigInterface;
 use Notify\Manager\AbstractManager;
 
+/**
+ * @method \Notify\Producer\ProducerInterface make($driver = null)
+ */
 final class ProducerManager extends AbstractManager
 {
     private $config;

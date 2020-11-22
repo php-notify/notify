@@ -16,16 +16,6 @@ abstract class AbstractManager implements ManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function addDriver($alias, $driver)
-    {
-        $this->drivers[$alias] = $driver;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function make($driver = null)
     {
         $driver = $driver ?: $this->getDefaultDriver();
@@ -34,11 +24,22 @@ abstract class AbstractManager implements ManagerInterface
             throw new InvalidArgumentException(sprintf('Unable to resolve NULL driver for [%s].', get_called_class()));
         }
 
+
         if (!isset($this->drivers[$driver])) {
             $this->drivers[$driver] = $this->createDriver($driver);
         }
 
         return $this->drivers[$driver];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addDriver($alias, $driver)
+    {
+        $this->drivers[$alias] = $driver;
+
+        return $this;
     }
 
     /**

@@ -12,7 +12,9 @@ interface PresenterInterface
     public function support(array $context);
 
     /**
-     * @return string|null
+     * @param string $criteria
+     *
+     * @return string
      */
-    public function render();
+    public function render($criteria = 'default');
 }

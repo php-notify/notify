@@ -27,7 +27,7 @@ interface ProducerInterface
      *
      * @return \Notify\Envelope\Envelope
      */
-    public function render($type, $message, $title = '', $context = array());
+    public function render($type, $message, $title = '', $context = array(), array $stamps = array());
 
     /**
      * @param string               $message
@@ -36,7 +36,7 @@ interface ProducerInterface
      *
      * @return \Notify\Envelope\Envelope
      */
-    public function error($message, $title = '', $context = array());
+    public function error($message, $title = '', $context = array(), array $stamps = array());
 
     /**
      * @param string               $message
@@ -45,7 +45,7 @@ interface ProducerInterface
      *
      * @return \Notify\Envelope\Envelope
      */
-    public function info($message, $title = '', $context = array());
+    public function info($message, $title = '', $context = array(), array $stamps = array());
 
     /**
      * @param string               $message
@@ -54,7 +54,7 @@ interface ProducerInterface
      *
      * @return \Notify\Envelope\Envelope
      */
-    public function success($message, $title = '', $context = array());
+    public function success($message, $title = '', $context = array(), array $stamps = array());
 
     /**
      * @param string               $message
@@ -63,5 +63,5 @@ interface ProducerInterface
      *
      * @return \Notify\Envelope\Envelope
      */
-    public function warning($message, $title = '', $context = array());
+    public function warning($message, $title = '', $context = array(), array $stamps = array());
 }
