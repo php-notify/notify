@@ -43,10 +43,7 @@
         }
     },
     "config": {
-        "sort-packages": true,
-        "platform": {
-            "php": "5.3.3"
-        }
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true

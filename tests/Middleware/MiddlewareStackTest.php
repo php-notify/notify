@@ -21,12 +21,12 @@ final class MiddlewareStackTest extends TestCase
         $stack = new MiddlewareManager($middlewareList);
 
         $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
-        $envelope     = new Envelope($notification);
+        $envelope = new Envelope($notification);
 
         $stack->handle($envelope);
 
         $this->assertSame($notification, $envelope->getNotification());
-        $this->assertCount(2, $envelope->all());
+        $this->assertCount(3, $envelope->all());
 
         $priorityStamp = $envelope->get('Notify\Envelope\Stamp\PriorityStamp');
         $this->assertInstanceOf('Notify\Envelope\Stamp\PriorityStamp', $priorityStamp);
@@ -55,7 +55,7 @@ final class MiddlewareStackTest extends TestCase
         $stack->handle($envelope);
 
         $this->assertSame($notification, $envelope->getNotification());
-        $this->assertCount(1, $envelope->all());
+        $this->assertCount(3, $envelope->all());
 
         $priorityStamp = $envelope->get('Notify\Envelope\Stamp\PriorityStamp');
         $this->assertInstanceOf('Notify\Envelope\Stamp\PriorityStamp', $priorityStamp);

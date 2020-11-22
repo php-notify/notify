@@ -10,7 +10,7 @@
          processIsolation="false"
          stopOnFailure="true">
     <testsuites>
-        <testsuite name="yoeunes Test Suite">
+        <testsuite name="Notify Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
