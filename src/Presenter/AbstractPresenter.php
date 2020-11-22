@@ -3,8 +3,6 @@
 namespace Notify\Presenter;
 
 use Notify\Envelope\Envelope;
-use Notify\Envelope\Stamp\LifeStamp;
-use Notify\Envelope\Stamp\RendererStamp;
 use Notify\Filter\FilterManager;
 use Notify\Renderer\HasGlobalOptionsInterface;
 use Notify\Renderer\HasScriptsInterface;
@@ -31,18 +29,25 @@ abstract class AbstractPresenter implements PresenterInterface
 
     public function __construct(StorageInterface $storage, FilterManager $filterManager, RendererManager $rendererManager)
     {
-        $this->storage = $storage;
-        $this->filterManager = $filterManager;
+        $this->storage         = $storage;
+        $this->filterManager   = $filterManager;
         $this->rendererManager = $rendererManager;
     }
 
-    protected function getEnvelopes($filterName, $criteria = [])
+    /**
+     * @inheritDoc
+     */
+    public function support(array $context)
     {
-        $filter = $this->filterManager->make($filterName);
+        return true;
+    }
+
+    protected function getEnvelopes($filterName, $criteria = array())
+    {
+        $filter    = $this->filterManager->make($filterName);
         $envelopes = $filter->filter($this->storage->get(), $criteria);
 
-
-        return array_filter($envelopes, function (Envelope $envelope) {
+        return array_filter($envelopes, static function (Envelope $envelope) {
             $lifeStamp = $envelope->get('Notify\Envelope\Stamp\LifeStamp');
 
             return $lifeStamp->getLife() > 0;
@@ -56,8 +61,8 @@ abstract class AbstractPresenter implements PresenterInterface
      */
     protected function getStyles($envelopes)
     {
-        $files = [];
-        $renderers = [];
+        $files     = array();
+        $renderers = array();
 
         foreach ($envelopes as $envelope) {
             $rendererStamp = $envelope->get('Notify\Envelope\Stamp\RendererStamp');
@@ -70,7 +75,7 @@ abstract class AbstractPresenter implements PresenterInterface
                 continue;
             }
 
-            $files = array_merge($files, $renderer->getStyles());
+            $files       = array_merge($files, $renderer->getStyles());
             $renderers[] = $rendererStamp->getRenderer();
         }
 
@@ -84,8 +89,8 @@ abstract class AbstractPresenter implements PresenterInterface
      */
     protected function getScripts($envelopes)
     {
-        $files = [];
-        $renderers = [];
+        $files     = array();
+        $renderers = array();
 
         foreach ($envelopes as $envelope) {
             $rendererStamp = $envelope->get('Notify\Envelope\Stamp\RendererStamp');
@@ -98,7 +103,7 @@ abstract class AbstractPresenter implements PresenterInterface
                 continue;
             }
 
-            $files = array_merge($files, $renderer->getScripts());
+            $files       = array_merge($files, $renderer->getScripts());
             $renderers[] = $rendererStamp->getRenderer();
         }
 
@@ -112,8 +117,8 @@ abstract class AbstractPresenter implements PresenterInterface
      */
     protected function getOptions($envelopes)
     {
-        $options = [];
-        $renderers = [];
+        $options   = array();
+        $renderers = array();
 
         foreach ($envelopes as $envelope) {
             $rendererStamp = $envelope->get('Notify\Envelope\Stamp\RendererStamp');
@@ -126,18 +131,10 @@ abstract class AbstractPresenter implements PresenterInterface
                 continue;
             }
 
-            $options[] = $renderer->renderOptions();
+            $options[]   = $renderer->renderOptions();
             $renderers[] = $rendererStamp->getRenderer();
         }
 
         return array_filter(array_unique($options));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function support(array $context)
-    {
-        return true;
     }
 }

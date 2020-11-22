@@ -7,10 +7,10 @@ use Notify\Filter\Specification\PrioritySpecification;
 
 class CriteriaBuilder
 {
-    public function __construct(FilterBuilder $filterBuilder, $criteria = [])
+    public function __construct(FilterBuilder $filterBuilder, $criteria = array())
     {
         $this->filterBuilder = $filterBuilder;
-        $this->criteria = $criteria;
+        $this->criteria      = $criteria;
     }
 
     public function build()
@@ -32,7 +32,7 @@ class CriteriaBuilder
         $priority = $this->criteria['priority'];
 
         if (!is_array($priority)) {
-            $priority = ['min' => $priority];
+            $priority = array('min' => $priority);
         }
 
         $min = isset($priority['min']) ? $priority['min'] : null;
@@ -50,7 +50,7 @@ class CriteriaBuilder
         $life = $this->criteria['life'];
 
         if (!is_array($life)) {
-            $life = ['min' => $life];
+            $life = array('min' => $life);
         }
 
         $min = isset($life['min']) ? $life['min'] : null;
@@ -77,7 +77,7 @@ class CriteriaBuilder
         $orderings = $this->criteria['order_by'];
 
         if (!is_array($orderings)) {
-            $orderings = [$orderings => FilterBuilder::ASC];
+            $orderings = array($orderings => FilterBuilder::ASC);
         }
 
         $this->filterBuilder->orderBy($orderings);

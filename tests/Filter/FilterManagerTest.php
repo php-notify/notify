@@ -4,10 +4,10 @@ namespace Notify\Tests\Filter;
 
 use Notify\Envelope\Envelope;
 use Notify\Envelope\Stamp\PriorityStamp;
+use Notify\Filter\FilterBuilder;
 use Notify\Middleware\AddCreatedAtStampMiddleware;
 use Notify\Middleware\AddPriorityStampMiddleware;
 use Notify\Middleware\MiddlewareManager;
-use Notify\Filter\FilterBuilder;
 use PHPUnit\Framework\TestCase;
 
 final class FilterManagerTest extends TestCase

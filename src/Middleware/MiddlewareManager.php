@@ -25,7 +25,7 @@ final class MiddlewareManager
         $middlewareList[] = new AddLifeStampMiddleware();
         $middlewareList[] = new AddPriorityStampMiddleware();
 
-        $this->middlewareList  = $middlewareList;
+        $this->middlewareList = $middlewareList;
 
         $this->middlewareChain = $this->createExecutionChain($middlewareList);
     }

@@ -2,8 +2,6 @@
 
 namespace Notify\Filter;
 
-use Notify\Storage\StorageInterface;
-
 class DefaultFilter implements FilterInterface
 {
     private $filterBuilder;
@@ -13,7 +11,7 @@ class DefaultFilter implements FilterInterface
         $this->filterBuilder = $filterBuilder;
     }
 
-    public function filter($envelopes, $criteria = [])
+    public function filter($envelopes, $criteria = array())
     {
         return $this->filterBuilder->withCriteria($criteria)->filter($envelopes);
     }

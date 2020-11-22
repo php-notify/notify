@@ -3,10 +3,8 @@
 namespace Notify\Producer;
 
 use Notify\Envelope\Envelope;
-use Notify\Envelope\Stamp\LifeStamp;
 use Notify\Envelope\Stamp\RendererStamp;
 use Notify\Envelope\Stamp\StampInterface;
-use Notify\Envelope\Stamp\UuidStamp;
 use Notify\Middleware\MiddlewareManager;
 use Notify\Notification\Notification;
 use Notify\Notification\NotificationInterface;
@@ -18,16 +16,16 @@ abstract class AbstractProducer implements ProducerInterface
 
     private $middleware;
 
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function getRenderer();
+
     public function __construct(StorageInterface $storage, MiddlewareManager $middleware)
     {
         $this->storage    = $storage;
         $this->middleware = $middleware;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getRenderer();
 
     /**
      * {@inheritdoc}

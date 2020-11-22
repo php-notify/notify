@@ -4,10 +4,8 @@ namespace Notify\Filter;
 
 use Notify\Envelope\Envelope;
 use Notify\Envelope\Stamp\OrderableStampInterface;
-use Notify\Envelope\Stamp\PriorityStamp;
 use Notify\Filter\Specification\AndSpecification;
 use Notify\Filter\Specification\OrSpecification;
-use Notify\Filter\Specification\PrioritySpecification;
 use Notify\Filter\Specification\SpecificationInterface;
 
 final class FilterBuilder
@@ -75,7 +73,7 @@ final class FilterBuilder
 
         if (null !== $orderings) {
             foreach ($orderings as $field => $ordering) {
-                usort($envelopes, function (Envelope $a, Envelope $b) use ($field, $ordering) {
+                usort($envelopes, static function (Envelope $a, Envelope $b) use ($field, $ordering) {
                     if (FilterBuilder::ASC === $ordering) {
                         list($a, $b) = array($b, $a);
                     }

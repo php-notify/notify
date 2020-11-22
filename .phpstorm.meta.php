@@ -2,10 +2,13 @@
 
 namespace PHPSTORM_META;
 
-use Notify\NotifyManager;
 use Notify\Envelope\Envelope;
+use Notify\Presenter\PresenterManager;
+use Notify\Producer\ProducerManager;
+use Notify\Renderer\RendererManager;
 
 override(Envelope::get(), type(0));
 
-override(NotifyManager::notifier(''), map(['' => '@']));
-expectedArguments(NotifyManager::notifier(), 0, 'toastr', 'pnotify', 'alert');
+override(ProducerManager::make(''), map(['' => '@']));
+override(RendererManager::make(''), map(['' => '@']));
+override(PresenterManager::make(''), map(['' => '@']));

@@ -28,21 +28,6 @@ final class Envelope implements NotificationInterface
     }
 
     /**
-     * Makes sure the notification is in an Envelope and adds the given stamps.
-     *
-     * @param \Notify\Notification\NotificationInterface|\Notify\Envelope\Envelope $notification
-     * @param \Notify\Envelope\Stamp\StampInterface[]                              $stamps
-     *
-     * @return \Notify\Envelope\Envelope
-     */
-    public static function wrap($notification, array $stamps = array())
-    {
-        $envelope = $notification instanceof self ? $notification : new self($notification);
-
-        return call_user_func_array(array($envelope, 'with'), $stamps);
-    }
-
-    /**
      * @param array|\Notify\Envelope\Stamp\StampInterface $stamps
      *
      * @return Envelope a new Envelope instance with additional stamp
@@ -134,5 +119,20 @@ final class Envelope implements NotificationInterface
     public function getContext()
     {
         return $this->notification->getContext();
+    }
+
+    /**
+     * Makes sure the notification is in an Envelope and adds the given stamps.
+     *
+     * @param \Notify\Notification\NotificationInterface|\Notify\Envelope\Envelope $notification
+     * @param \Notify\Envelope\Stamp\StampInterface[]                              $stamps
+     *
+     * @return \Notify\Envelope\Envelope
+     */
+    public static function wrap($notification, array $stamps = array())
+    {
+        $envelope = $notification instanceof self ? $notification : new self($notification);
+
+        return call_user_func_array(array($envelope, 'with'), $stamps);
     }
 }

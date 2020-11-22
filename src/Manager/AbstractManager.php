@@ -24,7 +24,6 @@ abstract class AbstractManager implements ManagerInterface
             throw new InvalidArgumentException(sprintf('Unable to resolve NULL driver for [%s].', get_called_class()));
         }
 
-
         if (!isset($this->drivers[$driver])) {
             $this->drivers[$driver] = $this->createDriver($driver);
         }
@@ -43,19 +42,6 @@ abstract class AbstractManager implements ManagerInterface
     }
 
     /**
-     * Dynamically call the default driver instance.
-     *
-     * @param string $method
-     * @param array  $parameters
-     *
-     * @return mixed
-     */
-    public function __call($method, array $parameters)
-    {
-        return call_user_func_array(array($this->make(), $method), $parameters);
-    }
-
-    /**
      * Create a new driver instance.
      *
      * @param string $driver
@@ -66,7 +52,7 @@ abstract class AbstractManager implements ManagerInterface
      */
     protected function createDriver($driver)
     {
-        $method = 'create'.str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $driver))).'Driver';
+        $method = 'create' . str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $driver))) . 'Driver';
 
         if (method_exists($this, $method)) {
             return $this->$method();
@@ -81,5 +67,18 @@ abstract class AbstractManager implements ManagerInterface
     protected function getDefaultDriver()
     {
         return null;
+    }
+
+    /**
+     * Dynamically call the default driver instance.
+     *
+     * @param string $method
+     * @param array  $parameters
+     *
+     * @return mixed
+     */
+    public function __call($method, array $parameters)
+    {
+        return call_user_func_array(array($this->make(), $method), $parameters);
     }
 }

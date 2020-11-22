@@ -20,7 +20,6 @@ final class ProducerManagerTest extends TestCase
 
         $manager->addDriver('notifier_2', $this->getMockBuilder('Notify\Producer\ProducerInterface'));
 
-
         $reflection = new ReflectionClass(get_class($manager));
         $extensions = $reflection->getProperty('drivers');
         $extensions->setAccessible(true);

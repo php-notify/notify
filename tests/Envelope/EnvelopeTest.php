@@ -21,15 +21,15 @@ final class EnvelopeTest extends TestCase
     public function testWith()
     {
         $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
-        $stamp_1        = $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock();
-        $stamp_2        = $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock();
+        $stamp1       = $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock();
+        $stamp2       = $this->getMockBuilder('Notify\Envelope\Stamp\StampInterface')->getMock();
 
         $envelope = new Envelope($notification);
-        $envelope->with($stamp_1, $stamp_2);
+        $envelope->with($stamp1, $stamp2);
 
         $this->assertSame($notification, $envelope->getNotification());
 
-        $this->assertSame(array(get_class($stamp_1) => $stamp_1, get_class($stamp_2) => $stamp_2), $envelope->all());
+        $this->assertSame(array(get_class($stamp1) => $stamp1, get_class($stamp2) => $stamp2), $envelope->all());
     }
 
     public function testWrap()

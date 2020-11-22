@@ -375,7 +375,7 @@
     <rule ref="SlevomatCodingStandard.Operators.SpreadOperatorSpacing"/>
 
     <!-- Forbid `list(...)` syntax -->
-    <rule ref="SlevomatCodingStandard.PHP.ShortList"/>
+    <!-- <rule ref="SlevomatCodingStandard.PHP.ShortList"/> -->
 
     <!-- Forbid use of longhand cast operators -->
     <rule ref="SlevomatCodingStandard.PHP.TypeCast"/>

@@ -21,7 +21,7 @@ final class MiddlewareStackTest extends TestCase
         $stack = new MiddlewareManager($middlewareList);
 
         $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
-        $envelope = new Envelope($notification);
+        $envelope     = new Envelope($notification);
 
         $stack->handle($envelope);
 
