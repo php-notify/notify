@@ -2,8 +2,6 @@
 
 namespace Notify\Envelope\Stamp;
 
-use DateTime;
-
 final class CreatedAtStamp implements StampInterface, OrderableStampInterface
 {
     /**
@@ -11,9 +9,9 @@ final class CreatedAtStamp implements StampInterface, OrderableStampInterface
      */
     private $createdAt;
 
-    public function __construct(DateTime $createdAt = null)
+    public function __construct(\DateTime $createdAt = null)
     {
-        $this->createdAt = $createdAt ?: new DateTime();
+        $this->createdAt = $createdAt ?: new \DateTime('now', new \DateTimeZone('Africa/Casablanca'));
     }
 
     /**
