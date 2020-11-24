@@ -2,6 +2,7 @@
 
 namespace Notify\Tests\Filter;
 
+use Notify\Config\Config;
 use Notify\Envelope\Envelope;
 use Notify\Envelope\Stamp\PriorityStamp;
 use Notify\Filter\DefaultFilter;
@@ -36,11 +37,22 @@ final class DefaultFilterTest extends TestCase
             array(new PriorityStamp(1))
         );
 
-        $middlewareList = array(
-            new AddPriorityStampMiddleware(),
-            new AddCreatedAtStampMiddleware(),
-        );
-        $middleware     = new MiddlewareManager($middlewareList);
+        $config = new Config(array(
+            'default' => 'notify',
+            'adapters' => array(
+                'notify' => array(
+                    'scripts' => array('script.js'),
+                    'styles' => array('styles.css'),
+                    'options' => array()
+                )
+            ),
+            'stamps_middlewares' => array(
+                new AddPriorityStampMiddleware(),
+                new AddCreatedAtStampMiddleware(),
+            )
+        ));
+
+        $middleware     = new MiddlewareManager($config);
 
         $envelopes = $middleware->handleMany($notifications);
 

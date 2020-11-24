@@ -2,6 +2,7 @@
 
 namespace Notify\Tests\Middleware;
 
+use Notify\Config\Config;
 use Notify\Envelope\Envelope;
 use Notify\Envelope\Stamp\PriorityStamp;
 use Notify\Middleware\AddCreatedAtStampMiddleware;
@@ -13,12 +14,22 @@ final class MiddlewareStackTest extends TestCase
 {
     public function testHandle()
     {
-        $middlewareList = array(
-            new AddPriorityStampMiddleware(),
-            new AddCreatedAtStampMiddleware(),
-        );
+        $config = new Config(array(
+            'default' => 'notify',
+            'adapters' => array(
+                'notify' => array(
+                    'scripts' => array('script.js'),
+                    'styles' => array('styles.css'),
+                    'options' => array()
+                )
+            ),
+            'stamps_middlewares' => array(
+                new AddPriorityStampMiddleware(),
+                new AddCreatedAtStampMiddleware(),
+            )
+        ));
 
-        $stack = new MiddlewareManager($middlewareList);
+        $stack = new MiddlewareManager($config);
 
         $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
         $envelope     = new Envelope($notification);
@@ -40,11 +51,22 @@ final class MiddlewareStackTest extends TestCase
 
     public function testHandleWithExistingStamps()
     {
-        $middlewareList = array(
-            new AddPriorityStampMiddleware(),
-        );
+        $config = new Config(array(
+            'default' => 'notify',
+            'adapters' => array(
+                'notify' => array(
+                    'scripts' => array('script.js'),
+                    'styles' => array('styles.css'),
+                    'options' => array()
+                )
+            ),
+            'stamps_middlewares' => array(
+                new AddPriorityStampMiddleware(),
+                new AddCreatedAtStampMiddleware(),
+            )
+        ));
 
-        $stack = new MiddlewareManager($middlewareList);
+        $stack = new MiddlewareManager($config);
 
         $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
         $stamps       = array(

@@ -2,10 +2,16 @@
 
 namespace Notify\Middleware;
 
+use Notify\Config\ConfigInterface;
 use Notify\Envelope\Envelope;
 
 final class MiddlewareManager
 {
+    /**
+     * @var \Notify\Config\ConfigInterface
+     */
+    private $config;
+
     /**
      * @var \Notify\Middleware\MiddlewareInterface[]
      */
@@ -17,10 +23,14 @@ final class MiddlewareManager
     private $middlewareChain;
 
     /**
-     * @param \Notify\Middleware\MiddlewareInterface[] $middlewareList
+     * @param \Notify\Config\ConfigInterface $config
      */
-    public function __construct(array $middlewareList = array())
+    public function __construct(ConfigInterface $config)
     {
+        $this->config = $config;
+
+        $middlewareList = $config->get('stamps_middlewares', array());
+
         $middlewareList[] = new AddCreatedAtStampMiddleware();
         $middlewareList[] = new AddLifeStampMiddleware();
         $middlewareList[] = new AddPriorityStampMiddleware();
