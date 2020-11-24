@@ -21,9 +21,10 @@ final class Envelope implements NotificationInterface
      * @param \Notify\Notification\NotificationInterface $notification
      * @param \Notify\Envelope\Stamp\StampInterface[]    $stamps
      */
-    public function __construct(NotificationInterface $notification, array $stamps = array())
+    public function __construct(NotificationInterface $notification, $stamps = array())
     {
         $this->notification = $notification;
+        $stamps = is_array($stamps) ? $stamps : array_slice(func_get_args(), 1);
         call_user_func_array(array($this, 'with'), $stamps);
     }
 

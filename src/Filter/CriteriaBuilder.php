@@ -7,6 +7,16 @@ use Notify\Filter\Specification\PrioritySpecification;
 
 class CriteriaBuilder
 {
+    /**
+     * @var \Notify\Filter\FilterBuilder
+     */
+    private $filterBuilder;
+
+    /**
+     * @var array
+     */
+    private $criteria;
+
     public function __construct(FilterBuilder $filterBuilder, $criteria = array())
     {
         $this->filterBuilder = $filterBuilder;

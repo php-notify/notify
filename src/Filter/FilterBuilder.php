@@ -58,7 +58,7 @@ final class FilterBuilder
 
     public function filter(array $envelopes)
     {
-        $specification = $this->getWhereSpecification();
+        $specification = $this->getSpecification();
 
         if (null !== $specification) {
             $envelopes = array_filter(
@@ -102,7 +102,7 @@ final class FilterBuilder
     /**
      * @return \Notify\Filter\Specification\SpecificationInterface
      */
-    public function getWhereSpecification()
+    public function getSpecification()
     {
         return $this->specification;
     }

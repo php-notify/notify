@@ -4,16 +4,16 @@ namespace Notify\Tests\Filter;
 
 use Notify\Envelope\Envelope;
 use Notify\Envelope\Stamp\PriorityStamp;
+use Notify\Filter\DefaultFilter;
 use Notify\Filter\FilterBuilder;
-use Notify\Filter\Specification\PrioritySpecification;
 use Notify\Middleware\AddCreatedAtStampMiddleware;
 use Notify\Middleware\AddPriorityStampMiddleware;
 use Notify\Middleware\MiddlewareManager;
-use PHPUnit\Framework\TestCase;
+use Notify\Tests\TestCase;
 
-final class FilterManagerTest extends TestCase
+final class DefaultFilterTest extends TestCase
 {
-    public function testFilterWhere()
+    public function testWithCriteria()
     {
         $notifications = array(
             $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock(),
@@ -44,41 +44,11 @@ final class FilterManagerTest extends TestCase
 
         $envelopes = $middleware->handleMany($notifications);
 
-        $builder = new FilterBuilder();
-
-        $envelopes = $builder
-            ->andWhere(new PrioritySpecification(1))
-            ->andWhere(New PrioritySpecification(1, 5))
-            ->orderBy(array(
-                'Notify\Envelope\Stamp\PriorityStamp' => 'ASC'
-            ))
-            ->setMaxResults(2)
-            ->filter($envelopes)
-        ;
-
-        $this->assertNotEmpty($envelopes);
-
-        $builder = new FilterBuilder();
-
-        $envelopes = $builder
-            ->orWhere(new PrioritySpecification(1))
-            ->orWhere(New PrioritySpecification(1, 5))
-            ->orderBy(array(
-                'Notify\Envelope\Stamp\PriorityStamp' => 'ASC',
-                'Notify\Envelope\Stamp\NotExists' => 'ASC',
-            ))
-            ->setMaxResults(2)
-            ->filter($envelopes)
-        ;
-
-        $this->assertNotEmpty($envelopes);
-
-        $builder = new FilterBuilder();
-        $builder->withCriteria(array(
-            'priority' => '1'
+        $defaultFilter = new DefaultFilter(new FilterBuilder());
+        $defaultFilter->filter($envelopes, array(
+            'priority' => 2,
         ));
 
-        $envelopes = $builder->filter($envelopes);
         $this->assertNotEmpty($envelopes);
     }
 }

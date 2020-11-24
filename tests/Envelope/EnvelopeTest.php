@@ -40,6 +40,10 @@ final class EnvelopeTest extends TestCase
         $envelope = Envelope::wrap($notification, array($stamp));
 
         $this->assertSame($notification, $envelope->getNotification());
+        $this->assertSame($notification->getType(), $envelope->getType());
+        $this->assertSame($notification->getMessage(), $envelope->getMessage());
+        $this->assertSame($notification->getTitle(), $envelope->getTitle());
+        $this->assertSame($notification->getContext(), $envelope->getContext());
         $this->assertSame(array(get_class($stamp) => $stamp), $envelope->all());
     }
 
