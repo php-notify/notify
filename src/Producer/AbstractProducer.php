@@ -16,11 +16,6 @@ abstract class AbstractProducer implements ProducerInterface
 
     private $middleware;
 
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getRenderer();
-
     public function __construct(StorageInterface $storage, MiddlewareManager $middleware)
     {
         $this->storage    = $storage;
@@ -30,9 +25,38 @@ abstract class AbstractProducer implements ProducerInterface
     /**
      * {@inheritdoc}
      */
+    abstract public function getRenderer();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function success($message, $title = '', $context = array(), array $stamps = array())
+    {
+        return $this->render('success', $message, $title, $context, $stamps);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function error($message, $title = '', $context = array(), array $stamps = array())
     {
         return $this->render('error', $message, $title, $context, $stamps);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function warning($message, $title = '', $context = array(), array $stamps = array())
+    {
+        return $this->render('warning', $message, $title, $context, $stamps);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function info($message, $title = '', $context = array(), array $stamps = array())
+    {
+        return $this->render('info', $message, $title, $context, $stamps);
     }
 
     /**
@@ -75,29 +99,5 @@ abstract class AbstractProducer implements ProducerInterface
         $this->storage->add($envelope);
 
         return $envelope;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function info($message, $title = '', $context = array(), array $stamps = array())
-    {
-        return $this->render('info', $message, $title, $context, $stamps);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function success($message, $title = '', $context = array(), array $stamps = array())
-    {
-        return $this->render('success', $message, $title, $context, $stamps);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function warning($message, $title = '', $context = array(), array $stamps = array())
-    {
-        return $this->render('warning', $message, $title, $context, $stamps);
     }
 }
