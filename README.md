@@ -1,4 +1,4 @@
-<p align="center"><img width="300" alt="notify" src="https://user-images.githubusercontent.com/10859693/100492615-31e0ba00-312e-11eb-8401-34c3a779c9bc.png"></p>
+<p align="center"><img width="600" alt="notify" src="https://user-images.githubusercontent.com/10859693/100492826-75d4be80-3130-11eb-9d13-5e83238647f4.png"></p>
 
 <h1 align="center">Easy flash notifications for PHP, Laravel, Symfony, Lumen</h1>
 
