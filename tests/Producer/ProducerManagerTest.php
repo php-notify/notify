@@ -3,6 +3,7 @@
 namespace Notify\Tests\Producer;
 
 use Notify\Producer\ProducerManager;
+use Notify\Tests\Stubs\Producer\FakeProducer;
 use Notify\Tests\TestCase;
 use ReflectionClass;
 
@@ -14,22 +15,23 @@ final class ProducerManagerTest extends TestCase
         $manager = new ProducerManager($config);
 
         $producer = $this->getMockBuilder('Notify\Producer\ProducerInterface')->getMock();
-        $manager->addDriver('producer_1', $producer);
-
-        $manager->addDriver('producer_2', $this->getMockBuilder('Notify\Producer\ProducerInterface'));
+        $producer->method('supports')->willReturn(true);
+        $manager->addDriver($producer);
 
         $reflection = new ReflectionClass(get_class($manager));
         $extensions = $reflection->getProperty('drivers');
         $extensions->setAccessible(true);
 
-        $this->assertCount(2, $extensions->getValue($manager));
+        $drivers = $extensions->getValue($manager);
+        $this->assertCount(1, $drivers);
 
-        $this->assertSame($producer, $manager->make('producer_1'));
+        $producer1 = $manager->make('producer_1');
+        $this->assertSame($producer, $producer1);
     }
 
     public function testNullDriver()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Unable to resolve NULL driver for [Notify\Producer\ProducerManager].');
+        $this->setExpectedException('InvalidArgumentException', 'Driver [] not supported.');
 
         $config  = $this->getMockBuilder('Notify\Config\ConfigInterface')->getMock();
         $config->method('get')->willReturn(null);
@@ -37,7 +39,7 @@ final class ProducerManagerTest extends TestCase
         $manager = new ProducerManager($config);
 
         $producer = $this->getMockBuilder('Notify\Producer\ProducerInterface')->getMock();
-        $manager->addDriver('producer_1', $producer);
+        $manager->addDriver($producer);
 
         $this->assertSame($producer, $manager->make());
     }
@@ -50,7 +52,7 @@ final class ProducerManagerTest extends TestCase
         $manager = new ProducerManager($config);
 
         $producer = $this->getMockBuilder('Notify\Producer\ProducerInterface')->getMock();
-        $manager->addDriver('producer_1', $producer);
+        $manager->addDriver( $producer);
 
         $this->assertSame($producer, $manager->make('not_supported'));
     }

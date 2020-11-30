@@ -2,7 +2,7 @@
 
 namespace Notify\Filter;
 
-class DefaultFilter implements FilterInterface
+final class DefaultFilter implements FilterInterface
 {
     private $filterBuilder;
 

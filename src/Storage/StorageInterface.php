@@ -2,22 +2,25 @@
 
 namespace Notify\Storage;
 
-use Notify\Envelope\Envelope;
-
 interface StorageInterface
 {
     /**
-     * @return Envelope[]
+     * @return \Notify\Envelope\Envelope[]
      */
-    public function get();
+    public function all();
 
     /**
-     * @param \Notify\Envelope\Envelope $envelope
+     * @param \Notify\Envelope\Envelope|\Notify\Envelope\Envelope[] $envelopes
      */
-    public function add(Envelope $envelope);
+    public function add($envelopes);
 
     /**
-     * @param Envelope[] $envelopes
+     * @param \Notify\Envelope\Envelope|\Notify\Envelope\Envelope[] $envelopes
      */
-    public function flush($envelopes);
+    public function remove($envelopes);
+
+    /**
+     * Remove all notifications from the storage
+     */
+    public function clear();
 }

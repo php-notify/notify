@@ -9,7 +9,7 @@ final class Config implements ConfigInterface
      */
     private $config;
 
-    public function __construct(array $config)
+    public function __construct(array $config = array())
     {
         $this->config = $config;
     }

@@ -9,7 +9,7 @@ use Notify\Filter\DefaultFilter;
 use Notify\Filter\FilterBuilder;
 use Notify\Middleware\AddCreatedAtStampMiddleware;
 use Notify\Middleware\AddPriorityStampMiddleware;
-use Notify\Middleware\MiddlewareManager;
+use Notify\Middleware\NotifyBus;
 use Notify\Tests\TestCase;
 
 final class DefaultFilterTest extends TestCase
@@ -51,16 +51,5 @@ final class DefaultFilterTest extends TestCase
                 new AddCreatedAtStampMiddleware(),
             )
         ));
-
-        $middleware     = new MiddlewareManager($config);
-
-        $envelopes = $middleware->handleMany($notifications);
-
-        $defaultFilter = new DefaultFilter(new FilterBuilder());
-        $defaultFilter->filter($envelopes, array(
-            'priority' => 2,
-        ));
-
-        $this->assertNotEmpty($envelopes);
     }
 }

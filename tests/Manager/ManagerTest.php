@@ -18,38 +18,36 @@ final class ManagerTest extends TestCase
         $this->assertEquals('default_notifier', $manager->getDefaultDriver());
     }
 
-    public function testThrowExceptionWhenDriverNotFound()
+    public function testMakeDriver()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Driver [default_notifier] not supported.');
+        $config = $this->getMockBuilder('Notify\Config\ConfigInterface')->getMock();
+        $config->method('get')
+            ->with('default')
+            ->willReturn('default_notifier');
+
+        $manager = new ProducerManager($config);
+
+        $producer = $this->getMockBuilder('Notify\Producer\ProducerInterface')->getMock();
+        $producer->method('supports')->willReturn(true);
+        $manager->addDriver($producer);
+
+        $this->assertSame($producer, $manager->make('fake'));
+    }
+
+    public function testDriverNotSupported()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Driver [test_driver] not supported.');
 
         $config = $this->getMockBuilder('Notify\Config\ConfigInterface')->getMock();
         $config->method('get')
-            ->with('drivers')
-            ->willReturn(array());
+            ->with('default')
+            ->willReturn('default_notifier');
 
         $manager = new ProducerManager($config);
-        $this->callMethod($manager, 'createDriver', 'default_notifier');
-    }
 
-    public function testThrowExceptionForUnsupportedNotifier()
-    {
-        $this->setExpectedException('InvalidArgumentException', 'Driver [default_notifier] not supported.');
+        $producer = $this->getMockBuilder('Notify\Producer\ProducerInterface')->getMock();
+        $manager->addDriver($producer);
 
-        $config = $this->getMockBuilder('\Notify\Config\ConfigInterface')->getMock();
-        $config
-            ->method('get')
-            ->with('drivers')
-            ->willReturn(
-                array(
-                    'default_notifier' => array(
-                        'scripts' => array('jquery.js', 'default_notifier.js'),
-                        'styles'  => array('default_notifier.css'),
-                        'options' => array(),
-                    ),
-                )
-            );
-
-        $manager = new ProducerManager($config);
-        $this->callMethod($manager, 'createDriver', 'default_notifier');
+        $manager->make('test_driver');
     }
 }

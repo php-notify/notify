@@ -3,9 +3,8 @@
 namespace Notify\Envelope;
 
 use Notify\Envelope\Stamp\StampInterface;
-use Notify\Notification\NotificationInterface;
 
-final class Envelope implements NotificationInterface
+final class Envelope
 {
     /**
      * @var \Notify\Notification\NotificationInterface
@@ -18,13 +17,13 @@ final class Envelope implements NotificationInterface
     private $stamps = array();
 
     /**
-     * @param \Notify\Notification\NotificationInterface $notification
-     * @param \Notify\Envelope\Stamp\StampInterface[]    $stamps
+     * @param \Notify\Envelope\Envelope|\Notify\Notification\NotificationInterface $notification
+     * @param \Notify\Envelope\Stamp\StampInterface[]                              $stamps
      */
-    public function __construct(NotificationInterface $notification, $stamps = array())
+    public function __construct($notification, $stamps = array())
     {
         $this->notification = $notification;
-        $stamps = is_array($stamps) ? $stamps : array_slice(func_get_args(), 1);
+        $stamps             = is_array($stamps) ? $stamps : array_slice(func_get_args(), 1);
         call_user_func_array(array($this, 'with'), $stamps);
     }
 
@@ -54,6 +53,21 @@ final class Envelope implements NotificationInterface
         $this->stamps[get_class($stamp)] = $stamp;
 
         return $this;
+    }
+
+    /**
+     * Makes sure the notification is in an Envelope and adds the given stamps.
+     *
+     * @param \Notify\Notification\NotificationInterface|\Notify\Envelope\Envelope $notification
+     * @param \Notify\Envelope\Stamp\StampInterface[]                              $stamps
+     *
+     * @return \Notify\Envelope\Envelope
+     */
+    public static function wrap($notification, array $stamps = array())
+    {
+        $envelope = $notification instanceof self ? $notification : new self($notification);
+
+        return call_user_func_array(array($envelope, 'with'), $stamps);
     }
 
     /**
@@ -88,52 +102,5 @@ final class Envelope implements NotificationInterface
     public function getNotification()
     {
         return $this->notification;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getType()
-    {
-        return $this->notification->getType();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMessage()
-    {
-        return $this->notification->getMessage();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getTitle()
-    {
-        return $this->notification->getTitle();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getContext()
-    {
-        return $this->notification->getContext();
-    }
-
-    /**
-     * Makes sure the notification is in an Envelope and adds the given stamps.
-     *
-     * @param \Notify\Notification\NotificationInterface|\Notify\Envelope\Envelope $notification
-     * @param \Notify\Envelope\Stamp\StampInterface[]                              $stamps
-     *
-     * @return \Notify\Envelope\Envelope
-     */
-    public static function wrap($notification, array $stamps = array())
-    {
-        $envelope = $notification instanceof self ? $notification : new self($notification);
-
-        return call_user_func_array(array($envelope, 'with'), $stamps);
     }
 }

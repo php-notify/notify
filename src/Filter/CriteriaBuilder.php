@@ -5,7 +5,7 @@ namespace Notify\Filter;
 use Notify\Filter\Specification\LifeSpecification;
 use Notify\Filter\Specification\PrioritySpecification;
 
-class CriteriaBuilder
+final class CriteriaBuilder
 {
     /**
      * @var \Notify\Filter\FilterBuilder

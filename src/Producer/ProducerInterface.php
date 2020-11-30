@@ -5,63 +5,20 @@ namespace Notify\Producer;
 interface ProducerInterface
 {
     /**
-     * @param string               $type
-     * @param string               $message
-     * @param string               $title
-     * @param array<string, mixed> $context
-     *
      * @return \Notify\Notification\NotificationInterface
      */
-    public function createNotification($type, $message, $title = '', $context = array());
+    public function createNotification();
 
     /**
-     * @return \Notify\Renderer\RendererInterface
+     * @return \Notify\Notification\NotificationBuilderInterface
      */
-    public function getRenderer();
+    public function createNotificationBuilder();
 
     /**
-     * @param string $type
-     * @param string $message
-     * @param string $title
-     * @param array  $context
+     * @param string|null $name
+     * @param array       $context
      *
-     * @return \Notify\Envelope\Envelope
+     * @return boolean
      */
-    public function render($type, $message, $title = '', $context = array(), array $stamps = array());
-
-    /**
-     * @param string               $message
-     * @param string               $title
-     * @param array<string, mixed> $context
-     *
-     * @return \Notify\Envelope\Envelope
-     */
-    public function error($message, $title = '', $context = array(), array $stamps = array());
-
-    /**
-     * @param string               $message
-     * @param string               $title
-     * @param array<string, mixed> $context
-     *
-     * @return \Notify\Envelope\Envelope
-     */
-    public function info($message, $title = '', $context = array(), array $stamps = array());
-
-    /**
-     * @param string               $message
-     * @param string               $title
-     * @param array<string, mixed> $context
-     *
-     * @return \Notify\Envelope\Envelope
-     */
-    public function success($message, $title = '', $context = array(), array $stamps = array());
-
-    /**
-     * @param string               $message
-     * @param string               $title
-     * @param array<string, mixed> $context
-     *
-     * @return \Notify\Envelope\Envelope
-     */
-    public function warning($message, $title = '', $context = array(), array $stamps = array());
+    public function supports($name = null, array $context = array());
 }

@@ -3,31 +3,69 @@
 namespace Notify\Tests\Storage;
 
 use Notify\Envelope\Envelope;
-use Notify\Envelope\Stamp\LifeStamp;
+use Notify\Envelope\Stamp\UuidStamp;
 use Notify\Notification\Notification;
 use Notify\Storage\ArrayStorage;
 use Notify\Tests\TestCase;
 
 final class ArrayStorageTest extends TestCase
 {
-    public function testStorage()
+    public function testAdd()
     {
-        $e1 = new Envelope(new Notification('success', 'success message'));
-        $e2 = new Envelope(new Notification('success', 'success message'), new LifeStamp(2));
-        $e3 = new Envelope(new Notification('success', 'success message'));
-        $e4 = new Envelope(new Notification('success', 'success message'));
-
         $storage = new ArrayStorage();
-        $storage->add($e1);
-        $storage->add($e2);
-        $storage->add($e3);
-        $storage->add($e4);
+        $envelopes = array();
 
-        $this->assertCount(4, $storage->get());
+        foreach (range(0, 4) as $index) {
+            $envelopes[$index] = new Envelope(new Notification('success', 'success message'));
+            $storage->add($envelopes[$index]);
+        }
 
-        $storage->flush(array($e2, $e1));
+        $this->assertCount(5, $storage->all());
+    }
 
-        $this->assertCount(3, $storage->get());
-        $this->assertSame(array($e2, $e3, $e4), $storage->get());
+    public function testAddNotificationWithUuidStamp()
+    {
+        $storage = new ArrayStorage();
+        $storage->add(new Envelope(new Notification('success')));
+
+        $envelopes = $storage->all();
+
+        $this->assertCount(1, $envelopes);
+
+        $uuid = $envelopes[0]->get('Notify\Envelope\Stamp\UuidStamp');
+        $this->assertNotNull($uuid);
+    }
+
+    public function testClear()
+    {
+        $storage = new ArrayStorage();
+        $envelopes = array();
+
+        foreach (range(0, 4) as $index) {
+            $envelopes[$index] = new Envelope(new Notification('success', 'success message'));
+            $storage->add($envelopes[$index]);
+        }
+
+        $storage->clear();
+
+        $this->assertSame(array(), $storage->all());
+    }
+
+    public function testRemove()
+    {
+        $storage = new ArrayStorage();
+        $envelopes = array();
+
+        foreach (range(0, 4) as $index) {
+            $envelopes[$index] = new Envelope(new Notification('success', 'success message'), new UuidStamp());
+            $storage->add($envelopes[$index]);
+        }
+
+        $storage->remove($envelopes[0], $envelopes[2]);
+
+        $actual = UuidStamp::indexWithUuid($storage->all());
+        $expected = UuidStamp::indexWithUuid($envelopes[1], $envelopes[3], $envelopes[4]);
+
+        $this->assertSame(array(), array_diff_key($actual, $expected));
     }
 }

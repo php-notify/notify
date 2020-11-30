@@ -2,13 +2,12 @@
 
 namespace Notify\Tests\Stubs\Producer;
 
-use Notify\Manager\AbstractManager;
 use Notify\Producer\AbstractProducer;
 
 class FakeProducer extends AbstractProducer
 {
-    public function getRenderer()
+    public function supports($name = null, array $context = array())
     {
-        return 'fake';
+        return in_array($name, array('fake', __CLASS__));
     }
 }

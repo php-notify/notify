@@ -3,12 +3,12 @@
 namespace Notify\Tests\Stubs\Renderer;
 
 use Notify\Envelope\Envelope;
-use Notify\Renderer\HasGlobalOptionsInterface;
+use Notify\Renderer\HasOptionsInterface;
 use Notify\Renderer\HasScriptsInterface;
 use Notify\Renderer\HasStylesInterface;
 use Notify\Renderer\RendererInterface;
 
-class FakeRenderer implements RendererInterface, HasScriptsInterface, HasGlobalOptionsInterface, HasStylesInterface
+class FakeRenderer implements RendererInterface, HasScriptsInterface, HasOptionsInterface, HasStylesInterface
 {
     public function renderOptions()
     {

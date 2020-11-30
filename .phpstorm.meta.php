@@ -2,13 +2,16 @@
 
 namespace PHPSTORM_META;
 
-use Notify\Envelope\Envelope;
-use Notify\Presenter\PresenterManager;
-use Notify\Producer\ProducerManager;
-use Notify\Renderer\RendererManager;
+override(\Notify\Envelope\Envelope::get(), type(0));
+override(\Notify\Manager\ManagerInterface::make(0), map(['' => '@']));
 
-override(Envelope::get(), type(0));
+registerArgumentsSet('notificationTypes',
+    \Notify\Notification\NotificationInterface::TYPE_SUCCESS,
+    \Notify\Notification\NotificationInterface::TYPE_ERROR,
+    \Notify\Notification\NotificationInterface::TYPE_INFO,
+    \Notify\Notification\NotificationInterface::TYPE_INFO,
+);
 
-override(ProducerManager::make(''), map(['' => '@']));
-override(RendererManager::make(''), map(['' => '@']));
-override(PresenterManager::make(''), map(['' => '@']));
+expectedArguments(\Notify\Notification\NotificationBuilder::type(), 1, argumentsSet('notificationTypes'));
+expectedReturnValues(\Notify\Notification\NotificationInterface::setType(), 1, argumentsSet('notificationTypes'));
+expectedReturnValues(\Notify\Notification\NotificationInterface::getType(), argumentsSet('notificationTypes'));

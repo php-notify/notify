@@ -17,7 +17,7 @@ final class CriteriaBuilderTest extends TestCase
             'priority' => 1,
             'life' => 2,
             'limit' => 2,
-            'order_by' => 'Notify\Envelope\Stamp\LifeStamp',
+            'order_by' => 'Notify\Envelope\Stamp\ReplayStamp',
         ));
 
         $this->assertInstanceOf('Notify\Filter\FilterBuilder', $criteria->build());

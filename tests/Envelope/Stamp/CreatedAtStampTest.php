@@ -4,7 +4,7 @@ namespace Notify\Tests\Envelope\Stamp;
 
 use Notify\Envelope\Envelope;
 use Notify\Envelope\Stamp\CreatedAtStamp;
-use Notify\Envelope\Stamp\LifeStamp;
+use Notify\Envelope\Stamp\ReplayStamp;
 use PHPUnit\Framework\TestCase;
 
 final class CreatedAtStampTest extends TestCase
@@ -26,6 +26,6 @@ final class CreatedAtStampTest extends TestCase
         $createdAt2 = new CreatedAtStamp(new \DateTime('+1 h'));
 
         $this->assertFalse($createdAt1->compare($createdAt2));
-        $this->assertSame(0, $createdAt1->compare(new LifeStamp(1)));
+        $this->assertSame(0, $createdAt1->compare(new ReplayStamp(1)));
     }
 }

@@ -2,44 +2,37 @@
 
 namespace Notify\Notification;
 
-final class Notification implements NotificationInterface
+class Notification implements NotificationInterface
 {
     /**
      * @var string
      */
-    private $type;
+    protected $message;
 
     /**
      * @var string
      */
-    private $message;
-
-    /**
-     * @var string
-     */
-    private $title;
+    protected $type = self::TYPE_SUCCESS;
 
     /**
      * @var array<string, mixed>
      */
-    private $context;
+    protected $options = array();
 
     /**
-     * @param string               $type
-     * @param string               $message
-     * @param string               $title
-     * @param array<string, mixed> $context
+     * @param string|null $message
+     * @param string|null $type
+     * @param array       $options
      */
-    public function __construct($type, $message, $title = '', $context = array())
+    public function __construct($message = null, $type = self::TYPE_SUCCESS, array $options = array())
     {
-        $this->type    = $type;
         $this->message = $message;
-        $this->title   = $title;
-        $this->context = $context;
+        $this->type    = $type;
+        $this->options = $options;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getType()
     {
@@ -47,7 +40,15 @@ final class Notification implements NotificationInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @inheritDoc
      */
     public function getMessage()
     {
@@ -55,18 +56,54 @@ final class Notification implements NotificationInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getTitle()
+    public function setMessage($message)
     {
-        return $this->title;
+        $this->message = $message;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getContext()
+    public function getOptions()
     {
-        return $this->context;
+        return $this->options;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getOption($name, $default = null)
+    {
+        if (!isset($this->options[$name])) {
+            return $default;
+        }
+
+        return $this->options[$name];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setOption($name, $value)
+    {
+        $this->options[$name] = $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function unsetOption($name)
+    {
+        unset($this->options[$name]);
     }
 }

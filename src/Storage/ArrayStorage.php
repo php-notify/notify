@@ -3,11 +3,9 @@
 namespace Notify\Storage;
 
 use Notify\Envelope\Envelope;
-use Notify\Envelope\Stamp\CreatedAtStamp;
-use Notify\Envelope\Stamp\LifeStamp;
 use Notify\Envelope\Stamp\UuidStamp;
 
-class ArrayStorage implements StorageInterface
+final class ArrayStorage implements StorageInterface
 {
     /**
      * @var Envelope[]
@@ -17,7 +15,7 @@ class ArrayStorage implements StorageInterface
     /**
      * @inheritDoc
      */
-    public function get()
+    public function all()
     {
         return $this->envelopes;
     }
@@ -25,52 +23,40 @@ class ArrayStorage implements StorageInterface
     /**
      * @inheritDoc
      */
-    public function add(Envelope $envelope)
+    public function add($envelopes)
     {
-        if (null === $envelope->get('Notify\Envelope\Stamp\UuidStamp')) {
-            $envelope->withStamp(new UuidStamp());
-        }
-
-        if (null === $envelope->get('Notify\Envelope\Stamp\LifeStamp')) {
-            $envelope->withStamp(new LifeStamp(1));
-        }
-
-        if (null === $envelope->get('Notify\Envelope\Stamp\CreatedAtStamp')) {
-            $envelope->withStamp(new CreatedAtStamp());
-        }
-
-        $this->envelopes[] = $envelope;
-    }
-
-    public function flush($envelopes)
-    {
-        $envelopesMap = array();
+        $envelopes = is_array($envelopes) ? $envelopes : func_get_args();
 
         foreach ($envelopes as $envelope) {
-            $life = $envelope->get('Notify\Envelope\Stamp\LifeStamp')->getLife();
-            $uuid = $envelope->get('Notify\Envelope\Stamp\UuidStamp')->getUuid();
-
-            $envelopesMap[$uuid] = $life;
-        }
-
-        $store = array();
-
-        foreach ($this->get()as $envelope) {
-            $uuid = $envelope->get('Notify\Envelope\Stamp\UuidStamp')->getUuid();
-
-            if(isset($envelopesMap[$uuid])) {
-                $life = $envelopesMap[$uuid] - 1;
-
-                if ($life <= 0) {
-                    continue;
-                }
-
-                $envelope->with(new LifeStamp($life));
+            if (null === $envelope->get('Notify\Envelope\Stamp\UuidStamp')) {
+                $envelope->withStamp(new UuidStamp());
             }
 
-            $store[] = $envelope;
+            $this->envelopes[] = $envelope;
         }
+    }
 
-        $this->envelopes = $store;
+    /**
+     * @param \Notify\Envelope\Envelope[] $envelopes
+     */
+    public function remove($envelopes)
+    {
+        $envelopes = is_array($envelopes) ? $envelopes : func_get_args();
+
+        $map = UuidStamp::indexWithUuid($envelopes);
+
+        $this->envelopes = array_filter($this->envelopes, function (Envelope $envelope) use ($map) {
+            $uuid = $envelope->get('Notify\Envelope\Stamp\UuidStamp')->getUuid();
+
+            return !isset($map[$uuid]);
+        });
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function clear()
+    {
+        $this->envelopes = array();
     }
 }

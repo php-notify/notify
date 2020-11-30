@@ -2,7 +2,7 @@
 
 namespace Notify\Renderer;
 
-interface HasGlobalOptionsInterface
+interface HasOptionsInterface
 {
     /**
      * @return array

@@ -9,7 +9,7 @@ final class JsonPresenter extends AbstractPresenter
     /**
      * @param string|array $criteria
      *
-     * @return string
+     * @return array
      */
     public function render($criteria = null)
     {
@@ -23,7 +23,7 @@ final class JsonPresenter extends AbstractPresenter
         $envelopes = $this->getEnvelopes($filterName, $criteria);
 
         if (empty($envelopes)) {
-            return '';
+            return array();
         }
 
         $response = array(
@@ -41,19 +41,19 @@ final class JsonPresenter extends AbstractPresenter
     /**
      * @param \Notify\Envelope\Envelope[] $envelopes
      *
-     * @return string
+     * @return array
      */
     private function renderEnvelopes($envelopes)
     {
         $notifications = array();
 
         foreach ($envelopes as $envelope) {
-            $rendererStamp = $envelope->get('Notify\Envelope\Stamp\RendererStamp');
-            $renderer      = $this->rendererManager->make($rendererStamp->getRenderer());
+            $rendererStamp = $envelope->get('Notify\Envelope\Stamp\HandlerStamp');
+            $renderer      = $this->rendererManager->make($rendererStamp->getHandler());
 
             $notifications[] = array(
                 'code'    => $renderer->render($envelope),
-                'adapter' => $rendererStamp->getRenderer()
+                'adapter' => $rendererStamp->getHandler()
             );
         }
 

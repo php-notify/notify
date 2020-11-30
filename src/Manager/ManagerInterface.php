@@ -7,21 +7,21 @@ interface ManagerInterface
     /**
      * Get a driver instance.
      *
-     * @param string|null $driver
+     * @param string|null  $name
+     * @param array $context
      *
      * @return object
      *
      * @throws \InvalidArgumentException
      */
-    public function make($driver = null);
+    public function make($name = null, array $context = array());
 
     /**
      * Register a custom driver creator.
      *
-     * @param string          $alias
      * @param \Closure|object $driver
      *
      * @return $this
      */
-    public function addDriver($alias, $driver);
+    public function addDriver($driver);
 }

@@ -7,7 +7,7 @@ use Notify\Envelope\Envelope;
 use Notify\Envelope\Stamp\PriorityStamp;
 use Notify\Middleware\AddCreatedAtStampMiddleware;
 use Notify\Middleware\AddPriorityStampMiddleware;
-use Notify\Middleware\MiddlewareManager;
+use Notify\Middleware\NotifyBus;
 use PHPUnit\Framework\TestCase;
 
 final class MiddlewareStackTest extends TestCase
@@ -29,12 +29,12 @@ final class MiddlewareStackTest extends TestCase
             )
         ));
 
-        $stack = new MiddlewareManager($config);
+        $stack = new NotifyBus($config);
 
         $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
         $envelope     = new Envelope($notification);
 
-        $stack->handle($envelope);
+        $stack->dispatch($envelope);
 
         $this->assertSame($notification, $envelope->getNotification());
         $this->assertCount(3, $envelope->all());
@@ -66,7 +66,7 @@ final class MiddlewareStackTest extends TestCase
             )
         ));
 
-        $stack = new MiddlewareManager($config);
+        $stack = new NotifyBus($config);
 
         $notification = $this->getMockBuilder('Notify\Notification\NotificationInterface')->getMock();
         $stamps       = array(
@@ -74,7 +74,7 @@ final class MiddlewareStackTest extends TestCase
         );
         $envelope     = new Envelope($notification, $stamps);
 
-        $stack->handle($envelope);
+        $stack->dispatch($envelope);
 
         $this->assertSame($notification, $envelope->getNotification());
         $this->assertCount(3, $envelope->all());

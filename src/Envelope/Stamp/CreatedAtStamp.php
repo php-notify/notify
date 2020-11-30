@@ -5,10 +5,15 @@ namespace Notify\Envelope\Stamp;
 final class CreatedAtStamp implements StampInterface, OrderableStampInterface
 {
     /**
-     * @param int
+     * @param \DateTime
      */
     private $createdAt;
 
+    /**
+     * @param \DateTime|null $createdAt
+     *
+     * @throws \Exception
+     */
     public function __construct(\DateTime $createdAt = null)
     {
         $this->createdAt = $createdAt ?: new \DateTime('now', new \DateTimeZone('Africa/Casablanca'));
@@ -22,6 +27,11 @@ final class CreatedAtStamp implements StampInterface, OrderableStampInterface
         return $this->createdAt;
     }
 
+    /**
+     * @param \Notify\Envelope\Stamp\OrderableStampInterface $orderable
+     *
+     * @return int
+     */
     public function compare($orderable)
     {
         if (!$orderable instanceof CreatedAtStamp) {

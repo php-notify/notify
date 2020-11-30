@@ -29,7 +29,7 @@ final class LifeSpecification implements SpecificationInterface
      */
     public function isSatisfiedBy(Envelope $envelope)
     {
-        $stamp = $envelope->get('Notify\Envelope\Stamp\LifeStamp');
+        $stamp = $envelope->get('Notify\Envelope\Stamp\ReplayStamp');
 
         if (null === $stamp) {
             return false;

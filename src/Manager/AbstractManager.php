@@ -3,62 +3,59 @@
 namespace Notify\Manager;
 
 use InvalidArgumentException;
+use Notify\Config\ConfigInterface;
 
 abstract class AbstractManager implements ManagerInterface
 {
     /**
      * The array of created "drivers".
      *
-     * @var array<string, object>
+     * @var array<object>
      */
     protected $drivers = array();
 
     /**
-     * {@inheritdoc}
+     * @var \Notify\Config\ConfigInterface
      */
-    public function make($driver = null)
+    protected $config;
+
+    /**
+     * @param \Notify\Config\ConfigInterface $config
+     */
+    public function __construct(ConfigInterface $config)
     {
-        $driver = $driver ?: $this->getDefaultDriver();
-
-        if (null === $driver) {
-            throw new InvalidArgumentException(sprintf('Unable to resolve NULL driver for [%s].', get_called_class()));
-        }
-
-        if (!isset($this->drivers[$driver])) {
-            $this->drivers[$driver] = $this->createDriver($driver);
-        }
-
-        return $this->drivers[$driver];
+        $this->config = $config;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addDriver($alias, $driver)
+    public function make($name = null, array $context = array())
     {
-        $this->drivers[$alias] = $driver;
+        $name = $name ?: $this->getDefaultDriver();
+
+        if (is_array($name)) {
+            $context = $name;
+            $name = null;
+        }
+
+        foreach ($this->drivers as $driver) {
+            if ($driver->supports($name, $context)) {
+                return $driver;
+            }
+        }
+
+        throw new InvalidArgumentException(sprintf('Driver [%s] not supported.', $name));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addDriver($driver)
+    {
+        $this->drivers[] = $driver;
 
         return $this;
-    }
-
-    /**
-     * Create a new driver instance.
-     *
-     * @param string $driver
-     *
-     * @return mixed
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function createDriver($driver)
-    {
-        $method = 'create' . str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $driver))) . 'Driver';
-
-        if (method_exists($this, $method)) {
-            return $this->$method();
-        }
-
-        throw new InvalidArgumentException(sprintf('Driver [%s] not supported.', $driver));
     }
 
     /**
@@ -67,6 +64,14 @@ abstract class AbstractManager implements ManagerInterface
     protected function getDefaultDriver()
     {
         return null;
+    }
+
+    /**
+     * @return \Notify\Config\ConfigInterface
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**

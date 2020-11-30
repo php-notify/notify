@@ -62,8 +62,8 @@ HTML;
         $html = '';
 
         foreach ($envelopes as $envelope) {
-            $rendererStamp = $envelope->get('Notify\Envelope\Stamp\RendererStamp');
-            $renderer = $this->rendererManager->make($rendererStamp->getRenderer());
+            $rendererStamp = $envelope->get('Notify\Envelope\Stamp\HandlerStamp');
+            $renderer = $this->rendererManager->make($rendererStamp->getHandler());
 
             $html .= $renderer->render($envelope) . PHP_EOL;
         }
@@ -88,6 +88,8 @@ HTML;
     }
 
     /**
+     * @param \Notify\Envelope\Envelope[] $envelopes
+     *
      * @return string
      */
     public function renderScripts($envelopes)

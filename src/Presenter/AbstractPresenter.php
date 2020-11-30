@@ -5,7 +5,7 @@ namespace Notify\Presenter;
 use Notify\Config\ConfigInterface;
 use Notify\Envelope\Envelope;
 use Notify\Filter\FilterManager;
-use Notify\Renderer\HasGlobalOptionsInterface;
+use Notify\Renderer\HasOptionsInterface;
 use Notify\Renderer\HasScriptsInterface;
 use Notify\Renderer\HasStylesInterface;
 use Notify\Renderer\RendererManager;
@@ -56,9 +56,9 @@ abstract class AbstractPresenter implements PresenterInterface
     /**
      * @inheritDoc
      */
-    public function support(array $context)
+    public function supports($name = null, array $context = array())
     {
-        return true;
+        return get_class($this) === $name;
     }
 
     protected function getEnvelopes($filterName, $criteria = array())
@@ -69,7 +69,7 @@ abstract class AbstractPresenter implements PresenterInterface
         return array_filter(
             $envelopes,
             static function (Envelope $envelope) {
-                $lifeStamp = $envelope->get('Notify\Envelope\Stamp\LifeStamp');
+                $lifeStamp = $envelope->get('Notify\Envelope\Stamp\ReplayStamp');
 
                 return $lifeStamp->getLife() > 0;
             }
@@ -87,18 +87,18 @@ abstract class AbstractPresenter implements PresenterInterface
         $renderers = array();
 
         foreach ($envelopes as $envelope) {
-            $rendererStamp = $envelope->get('Notify\Envelope\Stamp\RendererStamp');
-            if (in_array($rendererStamp->getRenderer(), $renderers)) {
+            $rendererStamp = $envelope->get('Notify\Envelope\Stamp\HandlerStamp');
+            if (in_array($rendererStamp->getHandler(), $renderers)) {
                 continue;
             }
 
-            $renderer = $this->rendererManager->make($rendererStamp->getRenderer());
+            $renderer = $this->rendererManager->make($rendererStamp->getHandler());
             if (!$renderer instanceof HasStylesInterface) {
                 continue;
             }
 
             $files       = array_merge($files, $renderer->getStyles());
-            $renderers[] = $rendererStamp->getRenderer();
+            $renderers[] = $rendererStamp->getHandler();
         }
 
         return array_values(array_filter(array_unique($files)));
@@ -115,18 +115,18 @@ abstract class AbstractPresenter implements PresenterInterface
         $renderers = array();
 
         foreach ($envelopes as $envelope) {
-            $rendererStamp = $envelope->get('Notify\Envelope\Stamp\RendererStamp');
-            if (in_array($rendererStamp->getRenderer(), $renderers)) {
+            $rendererStamp = $envelope->get('Notify\Envelope\Stamp\HandlerStamp');
+            if (in_array($rendererStamp->getHandler(), $renderers)) {
                 continue;
             }
 
-            $renderer = $this->rendererManager->make($rendererStamp->getRenderer());
+            $renderer = $this->rendererManager->make($rendererStamp->getHandler());
             if (!$renderer instanceof HasScriptsInterface) {
                 continue;
             }
 
             $files       = array_merge($files, $renderer->getScripts());
-            $renderers[] = $rendererStamp->getRenderer();
+            $renderers[] = $rendererStamp->getHandler();
         }
 
         return array_values(array_filter(array_unique($files)));
@@ -143,18 +143,18 @@ abstract class AbstractPresenter implements PresenterInterface
         $renderers = array();
 
         foreach ($envelopes as $envelope) {
-            $rendererStamp = $envelope->get('Notify\Envelope\Stamp\RendererStamp');
-            if (in_array($rendererStamp->getRenderer(), $renderers)) {
+            $rendererStamp = $envelope->get('Notify\Envelope\Stamp\HandlerStamp');
+            if (in_array($rendererStamp->getHandler(), $renderers)) {
                 continue;
             }
 
-            $renderer = $this->rendererManager->make($rendererStamp->getRenderer());
-            if (!$renderer instanceof HasGlobalOptionsInterface) {
+            $renderer = $this->rendererManager->make($rendererStamp->getHandler());
+            if (!$renderer instanceof HasOptionsInterface) {
                 continue;
             }
 
             $options[]   = $renderer->renderOptions();
-            $renderers[] = $rendererStamp->getRenderer();
+            $renderers[] = $rendererStamp->getHandler();
         }
 
         return array_values(array_filter(array_unique($options)));

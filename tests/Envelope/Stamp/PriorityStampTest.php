@@ -3,7 +3,7 @@
 namespace Notify\Tests\Envelope\Stamp;
 
 use Notify\Envelope\Envelope;
-use Notify\Envelope\Stamp\LifeStamp;
+use Notify\Envelope\Stamp\ReplayStamp;
 use Notify\Envelope\Stamp\PriorityStamp;
 use PHPUnit\Framework\TestCase;
 
@@ -27,6 +27,6 @@ final class PriorityStampTest extends TestCase
         $stamp2 = new PriorityStamp(2);
 
         $this->assertFalse($stamp1->compare($stamp2));
-        $this->assertSame(0, $stamp1->compare(new LifeStamp(1)));
+        $this->assertSame(0, $stamp1->compare(new ReplayStamp(1)));
     }
 }

@@ -9,6 +9,9 @@ final class PriorityStamp implements StampInterface, OrderableStampInterface
      */
     private $priority;
 
+    /**
+     * @param int $priority
+     */
     public function __construct($priority)
     {
         $this->priority = $priority;
@@ -22,6 +25,11 @@ final class PriorityStamp implements StampInterface, OrderableStampInterface
         return $this->priority;
     }
 
+    /**
+     * @param \Notify\Envelope\Stamp\OrderableStampInterface $orderable
+     *
+     * @return int
+     */
     public function compare($orderable)
     {
         if (!$orderable instanceof PriorityStamp) {

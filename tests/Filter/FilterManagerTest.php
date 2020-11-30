@@ -9,7 +9,7 @@ use Notify\Filter\FilterBuilder;
 use Notify\Filter\Specification\PrioritySpecification;
 use Notify\Middleware\AddCreatedAtStampMiddleware;
 use Notify\Middleware\AddPriorityStampMiddleware;
-use Notify\Middleware\MiddlewareManager;
+use Notify\Middleware\NotifyBus;
 use PHPUnit\Framework\TestCase;
 
 final class FilterManagerTest extends TestCase
@@ -52,9 +52,12 @@ final class FilterManagerTest extends TestCase
             )
         ));
 
-        $middleware     = new MiddlewareManager($config);
+        $middleware     = new NotifyBus($config);
 
-        $envelopes = $middleware->handleMany($notifications);
+        $envelopes = array();
+        foreach ($notifications as $notification) {
+            $envelopes[] = $middleware->dispatch($notification);
+        }
 
         $builder = new FilterBuilder();
 
